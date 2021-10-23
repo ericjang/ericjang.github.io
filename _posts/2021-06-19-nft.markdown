@@ -1,8 +1,91 @@
 ---
 layout: post
-title:  "Stonks are What You Can Get Away With: NFTs and Financial Nihilism"
+title:  "Stonks are What You Can Get Away With"
 date:   2021-06-19
-redirect_to: https://blog.evjang.com/2021/06/nft.html
 categories:
+summary: An explanation of what NFTs are from first principles and how they unite ideas from both artistic and financial nihilism.
 ---
-	
+
+{% include image.html
+            title="Ten Apes"
+            caption="Ten Apes."
+            src="https://1.bp.blogspot.com/-LqtGHFLzlTw/YM5_JJYCUZI/AAAAAAAAivM/4shsfLTDYI8caqc_pT1fkc1rHrFAPbg7wCNcBGAsYHQ/w400-h400/punk_tile%25403x.png" %}
+
+Andy Warhol once said, “Art is what you can get away with.” I interpret the quote as a nihilistic take on “beauty is in the eye of the beholder” — [a urinal you found in the junkyard](https://en.wikipedia.org/wiki/Fountain_(Duchamp)) can be considered art, so long as you convince someone to buy it, or showcase it in a museum. All that matters is what other people see in it and what buyers are willing to pay.
+
+The 2020’s equivalent of Warhol paintings are [Non-Fungible-Tokens (NFTs)](https://ethereum.org/en/nft/). In this essay I’ll explain what NFTs are by motivating them with some interesting real-world problems. Then I’ll discuss why the NFT craze for digital art generates so much ideologically contentious debate. Finally, I’ll discuss some parallels between artistic and financial nihilism, and how this might serve as a framework for thinking about wildly speculative markets.
+
+# Explaining NFTs using Counterfeit Goods
+
+Suppose you want to buy a Birkin bag or some other luxury brand item. An unauthorized seller — perhaps someone who needs some emergency cash — is willing to sell you a Birkin bag. They offer you a good discount, relative to the price the authorized retailer would charge you. But how can you be sure they aren’t selling you a fake? Counterfeits for these items are very high quality, and the average Birkin customer probably can’t tell the difference between a real and a fake.
+
+One way to avoid counterfeits is to only purchase items from an authorized retailer, e.g. a trusted Hermès store. But this is not practical because it prevents people from selling or giving away their bags. If you leave your bag to someone in your will, then its authenticity is no longer guaranteed.
+
+So we have the market need: how does a seller pass on or sell a luxury item? How does a buyer ensure that they are buying an authentic item?
+
+One possible answer is for Hermès to print out a list of secret serial numbers, perhaps sewn inside the bag, that declare whether a bag is legit or not. Owners receive a serial number when they buy the bag. But this is not a strong deterrent. A counterfeiter could just buy a real bag and then copy its serial number into many fake bags.
+
+What if Hermès maintains a public website of who owns which bag? Any time a bag changes ownership, this ledger needs to be updated. By recording a unique owner for each unique serial number, this solves the problem of counterfeiters simply duplicating serial numbers. The process shifts from verifying properties to verifying transactions and owners.
+
+These approaches would work, but also have a centralized point of failure: If the Hermès website goes down, nobody can trade bags anymore. Hermès is a big company and has the resources to protect their website against DDOS attacks and other cybersecurity threat vectors, but smaller luxury brands might not have a state-of-the-art security department. If they are not careful, their security could be breached by hackers or an unscrupulous sysadmin. Also, if Hermès stops operating as a company in 25 years, who will maintain the ledger of ownership? If it is a third party company, can we trust them not to abuse that power? Even in the unlikely event that the central point of failure never makes a mistake, it’s still mildly annoying to require Hermès to get involved every time a bag changes hands.
+
+What if you could verify transactions and owners, without a centralized party? This is where Non-Fungible Tokens, or NFTs, come in. In 2009, someone [published a landmark paper](https://bitcoin.org/bitcoin.pdf) on how to build a decentralized ledger of who owns what. This ledger is called a "blockchain". A blockchain is a record of the consensus state of the world, following some agreed-upon protocol that is known to everyone. The remarkable thing about blockchains is that they are decentralized (no central point of failure), and resilient to malicious actors in the network. Distributed consensus is reached by each individual contributing some resource like money, hash rate, or computer storage. So long as a large fraction of resources in the network are controlled by well-behaved actors, the integrity of the blockchain remains secure. The fraction required typically varies from one-thirds to just over a half.
+
+There are many blockchains out there. The details of how their consensus protocols are implemented are fascinating but beyond the scope of this essay. The important thing to know is that the base technology underlying NFTs and cryptocurrencies is a formal protocol that allows people to come to an agreement on who owns what without having to involve a trusted third party (e.g. Hermès, an escrow agent, your bank, or your government). Theoretically speaking, blockchains allow shared consensus in a trustless society.
+
+NFTs are like a paper deed of ownership, but instead of paper the certificate is digital. And unlike a paper deed an NFT cannot be forged. NFTs contain a unique “serial number” that is publicly viewable, but only one person can be said to “possess” that serial number on the blockchain, much like how home addresses are public but registered to a single owner by the recording office. To see how NFTs solve the Birkin bag counterfeit problem, let’s suppose Hermès publicly declares the following for all to hear:
+
+*“Owners of True Birkin bags will be issued a digital certificate of authenticity represented by an NFT”*
+
+As a buyer, you can be quite confident that the bag is authentic if the seller also owns the NFT, and you can verify that the NFT was indeed originally created by Hermès by looking up its public transaction history. During a transaction, the seller simply gives the buyer the bag and tells the blockchain to re-assign ownership of the NFT to the buyer’s digital identifier. If the payment is done in cryptocurrency, the escrow can even be performed [using a smart contract](https://medium.com/coinmonks/escrow-service-as-a-smart-contract-the-business-logic-5b678ebe1955) without a centralized party (the seller publishes contract “If a specific buyer’s wallet address sends me X USDC in 24 hours, send the NFT is sent to them and send the cash to me.”)
+
+NFTs provide the means to implement digital scarcity, but there still needs to be a way to pair it with a real-world item in the “analog” world. A seller could still bypass the security of NFTs by selling you an NFT with a fake Birkin bag. However, for every fake bag you want to sell, you need to purchase a real NFT and the real bag that comes with it. After you sell the NFT with the fake bag, you are left with a real bag with no NFT! Subsequently, the market value of the real bag drops because buyers will be highly suspicious of a seller who says "this is a real bag, I don't have the NFT because I just sold it with a fake bag." While NFTs are not sure proof of a physical Birkin bag's authenticity, they all but ruin the economic incentives of counterfeiting.
+
+What about luxury consumable goods? You could buy NFT-certified Wagyu beef, sell the NFT with some cheaper steak, and then eat the real Wagyu beef - it doesn’t matter what other people think you're eating. However, NFT transactions are public, so a grocery shopper would be quite suspicious of a food NFT that has changed hands outside of the typical supply chain addresses. For NFTs paired with physical goods, each “unusual” transaction significantly adds to counterfeit risk, which diminishes the economic incentives to counterfeiters. This is especially true for consumable, perishable goods.
+
+Authenticity is useful, even outside of Veblen goods. You can imagine using NFTs to implement anonymous [digital identity verification](https://www.marketsandmarkets.com/Market-Reports/digital-identity-solutions-market-247527694.html) (a 30B market by 2024), or ship it with food products like meat where the customer cares a lot about the provenance of the product. In Taiwan, there is a current ongoing scandal where a bunch of US-imported pork has been passed off as “domestic pork” and nobody can trust their butchers anymore.
+
+In the most general case, NFTs can be used to implement provenance tracking of both physical and digital assets - an increasingly important need in our modern age of disinformation. Where did this photo of a politician come from? Who originally produced this audio clip?
+
+# The Riddle of Intangible Value
+
+NFTs make a lot of sense for protecting the authenticity of luxury goods or implementing single sign-on or tracking the provenance of meat products, but that’s not what they’re primarily used for today. Rather, most people sell NFTs for digital art. Here are some early examples of art NFTs, called “Cryptopunks”. Each punk is a 24x24 RGB image.
+
+{% include image.html
+            title="Cryptopunks"
+            caption="Cryptopunks"
+            src="https://1.bp.blogspot.com/-t1cPZbFr3Ms/YM6AONO77bI/AAAAAAAAivU/jN3eSdaU61gm8_ZM5e3ri-PIt9v4546XACNcBGAsYHQ/w640-h184/punk-variety-2x.png" %}
+
+One of these recently sold for 17M USD in an auction. At first glance, this is perplexing. The underlying digital content - some pixels stored in a file - are freely accessible to anyone. Why would anyone pay so much for a certificate of authenticity on something that anyone can enjoy for free? Is the buyer the one that gets punked?
+
+It’s easy to dismiss this behavior as poor taste colliding with the arbitrarily large disposable income of rich people, in particular crypto millionaires that swap crypto assets with other crypto millionaires. While this may be true, I think it’s far more interesting to ask “what worldview would cause a rational person to bet $17M on a certificate for a 24x24x3 set of pixel values”?
+
+Historically, the lion’s share of rewards for digital content has been owned by distribution technology like Spotify or content aggregators like Facebook, and then split with the management company. The creatives themselves are paid pittances, and do not share in the financialization of their labor. The optimist case for NFT art is as follows: NFTs are decentralized, which means any artist with an internet connection can draw up financial contracts for their art on their own terms. If NFTs revolutionize the business model of digital art, and if the future of art is mostly digital, then the first art NFTs to ever be issued might accrue significant cultural relevance, and that’s why they command such high speculative prices.
+
+Valuing art based on cultural relevance might be a bit absurd, but why is the Mona Lisa “The Mona Lisa”? da Vinci arguably made “better” paintings from a technical standpoint. It's because of intangible value. The Mona Lisa is valuable because of its cultural proximity to important events and people in history, and the mimetic desire of other humans. In fact, it was a relatively obscure painting until 1911, when it was stolen from the Louvre and became a source of national shame overnight.
+
+All art, from your child’s first finger painting, to an antique heirloom passed down generations, to a “masterpiece” like the Mona Lisa, are valued this way. They are valuable simply because others deem it valuable.
+
+NFTs are the digital equivalent of buying a [banana duck-taped to a wall](https://en.wikipedia.org/wiki/Comedian_(artwork)); you are betting that in the future, that statement of ownership on some blockchain will be historically significant, which you can presumably trade in for cash or clout or both. But buyer beware: things get philosophically tricky when applying the theory of “intangible value” to digital information and artwork where the cost of replication goes to zero.
+
+I can think of two ways to look at how one values NFTs for digital art. One perspective is that in a world full of fake Birkin bags and products sourced from ethically dubious places, the only thing of value is the certificate of authenticity. The cultural and mimetic value of content has transferred entirely to the provenance certificate, and not the pixels themselves (which can be copied for free). If art’s value is derived from the cultural relevance it represents and its proximity to important people, then the most sensible way to make high art would not be to improve one’s painting skills, but to schmooze with a lot of famous people and insert oneself into important events in history, and issue scarce status symbols for the bourgeoisie. Warhol did exactly that. 
+
+The alternate view is that if a perfect copy can be made of some pixels, then it is not really a counterfeit at all, and therefore the NFT secures nothing of actual value. Is it meaningful to ascribe a certificate of authenticity to something that can be perfectly replicated? Is “authenticity” of a stream of 0s and 1s meaningless? There is certainly utility in verifying the source of some information, but anyone can mint an NFT for the same information.
+
+In summary, the Pro-NFT crowd values the intangible “collector’s scarcity and cultural relevance”. The anti-NFT focuses on tangible value - how much real value does this secure? Both are reasonable frameworks to value things, and you can end up with wildly different conclusions.
+
+# Artistic and Financial Nihilism: One and The Same?
+
+Convince enough people that a urinal is valuable, and it becomes an investment grade asset. This is no longer merely a matter of art philosophy - when you invest in an index fund, you are essentially reinforcing the market’s current belief of valuations. When people bid up the price of TSLA or GME to stratospheric valuations, the index fund must re-adjust their market-weighted holdings to reflect those prices, creating further money inflows to the asset and thus a [self-fulfilling prophecy](https://www.ft.com/content/0ca06172-bfe9-11de-aed2-00144feab49a). As it turns out, the art-of-investing is much like investing-in-art. As I have suggested in the title of this essay and borrowed from Warhol (who probably borrowed it from Marshall McLuhan), [stonks](https://knowyourmeme.com/memes/stonks) are what you can get away with.
+
+We are starting to see this valuation framework being applied to the equities market today, where price movements are dominated by narratives about where the price is going and what other people are willing to pay for it, especially with meme stocks like GME and AMC. Many retail investors don’t really care about whether GME’s price is justified by their corporate earnings - they simply buy at any cost. This financial nihilism - where intrinsic value is unknowable and all that matters is what other people think - is a worldview often encountered in Gen Z retail traders and a surprising number of professional traders I know. Perhaps the [midwit meme](https://knowyourmeme.com/memes/iq-bell-curve-midwit) is really true.
+
+This is definitely a cause for some concern, but at the same time, I think value investors should keep an open mind that what first seems like irrational behavior might have a method to madness. If you have an irrational force acting in the markets, like shareholders who refuse to sell or lend their stock, a discounted cash flow model for AMC or GME starts to not become very predictive of share price. By reflexivity, that will have impacts on future cash flows! In a similar fashion, using present-day frameworks for thinking about business and value do not account for the disruptive force of technology. That’s why I find NFTs so fascinating - they are an intersection of finance, art, technology, and the nihilistic framework of valuation that is so prevalent in our society today. 
+
+What is rational behavior for an investor, anyway? Is it “standard behavior” as measured against the population average? How do you tell apart standard behavior from a collective delusion? Perhaps the luxury bag makers, [Ryan Cohens](https://twitter.com/ryancohen?lang=en), and Andy Warhol’s of the world understand it best: Convince the world to believe in your values, and you will be the sanest person on the planet. For fifteen minutes, at least.
+
+# Acknowledgements
+
+Thanks to [Cati Grasso](https://twitter.com/catisgrasso?lang=en), [Sam Hoffman](https://www.linkedin.com/in/samhoffman523/), [Phúc Lê](https://twitter.com/lkhphuc), Chung Kang Wang, Jerry Suh, and Ellen Jiang for comments and feedback on drafts of this post.
+
+

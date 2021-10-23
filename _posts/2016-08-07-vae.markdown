@@ -1,8 +1,7 @@
 ---
 layout: post
-title:  ""
+title:  "A Beginner's Guide to Variational Methods: Mean-Field Approximation"
 date:   2016-08-07
 redirect_to: http://blog.evjang.com/2016/08/variational-bayes.html
 categories:
 ---
-	
