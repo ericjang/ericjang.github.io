@@ -99,7 +99,7 @@ What about offline RL methods like Deep Q-Learning on large datasets of $$(S,A,R
 
 Unfortunately, bootstrapping does not mix well with generalization. It is folk knowledge that the [deadly triad][deadly-triad] of function approximation, bootstrapping, and off-policy data make training unstable. I think this problem will only get worse as we scale up models and expect to train them on increasingly general tasks. [This work][implicit-underparam] shows that repeated bootstrapping iteratively decreases the capacity of the neural network. If you believe the claim that overparameterization of deep neural networks is key to generalization, then it would appear that for the same neural net architecture, offline RL is not quite as "data absorbent" as supervised learning.
 
-In practice, even algorithms like CQL are still challenging to scale and debug on larger, real-world datasets; colleagues of mine [tried several variations of AWAC and CQL on large-scale robotics problems][aw-opt] and found them to be trickier to get them to work than naive methods like Behavior Cloning.
+In practice, even algorithms like CQL are still challenging to scale and debug on larger, real-world datasets; colleagues of mine [tried several variations of AWAC and CQL on large-scale robotics problems][awopt] and found them to be trickier to get them to work than naive methods like Behavior Cloning.
 
 Instead of going through all this trouble, what if we lean into what deep nets excel at - sponging up data quickly with supervised learning and generalizing to massive datasets? **Can we accomplish what RL sets out to do using the tools of generalization, rather than direct optimization**? 
 
