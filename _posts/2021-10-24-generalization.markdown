@@ -3,7 +3,7 @@ layout: post
 title: "Just Ask for Generalization"
 date:  2021-10-24
 <!-- summary: Instead of searching for the best policy, why not learn a distribution over all policies, conditioned on language, and just ask the distribution nicely for what you want? -->
-summary: Generalizing to what you want may be easier than optimizing directly for what you want.
+summary: Generalizing to what you want may be easier than optimizing directly for what you want. We might even ask for "consciousness".
 categories:
 ---
 
