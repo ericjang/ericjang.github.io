@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Generative Adversarial Nets in TensorFlow: Part I"
+date:   2015-12-29
+redirect_to: http://blog.evjang.com/2016/06/generative-adversarial-nets-in.html
+categories:
+---
+	

@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Stonks are What You Can Get Away With: NFTs and Financial Nihilism"
+date:   2021-06-19
+redirect_to: https://blog.evjang.com/2021/06/nft.html
+categories:
+---
+	

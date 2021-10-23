@@ -1,0 +1,50 @@
+---
+layout: post
+title:  "Don't Mess with Backprop: Doubts about Biologically Plausible Deep Learning"
+date:   2021-02-13
+categories:
+summary: Instead of trying to train a deep neural net with a biologically inspired learning rule, meta-learn the biologically inspired behavior you want with standard backprop.
+---
+
+[Traducción a Español](https://www.ibidemgroup.com/edu/backprop-bpdl-aprendizaje-profundo/)
+
+Biologically Plausible Deep Learning (BPDL) is an active research field at the intersection of Neuroscience and Machine Learning, studying how we can train deep neural networks with a "learning rule" that could conceivably be implemented in the brain.
+
+The line of reasoning that typically motivates BPDL is as follows:
+
+1. A Deep Neural Network (DNN) can learn to perform perception tasks that biological brains are capable of (such as detecting and recognizing objects).
+2. If activation units and their weights are to DNNs as what neurons and synapses are to biological brains, then what is [backprop](https://en.wikipedia.org/wiki/Backpropagation) (the primary method for training deep neural nets) analogous to?
+3. If learning rules in brains are not implemented using backprop, then how are they implemented? How can we achieve similar performance to backprop-based update rules while still respecting biological constraints?
+
+A nice overview of the ways in which backprop is not biologically plausible can be found [here](https://psychology.stackexchange.com/questions/16269/is-back-prop-biologically-plausible), along with various algorithms that propose fixes.
+
+My somewhat contrarian opinion is that designing biologically plausible alternatives to backprop is the wrong question to be asking. The motivating premises of BPDL makes a faulty assumption: that layer activations are neurons and weights are synapses, and therefore learning-via-backprop must have a counterpart or alternative in biological learning.
+
+Despite the name and their impressive capabilities on various tasks, DNNs actually have very little to do with biological neural networks. One of the great errors in the field of Machine Learning is that we ascribe too much biological  meaning to our statistical tools and optimal control algorithms. It leads to confusion from newcomers, who ascribe entirely different meaning to "learning", "evolutionary algorithms", and so on.
+
+DNNs are a sequence of linear operations interspersed with nonlinear operations, applied sequentially to real-valued inputs - nothing more. They are optimized via gradient descent, and gradients are computed efficiently using a dynamic programming scheme known as backprop. Note that I didn't use the word "learning"!
+
+Dynamic programming is the ninth wonder of the world [1], and in my opinion one of the top three achievements of Computer Science. Backprop has linear time-complexity in network depth, which makes it extraordinarily hard to beat from a computational cost perspective. Many BPDL algorithms often don't do better than backprop, because they try to take an efficient optimization scheme and shoehorn in an update mechanism with additional constraints. 
+
+If the goal is to build a biologically plausible learning mechanism, there's no reason that units in Deep Neural Networks should be one-to-one with biological neurons. Trying to emulate a DNN with models of biologically neurons feels backwards; like trying to emulate the Windows OS with a human brain. It's hard and a human brain can't simulate Windows well.
+
+Instead, let's do the emulation the other way around: optimizing a function approximator to implement a biologically plausible learning rule. The recipe is straightforward:
+
+1. Build a biological plausible model of a neural network with model neurons and synaptic connections. Neurons communicate with each other using spike trains, rate coding, or gradients, and respect whatever constraints you deem to be "sufficiently biologically plausible". It has parameters that need to be trained.
+2. Use computer-aided search to design a biologically plausible learning rule for these model neurons. For instance, each neuron's feedforward behavior and local update rules can be modeled as a decision from an artificial neural network.
+3. Update the function approximator so that the biological model produces the desired learning behavior. We could train the neural networks via backprop. 
+
+The choice of function approximator we use to find our learning rule is irrelevant - what we care about at the end of the day is answering how a biological brain is able to learn hard tasks like perception, while respecting known constraints like the fact that biological neurons don't store all activations in memory or only employ local learning rules. We should leverage Deep Learning's ability to find good function approximators, and direct that towards finding a good biological learning rules.
+
+The insight that we should (artificially) learn to (biologically) learn is not a new idea, but it is one that I think is not yet obvious to the neuroscience + AI community. [Meta-Learning](https://en.wikipedia.org/wiki/Meta_learning_(computer_science)), or "Learning to Learn", is a field that has emerged in recent years, which formulates the act of acquiring a system capable of performing learning behavior (potentially superior to gradient descent). If meta-learning can find us more [sample efficient](https://arxiv.org/pdf/1703.05175.pdf) or [superior](https://arxiv.org/abs/1904.07392) or [robust](https://arxiv.org/pdf/1906.03367.pdf) learners, why can't it find us rules that respect biological learning constraints? Indeed, recent work [[1](https://arxiv.org/pdf/2006.09549.pdf), [2](https://www.biorxiv.org/content/10.1101/2019.12.30.891184v1.full.pdf), [3](https://arxiv.org/pdf/2012.03837.pdf), [4](https://arxiv.org/abs/1608.05343), [5](http://proceedings.mlr.press/v119/real20a/real20a.pdf)] shows this to be the case. You can indeed use backprop to train a separate learning rule superior to naïve backprop.
+
+I think the reason that many researchers have not really caught onto this idea (that we should emulate biologically plausible circuits with a meta-learning approach) is that until recently, compute power wasn't quite strong enough to both train a meta-learner and a learner. It still requires substantial computing power and research infrastructure to set up a meta-optimization scheme, but tools like [JAX make it considerably easier now](https://blog.evjang.com/2019/02/maml-jax.html).
+
+A true biology purist might argue that finding a learning rule using gradient descent and backprop is not an "evolutionarily plausible learning rule", because evolution clearly lacks the ability to perform dynamic programming or even gradient computation. But this can be amended by making the meta-learner evolutionarily plausible. For instance, the mechanism with which we select good function approximators does not need rely on backprop at all. Alternatively, we could formulate a meta-meta problem whereby the selection process itself obeys rules of evolutionary selection, but the selection process is found using, once again, backprop.
+
+Don't mess with backprop!
+
+# Footnote
+
+- [1] The eighth wonder being, of course, compound interest.
+

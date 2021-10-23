@@ -1,0 +1,7 @@
+---
+layout: post
+title:  "Selected Quotes from \"The Dark Ages of AI Panel Discussion\" (1984)"
+date:   2019-12-25
+redirect_to: https://blog.evjang.com/2019/12/aaai84.html
+categories:
+---

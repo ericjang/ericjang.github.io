@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Teacup: A Short Story"
+date:   2018-02-23
+redirect_to: https://blog.evjang.com/2018/02/teacup-story.html
+categories:
+---
+	

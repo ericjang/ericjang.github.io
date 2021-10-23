@@ -1,0 +1,8 @@
+---
+layout: post
+title:  ""
+date:   2016-08-07
+redirect_to: http://blog.evjang.com/2016/08/variational-bayes.html
+categories:
+---
+	

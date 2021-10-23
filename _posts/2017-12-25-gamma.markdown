@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Gamma Correction"
+date:   2017-12-25
+redirect_to: http://blog.evjang.com/2017/12/gamma-correction.html
+categories:
+---
+	

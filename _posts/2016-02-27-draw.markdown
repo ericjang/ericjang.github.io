@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Understanding and Implementing Deepmind's DRAW Model"
+date:   2016-02-27
+redirect_to: http://blog.evjang.com/2016/06/understanding-and-implementing.html
+categories:
+---
+	

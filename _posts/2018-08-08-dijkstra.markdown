@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Dijkstra's, in Disguise"
+date:   2018-08-08
+redirect_to: https://blog.evjang.com/2018/08/dijkstras.html
+categories:
+---
+	

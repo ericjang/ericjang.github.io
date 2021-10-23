@@ -1,0 +1,31 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+.post-header {
+	padding-top: 200px;
+}
+
+.site-header {
+	border-bottom: 1px solid #25a1d1;
+}
+
+.horizontal {
+	border-bottom: 1px solid #25a1d1;
+	margin-left: -2000px;
+    margin-right: -2000px;
+}
+
+body {
+      font-family: "Palatino", URW Palladio L, serif;
+}
+
+.image-wrapper {
+    text-align: center;
+
+    .image-caption {
+        color: $grey-color;
+        margin-top: $spacing-unit / 3;
+    }
+}

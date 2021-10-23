@@ -1,0 +1,7 @@
+---
+layout: post
+title:  "ML Mentorship: Some Q/A about RL"
+date:   2021-07-30
+redirect_to: "https://blog.evjang.com/2021/07/rl-qa.html"
+categories:
+---

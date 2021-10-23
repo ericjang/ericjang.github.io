@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Chaos and Randomness"
+date:   2020-09-13
+redirect_to: https://blog.evjang.com/2020/09/chaos.html
+categories:
+---
+	

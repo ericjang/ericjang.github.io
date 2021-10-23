@@ -1,0 +1,123 @@
+---
+layout: post
+title:  "Sovereign Arcade: Currency as High-Margin Infrastructure"
+date:   2021-05-26
+summary: How the powerful want to become countries, and the implications of cryptocurrencies on the sovereignty of nations.
+categories:
+---
+
+This essay is about how the powerful want to become countries, and the implications of cryptocurrencies on the sovereignty of nations. I’m not an economics expert: please leave a comment if I have made any errors.
+
+Money allows goods, services, and everything else under the sun to be assigned a value using the same unit of measurement. Without money, society reverts to [bartering](https://en.wikipedia.org/wiki/Barter), which is highly inefficient. You may need plumbing services but have nothing that the plumber wants, so your toilet remains clogged. By acting as a measure of value everyone agrees on, money facilitates frictionless economic collaboration between people.
+
+Foreign monetary policy is surprisingly simple to understand when viewed through the lens of power and control. Nation states get nervous when other nation states get too powerful, and controlling the currency is a form of power.
+
+To see why this is the case, let’s consider a Gaming Arcade (yes, like Chuck E. Cheese) as a miniature model of a “Nation State”. To participate inside the “arcade economy”, you are to swap your outside money (USD) for arcade tokens.
+
+{% include image.html
+            title="Chuck-E-Cheese Tokens"
+            caption="Arcades are like mini nation-states: they issue their own currency, encourage spending with state-owned enterprises, and have a one-sided currency exchange to prevent money outflows."
+            src="https://1.bp.blogspot.com/-QkAaGMn5bV0/YK7cIS3LEjI/AAAAAAAAiXY/20Dsfxqin78nR1VU-slQjMnIKw6mqhZigCNcBGAsYHQ/s640/chuckecheesetokens0213.2e16d0ba.fill-661x496.jpg" %}
+
+The coins are a store of value that facilitate a one-way transaction with the Nation-State: you get to play an arcade game, and in return you get some entertainment value and some tickets, which we call “wages”.
+
+The tickets are another store of value that can facilitate another one-way transaction: converting them into prizes. Prizes can be a stuffed animal or something else of value. Typically, the cost of winning a prize at an arcade is many multiples of what it would cost to just buy the prize at an outside store. The arcade captures that price difference as their profit.
+
+Money’s most important feature requirement is that it is a *stable* measure of value. Too much inflation, and people stop saving money. Too much deflation, and people and companies aren’t incentivized to spend money (for example, employing people). Imagine if tomorrow, an arcade coin could let you play a game for two rounds instead of one, and the day after, you could play for four rounds! Well, no one would want to play arcade games today anymore.
+
+The arcade imposes many kinds of draconian capital controls, and in many ways resembles an extreme form of [State Capitalism](https://en.wikipedia.org/wiki/State_capitalism):
+
+- All transactions are with state-owned enterprises (the arcade games) and must be conducted using state currencies (coins and tickets). You can’t start a business that takes people’s coins or tickets within the arcade.
+- The state can hand out valuable coins at virtually zero cost without worrying about inflation - every coin they issue is backed by a round of a coin-operated game, of which they have near-infinite supply. They can’t hand out infinite tickets though, because that would either require backing it up with more prizes, or devaluing each ticket so that more tickets are needed to buy the same prize.
+- You can bring outside money into the arcade, but you can’t convert coins, tickets, or prizes into money to take out.
+
+Controlling the currency supply is indeed a very powerful business to be in, and why arcades would prefer to issue their own currency and keep money from leaving their borders.
+
+Governments are just like arcades. They prefer their citizens and trading partners to use a currency they control, because it gives them a lever with which they can influence spending behavior. If country A uses country B’s currency instead, then country B’s currency supply shenanigans can actually influence saving and spending behavior of country A. This can pose a threat to the sovereignty of a nation (a fancy way to say “control over its people”).
+
+After World War II, the US Dollar [became the world’s reserve currency](https://en.wikipedia.org/wiki/Bretton_Woods_system), which means that it’s the currency used for the majority of international trade. The USA wants the world to buy oil with US dollars, and we go to great lengths to enforce it with various forms of [soft](https://www.bloomberg.com/news/features/2016-05-30/the-untold-story-behind-saudi-arabia-s-41-year-u-s-debt-secret) and [hard power](https://en.wikipedia.org/wiki/General_Atomics_MQ-1_Predator). The US dollar is backed by oil (petrodollar theory), and this “dollars-are-oil rule” in turn [is enforced by US military might](https://en.wikipedia.org/wiki/Petrodollar_recycling#Petrodollar_warfare).
+
+Governments print money all the time to pay for needed short-term needs like building bridges and COVID relief. However, too much of this can be a dangerous thing. The government gets what it wants in the short term, but more money chasing the same amount of goods will cause businesses to raise prices, causing inflation. Countries like Venezuela and Turkey who print too much of their own currency experience a runaway feedback loop where money supply and prices skyrocket, and then no one trusts the government currency as a stable source of value anymore.
+
+The USA is not like other countries in this regard; controlling the world’s reserve currency gives the USA the ability to print money like no other country can. The US government owing 28 trillion USD of debt is like the Arcade owing you a trillion game coins. Yes, it is a lot of coins - maybe the arcade doesn’t even have a trillion coins to give you. But the arcade knows that you know that it’s in the best interest of everyone to not try and collect all those coins right away, because the arcade would go bankrupt, and then the coins you asked for would be worthless. 
+
+Is this sketchy? Absolutely. Most other countries absolutely hate this power dynamic. Especially China. The USA [calls China a currency manipulator](https://home.treasury.gov/news/press-releases/sm751) for devaluing the yuan, but will turn around and do the exact same thing by printing dollars. China does not want to be subject to the whims of US monetary policy, so they are working very hard to establish the yuan as the currency of exchange in [international trade](https://www.nbr.org/publication/chinas-ten-year-struggle-against-u-s-financial-power/). Everyone wants to be the arcade operator, not the arcade player.
+
+# Large Companies as Nation-States
+
+Nation-states not only have to worry about the currencies of other nation-states, but increasingly, large global corporations as well. Any businesses that get big enough start to think about the currency game, since currency is a form of high-margin infrastructure.
+
+AliPay is a mobile wallet made by an affiliate company of Alibaba. It’s basically backed by an SQL table saying how much money each AliPay user has. It would be very easy for AliPay to print money - all they have to do is bump up some number in a row in the SQL table. As long as users are able to redeem their AliPay balance on something of equivalent value, Alibaba’s accounts remain solvent and they can get away with this. In fact, many of their users shop on Alibaba’s e-commerce properties anyway, so Alibaba doesn’t even need to have 100% cash reserves to back up all entries in their SQL table. Users can redeem their balances by paying for Alibaba goods, which Alibaba presumably can acquire for less than the price the user pays for.
+
+Of course, outright printing money incurs the wrath of the Sovereign Arcade. Alibaba was [severely](https://www.reuters.com/technology/exclusive-chinas-ant-explores-ways-jack-ma-exit-beijing-piles-pressure-sources-2021-04-17/) [punished](https://www.npr.org/2021/04/10/986112628/china-fines-alibaba-2-8-billion-for-breaking-anti-monopoly-law) for merely suggesting that they could do a better job than China’s banks. Facebook tried to challenge the dollar by [introducing a token](https://techcrunch.com/2019/06/18/facebook-libra/) backed with other countries’ reserve currencies, and the idea was [slapped down so hard](https://en.wikipedia.org/wiki/Diem_(digital_currency)#United_States_regulatory_response) that FB had to rename the project and start over. In contrast, the US government is happy to [approve crypto tokens backed using the US dollar](https://www.circle.com/en/usdc), because ultimately the US government controls the underlying resource.
+
+There are clever ways to build high margin infrastructure without crossing the money-printing line. Any large institution with a monopoly over a high-margin resource can essentially mint debt for free, effectively printing currency like an arcade does with its coins. The resource can be a lot of things - coffee, cloud computing credits, energy, user data. In the case of a nation-state, the resource is simply violence and enforcement of the law.
+
+As of 2019, [Starbucks had 1.6B USD of gift cards](http://jpkoning.blogspot.com/2019/08/starbucks-monetary-superpower.html) in circulation, which puts it above the national GDP of about 20 countries. Like the arcade coins, Starbucks gift cards are only redeemable for limited things: scones and coffee. Starbucks can essentially mint Starbucks gift cards for free, and this doesn’t suffer from inflation because each gift card is backed by future coffee which Starbucks can also make at a marginal cost. You can even use Starbucks cards internationally, which makes “Star-Bucks” more convenient than current foreign currency exchange protocols.
+
+As long as account balances are used to redeem a resource that the company can acquire cheaply (e.g. gift cards for coffee, gift cards for cloud computing, advertising credits), a large company could also practice “currency manipulation” by arbitrarily raising monetary balances in their SQL tables.
+
+
+# The Network State
+
+Yet another threat to the sovereign power is decentralized rogue nations, made possible by cryptocurrency. At the heart of cryptocurrency’s rise is a social problem in our modern, globalized society: how do we trust our sovereigns to actually be good stewards of our property? Banking executives who overleveraged risky investments got bailed out in 2008 by the US government. The USA printed a lot of money in 2020 to bail out those impacted by COVID-19 economic shutdowns. Every few weeks, we hear about data breaches in the news. A lot of Americans are losing trust in their institutions to protect their bank accounts, their privacy, and their economic interests.
+
+Even so, most Americans still take the power of the dollar for granted: 1) our spending power remains stable and 2) the number we see in our bank accounts is ours to spend. We have American soft and hard diplomacy to thank for that. But in less stable countries, capital controls can be rather extreme: a bank may simply decide one day that you can’t withdraw more than 1 USD per day. Or some government can decide that you’re a criminal and freeze your assets entirely.
+
+Cryptocurrency offers a simple answer: You can’t trust the sovereign, or the bank, or any central authority to maintain the SQL table of who owns what. Instead, everyone cooperatively maintains the record of ownership in a decentralized, trustless way. For those of you who aren’t familiar with how this works, I recommend this 26-minute [video](https://www.youtube.com/watch?v=bBC-nXj3Ng4&t=3s) by 3Blue1Brown.
+
+To use the arcade analogy, cryptocurrency would be like a group of teenagers going to the arcade, and instead of converting their money into arcade coins, they pool it together to buy prizes from outside. They bring their own games (Nintendo Switches or whatever), and then swap prizes with each other based on who wins. They get the fun value of hanging out with friends and playing games and prizes, while cutting the arcade operator out.
+
+The decentralized finance (DeFi) ecosystem has grown a lot in the last few years. In the first few years of crypto, all you could do was send Bitcoin and other Altcoins to each other. Today, you can [swap currencies](https://uniswap.org/) in decentralized exchanges, [take out flash loans](https://www.coindesk.com/what-is-a-flash-loan), [buy distressed debt at a discount](https://medium.com/dragonfly-research/liquidators-the-secret-whales-helping-defi-function-acf132fbea5e), [provide liquidity as a market maker](https://docs.uniswap.org/concepts/introduction/liquidity-user-guide), [perform no-limit betting on prediction markets](https://vitalik.ca/general/2021/02/18/election.html), [pay a foreigner with USD-backed stablecoins](https://cryptolawinsider.com/us-government-uses-stablecoins-to-send-foreign-aid-to-venezuela/), and [cryptographically certify authenticity](https://www.glossy.co/fashion/beyond-the-hype-nfts-stand-to-benefit-fashion-brands-in-the-future/) of luxury goods.
+
+[Balaji Srinivasan](https://balajis.com/about/) predicts that as decentralized finance projects continue to grow, a large group of individuals with a shared sense of values and territory will congregate on the internet and declare themselves citizens of a [“Network State”](https://www.youtube.com/watch?v=KMI_aGw2Cts). It sounds fantastical at first, but many of us already live in Proto-Network states. We do our work on computers, talk to people over the internet, shop for goods online, and spend leisure time in online communities like Runescape and such. It makes sense for a geographically distributed economy to adopt a digital-native currency that transcends borders.
+
+Network states will have the majority of their assets located on the internet, with a small amount of physical property distributed around the world for our worldly needs. The idea of a digital rogue nation is less far-fetched than you might think. If you walk into a Starbucks or McDonalds or a Google Office or an Apple Store anywhere in the world, there is a feeling of cultural consistency, a familiar ambience. In fact, Starbucks gets pretty close: you go there to eat and work and socialize and pay for things with Starbucks gift cards. 
+
+{% include image.html
+            title="Algebraist Coffee"
+            caption="A network state might have geographically distributed physical locations that have a consistent culture, with most of its assets and culture in the cloud. Pictured: Algebraist coffee, a new entrant into the luxury coffee brand space."
+            src="https://1.bp.blogspot.com/-eb4lVTN5pQE/YK7dBLt9UjI/AAAAAAAAiXk/Flj0heP-juECevf6bCArJSU8iG6v5HLYACNcBGAsYHQ/s640/download.jpeg" %}
+
+
+{% include image.html
+            title="Texas BBQ"
+            caption="A network state could have a national identity independent of physical location. I see no reason why a \"Texan\" couldn’t enjoy ranching and brisket and big cars and football anywhere in the world."
+            src="https://1.bp.blogspot.com/-68Lgyuhed7A/YK7dBObmWII/AAAAAAAAiXo/zCM_M4_Is-w3aCBtpvAIHlSRXoAutczEwCNcBGAsYHQ/s550/campfire-cookout-at-texas.jpeg" %}
+
+
+Balaji is broadly optimistic that existing sovereigns will be tolerant or even facilitate network states, by offering them economic development zones and tax incentives to establish their physical embodiments within their borders, in exchange for the innovation and capital they attract.
+
+I am not quite so optimistic - the fact that US persons can now pseudonymously perform economic activities with anyone in the world (including sanctioned countries) without the US government knowing, using a currency that the US government cannot control - is a terrifying prospect to the sovereign. The world’s governments highly underestimate the degree to which future decentralized economies will upset the world order and power structures of the world. Any one government can make life difficult for cryptocurrency businesses to get big, but as long as some countries are permissive towards it, it’s hard to put that genie back into the bottle and prevent the emergence of a new digital economy.
+
+# Crypto Whales
+
+I think the biggest threat to the emergence of a network state is not existing sovereigns, but rather the power imbalance of early stakeholders versus new adopters.
+
+At the time of writing, there are [nearly 100 Bitcoin billionaires](https://bitinfocharts.com/top-100-richest-bitcoin-addresses.html) and 7062 Bitcoin wallets that own more than 10M each. This isn’t even counting the other cryptocurrencies or DeFi wealth locked in Ethereum - the other day, someone up [bought nearly a billion dollars](https://bitinfocharts.com/dogecoin/address/DG6XWP6ruf4ZTsXAGzjDyQFaRimUn1mF2A) of the meme currency DOGE. We mostly have no idea who these people are - they walk amongst us, and are referred to as “whales”.
+
+A billionaire’s taxes substantially alter state budget planning in smaller states, so politicians actually go out of their way to appease billionaires (e.g. [Illinois with Ken Griffin](https://www.forbes.com/sites/giacomotognini/2020/11/05/battle-of-the-billionaires-failed-illinois-income-tax-initiative-drew-more-than-110-million-from-governor-jb-pritzker-and-citadels-ken-griffin/?sh=39617bc2da4b)). If crypto billionaires colluded, they could institute quite a lot of political change at local and maybe even national levels.
+
+China has absolutely [zero chill](https://www.nytimes.com/2021/05/25/world/asia/john-cena-taiwan-apology.html) when it comes to any challenge to their sovereignty, so it was not surprising at all that they recently [cracked down on domestic use of cryptocurrency](https://www.reuters.com/world/china/crypto-miners-halt-china-business-after-beijings-crackdown-bitcoin-dives-2021-05-24/). However, by shutting their miners down, I believe China is losing a strategic advantage in their quest to unseat America as the world superpower. A lot of crypto billionaires reside in China, having operated large mining pools and developing the world’s mining hardware early on. I think the smart move for China would have been to allow their miners to operate, but force them to sell their crypto holdings for digital yuan. This would peg crypto to the yuan, and also allow China to stockpile crypto reserves in case the world starts to use it more as a reserve currency.
+
+There’s a chance that crypto might even overtake the Yuan as the challenger to reserve currency, because it’s easier to acquire in countries with strict capital controls (e.g. Venezuela, Argentina, Zimbabwe). If I were China, I’d hedge against both possibilities and try to control both.
+
+Controlling miners has power implications far beyond stockpiling of crypto wealth. Miners play an important role in the market microstructure of cryptocurrency - they have the ability to see all potential transactions before they get permanently appended to blockchain. The assets minted by miners are virtually untraceable. One way a Network State could be compromised is if China smuggled several crypto whales into these fledgling nations that are starting to adopt Bitcoin, and then used their influence over Bitcoin reserves, tax revenues, and market microstructure to punish those who spoke out against China.
+
+The more serious issue than China’s hypothetical influence over Bitcoin monetary policy is the staggering inequality of crypto wealth distribution. Presently, [2% of wallets control over 95% of Bitcoin](https://insights.glassnode.com/bitcoin-supply-distribution/#:~:text=A%20recent%20report%20by%20Bloomberg,wealth%20in%20the%20Bitcoin%20network.). Many people are already uncomfortable with the majority of Bitcoins being owned by a handful of mining operators and Silicon Valley bros and other agents of tech inequality. Institutions fail violently when inequality is high - people will drop the existing ledger of balances and install a new one (such as Bitcoin). If people decide to form a new network state, why should they adopt a currency that would make these tech bros the richest members of their society? Would you want your richest citizen to be someone who bet their life savings on DOGE? Would you trust this person’s judgement or capacity for risk management?
+
+Like any currency, Bitcoin and Ethereum face adoption risk if the majority of assets are held by people who lack the leadership to deploy capital effectively on behalf of society. Unless crypto billionaires vow to not spend the majority of their wealth (like Satoshi has seemingly done), or demonstrate a remarkable level of leadership and altruism towards growing the crypto economy (like Vitalik Buterin has done), the inequality aspect will remain a large barrier to the formation of stable network states.
+
+# Summary
+
+1. A gaming arcade is a miniature model of a nation-state. Controlling the supply and right to issue currency is lucrative.
+2. Large businesses with high-margin infrastructure can essentially mint debt, much like printing money.
+3. Cryptocurrencies will create “Network States” that challenge existing nation-states. But they will not prosper if they set up their richest citizens as ones who won the “early adopter” lottery.
+
+# Further reading and Acknowledgements
+
+I highly recommend [Lyn Alden’s essay](https://www.lynalden.com/fraying-petrodollar-system/) on the history of the US dollar, the fraying petrodollar system, and the future of reserve currency.
+
+Thanks to Austin Chen and Melody Cao for providing feedback on earlier drafts.
+
+

@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "What I Cannot Control, I Do not Understand"
+date:   2019-03-10
+redirect_to: https://blog.evjang.com/2019/03/causal-rl.html
+categories:
+---
+	

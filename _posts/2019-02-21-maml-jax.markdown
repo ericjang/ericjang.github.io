@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Meta-Learning in 50 Lines of JAX"
+date:   2019-02-21
+redirect_to: https://blog.evjang.com/2019/02/maml-jax.html
+categories:
+---
+	

@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Bots and Thoughts from ICRA2018"
+date:   2018-06-21
+redirect_to: https://blog.evjang.com/2018/06/icra2018.html
+categories:
+---
+	

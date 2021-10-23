@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Thoughts on the BagNet Paper"
+date:   2019-02-05
+redirect_to: https://blog.evjang.com/2019/02/bagnet.html
+categories:
+---
+	

@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Doing a Concurrent Masters at Brown"
+date:   2018-01-23
+redirect_to: http://blog.evjang.com/2018/01/brown-cm.html
+categories:
+---
+	
