@@ -38,9 +38,7 @@ Note that there are no such images of "pandas looking into mirrors" or "banana c
 
 The ability to "just ask" language-conditioned deep learning models for what you want has led to "prompt engineering" as a viable space for improving our ML models. Here is a Tweet discussing how priming a VQGAN + CLIP model with the words "Unreal Engine" leads to drastically higher-quality images.
 
-
-<!-- ![unreal engine trick]() -->
-<img src="/assets/generalization/unreal-trick.jpg" alt="unreal-trick" width="50%"/>
+![unreal engine trick](/assets/generalization/unreal-trick.jpg)
 
 What if we could extend this principle - just asking generalization - to other challenging problems that have eluded analytical algorithmic improvements? 
 
