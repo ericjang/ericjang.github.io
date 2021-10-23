@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Just Ask for Generalization"
-date:  2021-10-24
+date:  2021-10-23
 <!-- summary: Instead of searching for the best policy, why not learn a distribution over all policies, conditioned on language, and just ask the distribution nicely for what you want? -->
 summary: Generalizing to what you want may be easier than optimizing directly for what you want. We might even ask for "consciousness".
 categories:
@@ -14,7 +14,7 @@ Discoveries around [Neural Scaling Laws][scaling-laws], [unsupervised pretrainin
 1. Large amounts of diverse data are more important to generalization than clever model biases.
 2. If you believe (1), then how much your model generalizes is directly proportional to how fast you can push diverse data into a sufficiently high-capacity model.
 
-To that end, Deep Neural nets trained with supervised learning are excellent data sponges - they can [memorize vast amounts of data][chiyuan-paper] and can do this quickly by training with [batch sizes in the tens of thousands][nado-batch]. Modern architectures like ResNets and Transformers seem to have no trouble absorbing increasingly large datasets when trained via supervised learning. 
+To that end, Deep Neural nets trained with supervised learning are excellent data sponges - they can [memorize vast amounts of data][chiyuan-paper] and can do this quickly by training with [batch sizes in the tens of thousands][nado-batch]. Modern architectures like ResNets and Transformers	 seem to have no trouble absorbing increasingly large datasets when trained via supervised learning. 
 
 When a model has minimized training loss (a.k.a *empirical risk*), it can be said to have "memorized" the training set. Classically one would think that minimizing training loss to zero is shortly followed by overfitting, but overparameterized deep networks seem to generalize well even in this regime. Here is an illustration of the "double descent" phenomena from [Patterns, Predictions, and Actions][mlstory-generalization], which illustrates that in some problems, overparameterized models can continue to reduce test error (risk) even as training loss is fully minimized. 
 
@@ -85,7 +85,7 @@ $$
 = \int_\Theta d\theta p(\theta) \nabla_\theta \log p(\theta) R(\theta) = E_{p(\theta)} [\nabla_\theta \log p(\theta) R(\theta)]
 $$
 
-This gradient estimator contains two expectations that we need to numerically approximate. First is computing $$R(\theta)$$ itself, which is an expectation over starting states $$p(s_0)$$. In my [previous blog post][robot-ephemeralization] I mentioned that accurate evaluation of a Binomial variable (e.g. the success rate of a robot on a single task) could require thousands of trials in order to achieve statistical certainty within a couple percent. For our hypothetical generalist robot, $$p(s_0)$$ could encompass millions of unique tasks and scenarios, which makes accuate evaluation prohibitively expensive.
+This gradient estimator contains two expectations that we need to numerically approximate. First is computing $$R(\theta)$$ itself, which is an expectation over starting states $$p(s_0)$$. In my [previous blog post]({% post_url 2021-09-20-ephemeralization %}) I mentioned that accurate evaluation of a Binomial variable (e.g. the success rate of a robot on a single task) could require thousands of trials in order to achieve statistical certainty within a couple percent. For our hypothetical generalist robot, $$p(s_0)$$ could encompass millions of unique tasks and scenarios, which makes accuate evaluation prohibitively expensive.
 
 The second expectation is encountered in the estimation of the policy gradient, over $$p(\theta)$$. Some algorithms like CMA-ES draw samples directly from the policy parameter distribution $$p(\theta)$$, while other RL algorithms like PPO sample from the policy distribution $$p_\theta(a\vert s)$$ and use the backpropagation rule to compute the gradient of the return with respect to the parameters: $$\frac{\partial R}{\partial \theta} = \frac{\partial R}{\partial \mu_a} \cdot \frac{\partial \mu_a}{\partial \theta}$$. The latter is typically preferred because the search space on action parameters is thought to be smaller than the search space on policy parameters (and therefore requires fewer environment interactions to estimate a gradient for).
 
@@ -208,7 +208,7 @@ Generalization and scaling:
 
 RL challenges:
 
-- [Robots Must Be Ephemeralized][robot-ephemeralization]
+- [Robots Must Be Ephemeralized]({% post_url 2021-09-20-ephemeralization %})
 - [An Empirical Model of Large-Batch Training][dota-grad-var]
 - [Implicit Under-Parameterization Inhibits Data-Efficient Deep Reinforcement Learning][implicit-underparam]
 - [Deep Reinforcement Learning and the Deadly Triad][deadly-triad]
@@ -291,7 +291,6 @@ See the second paragraph of the response to #6.
 [dall-e]: (https://openai.com/blog/dall-e/)
 
 <!-- RL problems -->
-[robot-ephemeralization]: https://blog.evjang.com/2021/09/ephemeralization.html
 [dota-grad-var]: https://arxiv.org/pdf/1812.06162.pdf
 [implicit-underparam]: https://arxiv.org/abs/2010.14498
 [deadly-triad]: https://arxiv.org/abs/1812.02648
