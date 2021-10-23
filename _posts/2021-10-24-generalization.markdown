@@ -190,7 +190,7 @@ There are some important implementation details that I haven't fleshed out yet, 
 
 # Acknowledgements
 
-Thanks to Daniel Freeman, David Ha, Corey Lynch, Karol Hausman, Irwan Bello, Igor Mordatch, and Vincent Vanhoucke for feedback and discussion on earlier drafts of this work.
+Thanks to Daniel Freeman, David Ha, Karol Hausman, Irwan Bello, Igor Mordatch, and Vincent Vanhoucke for feedback and discussion on earlier drafts of this work.
 
 
 # References
