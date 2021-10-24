@@ -169,7 +169,7 @@ The insight that we can cast optimization problems into inference problems is no
 
 I'm suggesting something slightly different here. Instead of casting a sequential decision making problem into an equivalent sequential inference problem, we construct the "meta-problem": a distribution of similar problems for which it's easy to obtain the solutions. We then solve the meta-problem with supervised learning by mapping problems directly to solutions. Don't overthink it, just train the deep net in the simplest way possible and ask it for generalization!
 
-Perhaps in the near future we will be able to prompt-engineer such language-conditioned models the hint "Generalize to unseen ...".
+Perhaps in the near future we will be able to prompt-engineer such language-conditioned models with the hint "Generalize to unseen ...".
 
 # Just ask for ... Consciousness?
 
