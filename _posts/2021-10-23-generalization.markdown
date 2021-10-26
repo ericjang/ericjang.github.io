@@ -245,7 +245,7 @@ There are parallels to likelihood-free generative models which require extensive
 
 **3. One of the findings of current language model work is that proxy objectives for what you really want are good enough. Simple next-token prediction induces generalization. But alignment to what you *really* want is still a hard problem in large model field and we don’t have good answers there yet (and ironically many attempts so far relied on incorporation of RL algorithms).**
 
-Alignment objectives may lack a per-example surrogate loss. But under the "generalize-then-infer" school of thought, I would simply recommend learning $$p(y\vert x, \text{alignment objective})$$ with max likelihood over numerous hindsight alignment objectives, and then simply condition on the desired alignment object at test time. One could obtain a distribution of alignment descriptions by simply running the model live, and then hindsight labeling with the corresponding alignment realized by the model. Then we simply invoke this meme:
+Alignment objectives may lack a per-example surrogate loss. But under the "generalize-then-infer" school of thought, I would simply recommend learning $$p(y\vert x, \text{alignment objective})$$ with max likelihood over numerous hindsight alignment objectives, and then simply condition on the desired alignment object at test time. One could obtain a distribution of alignment descriptions by simply running the model live, and then hindsight labeling with the corresponding alignment realized by the model. Then we simply invoke [this meme by Connor Leahy](https://twitter.com/NPCollapse/status/1401609927815307269):
 
 ![ainice](/assets/generalization/ainice.jpg)
 
@@ -275,6 +275,13 @@ I think this could emerge from training for the theory-of-mind imitation problem
 **7. Your formulation of consciousness only concerns itself with theory-of-mind behavior. What about attention behavior?**
 
 See the second paragraph of the response to #6.
+
+
+*Update 20211025: Updated with a paraphrased question from Alexander Terenin*
+
+**8. In [Rich Sutton's Bitter Lesson Essay][bitter-lesson], he argues that search *and* learning are both important. Do you really think that search can be completely replaced by a learned approach?**
+
+I agree that having a bit of light search in your program can be immensely helpful to learning and overall performance. It's a bit of a chicken/egg though. Does AlphaGo work because MCTS uses a learned value function to make search tractable? Or does the policy distillation only work because of search? I'm suggesting that when search becomes too hard (most RL tasks), it's time to use more learning. You're still doing search when performing supervised learning - you just get a lot more gradient signal per flop of computation.
 
 <!-- [SGD optimizer can be cast as approximate Bayesian inference](https://arxiv.org/abs/1704.04289) and [so can optimal control via AICO](https://icml.cc/Conferences/2009/papers/271.pdf) -->
 
@@ -310,3 +317,6 @@ See the second paragraph of the response to #6.
 [cond-gen]: http://proceedings.mlr.press/v119/jun20a/jun20a.pdf
 [sgd-bayes]: https://arxiv.org/abs/1704.04289
 [aico]: https://icml.cc/Conferences/2009/papers/271.pdf
+
+<!-- AQ -->
+[bitter-lesson]: http://www.incompleteideas.net/IncIdeas/BitterLesson.html
