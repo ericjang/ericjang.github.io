@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Differentiabe Path Tracing on the GPU/TPU"
+title:  "Differentiable Path Tracing on the GPU/TPU"
 date:   2019-11-28
 redirect_to: https://blog.evjang.com/2019/11/jaxpt.html
 categories:

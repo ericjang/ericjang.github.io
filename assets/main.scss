@@ -29,3 +29,10 @@ body {
         margin-top: $spacing-unit / 3;
     }
 }
+
+img[src*="#halfwidth"] {
+   max-width:375px;
+   display: block;
+   margin-left: auto;
+   margin-right: auto
+}

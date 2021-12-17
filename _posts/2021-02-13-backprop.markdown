@@ -46,5 +46,5 @@ Don't mess with backprop!
 
 # Footnote
 
-- [1] The eighth wonder being, of course, compound interest.
+- [1] The eighth wonder being compound interest, which is also a form of dynamic programming if you think about it.
 
