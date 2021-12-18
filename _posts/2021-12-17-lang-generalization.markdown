@@ -30,7 +30,7 @@ I'd like to throw in another take on the elephant: the aforementioned properties
 |Productivity![systematicity](/assets/language-substrate/productivity.png)|Test sequences longer than ones seen during training|books with 100k-200k words.|books with 200k+ words.
 |Substitutivity![systematicity](/assets/language-substrate/substitutivity.png)|Meaning of an expression is unchanged if a constituent is replaced with something of the same meaning|"bob ate pizza for lunch"|"bob had Dominos at noon" taken to mean (almost) the same thing
 |Localism![systematicity](/assets/language-substrate/localism.png)|The meaning of local parts are unchanged by the global context.|Arithmetic tasks like {(5)-4, (2+3)}|(2+3)-4 : (2+3) locally evaluates to 5, then 5-4 locally evaluates to 1. (2+3) representation not influenced by the presence of -4.
-|Overgeneralization![systematicity](/assets/language-substrate/overgeneralization.png)|Correctly handle exceptions to rules and patterns|{live->lived, laugh->loved, love->loved}|{kill->killed,break->broke (not breaked)}
+|Overgeneralization![systematicity](/assets/language-substrate/overgeneralization.png)|Correctly handle exceptions to rules and patterns|{live->lived, laugh->laughed, love->loved}|{kill->killed,break->broke (not breaked)}
 	
 # Compositionality in Everything Else
 
