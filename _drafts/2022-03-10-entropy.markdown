@@ -1,0 +1,9 @@
+---
+layout: post
+title: "Entropy Tutorial Part 1: Connections between Computation and Thermodynamic Work"
+date:  2021-12-17
+summary: Entropy, Carnot Cycle, Boltzmann constant, Landauer Limit, Loschmidt's Paradox, Reversibility of Physics, Magnetic Cooling, and the Second Law of Thermodynamics
+---
+
+
+
