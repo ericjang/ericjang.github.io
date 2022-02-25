@@ -1,0 +1,116 @@
+---
+layout: post
+title:  "Work, Heat, Computation: A Tutorial on Landauer's Principle"
+date:   2022-02-05
+categories:
+summary: 
+---
+
+I spent the last few weeks reading as much as I could about statistical mechanics.
+
+If I ever was going to do a PhD, I think I'd be interested in studying the physics of time.
+
+This blog post is an overview of what I know about the topic, explained as simply as possible from first principles.
+
+
+
+https://en.wikipedia.org/wiki/Entropy_(information_theory)
+
+https://en.wikipedia.org/wiki/Maximum_entropy_thermodynamics
+
+
+
+
+# Introductory Thermodynamics
+- pv=nrt
+- Carnot entropy vs Boltzmann Statistical Entropy
+- 2nd law of thermodynamics
+- 
+carnot cycle
+
+https://www.khanacademy.org/science/physics/thermodynamics/laws-of-thermodynamics/v/carnot-cycle-and-carnot-engine
+
+connection between statistical def of entropy vs. heat entropy https://www.youtube.com/watch?v=WLKEVfLFau4
+https://www.khanacademy.org/science/physics/thermodynamics/laws-of-thermodynamics/v/reconciling-thermodynamic-and-state-definitions-of-entropy
+
+clarification https://www.khanacademy.org/science/physics/thermodynamics/laws-of-thermodynamics/v/more-on-entropy
+
+
+adiabatic - occurs without transferring heat or mass to env. only transfers energy to env via work.(no heat exchange with env)
+
+isothermic process - temperature of system remains constant (heat exchange with env happens)
+https://en.wikipedia.org/wiki/Isothermal_process
+
+carnot cycle
+
+
+Sadi Carnot - Reflections on the Motive Power of Fire, 1824
+
+axiomatization of thermodynamics in 20th century, deriving it from mathematical axioms and logic rather than assuming empirical gas laws as is (from Sadi Carnot's time).
+
+Lieb and Yngvason 2000. - Fresh Look at Entropy and the second law of thermodynamics
+
+https://arxiv.org/pdf/math-ph/0003028.pdf
+
+
+Gibbs vs. Boltzmann Entropies - E.T. Jaynes (https://bayes.wustl.edu/etj/etj.html)
+
+
+# Information and Work
+- landauer's principl
+- Bennett's Billiard ball computer clarifying how Maxwell Demon is about storage, not observation
+- Reversible Computing
+- Heat, work, information
+
+Michael Frank - seminar on reversible computing (2017) https://www.youtube.com/watch?v=IQZ_bQbxSXk&t=9s
+
+
+# The arrow of time
+- interpreting time as a consequence of the second law
+- using thermodynamic arrow of time to disprove perpetual motion machines
+
+makes it quite easy to prove that perpetual motion machines are impossible.
+A machine cannot move through time without creating entropy, and entropy is not free.
+
+
+- loschmidt's paradox (classical)
+- resolutions to loschmidt's paradox
+- https://plato.stanford.edu/entries/time-thermo/
+- boundary conditions
+- Weingard's time-ordering field (can't find pdf of the original paper)
+
+Excellent stack exchange 
+https://physics.stackexchange.com/questions/76842/the-statistical-nature-of-the-2nd-law-of-thermodynamics/76860#76860
+
+
+Sean Carroll talk on passage of time
+https://longnow.org/seminars/02021/may/04/passage-time-and-meaning-life/
+
+
+begin with type theory?
+
+entropy is a property of macro state variables. it doesn't make sense to draw a picture of particles and claim it has entropy (that would be a micro state).
+
+can think of macro state as something having randomness and the resolved values are microstates.
+
+
+Sal Kahn
+Entropy
+
+
+Two talks / interviews by Charles Bennett
+https://www.youtube.com/watch?v=B5BUhzBlO-U&t=1187s
+https://www.youtube.com/watch?v=IA9T3ijos7k
+
+
+basic khan academy tutorials
+https://www.khanacademy.org/science/physics/thermodynamics/laws-of-thermodynamics/v/carnot-cycle-and-carnot-engine
+
+
+apparent contradiction of classical dynamics somehow giving rise to time variant phenomena. seems like best explain so far is temporally asymmetric boundary conditions (Boltzmann believed this must be true. alternatively, universe began in extremely tiny section of available phase space) "past hypothesis"
+
+
+# Experimental Papers 
+
+Brownian Carnot engine - Single particle carnot engine
+https://www.nature.com/articles/nphys3518
