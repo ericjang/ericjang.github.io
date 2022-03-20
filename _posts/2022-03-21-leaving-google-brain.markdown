@@ -8,9 +8,9 @@ In machine learning and optimization, it’s important to inject some noise into
 
 I spent 5.75 wonderful years (2097 days) on the Robotics team as my first job out of university. I wanted to extend my deepest gratitude to the colleagues and mentors who have taught me so much during my time at Google. Despite me not having a PhD, they took a chance on me and invested in my research career. I’m extremely proud of the technical (research and infra) and non-technical things (people skills) I worked on in my time there.
 
-What’s next? I don’t have anything lined up yet, so please reach out if you'd like to work with me or offer career advice. Here is [my resume](/resume). I'm leaning towards starting my own company, but I'm also open to joining an existing one if there is a better opportunity there.
+What’s next? I don’t have anything lined up yet, so please reach out if you'd like to work with me or offer career advice. Here is [my resume](/resume). I'm leaning towards starting my own company, but I'm open-minded and will join an existing company if it makes sense.
 
-One more thing - thank you to all my readers who have followed my writing over the years. Whatever I do next, I intend to continue sharing interesting things I’m learning and thinking about. 
+One more thing - thank you to all my readers who have followed my writing over the years. Whatever I do next, I intend to continue sharing interesting things I’m learning and thinking about. You can subscribe to this blog via [RSS](/feed.xml) or [email](https://feedburner.google.com/fb/a/mailverify?uri=evjang/tnsT&loc=en_US). 
 
 Sincerely,
 
