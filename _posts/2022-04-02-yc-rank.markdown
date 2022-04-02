@@ -63,7 +63,7 @@ YCRank takes as an the input natural language description of a company. Here is 
 
 I simplified the JSON string to remove redundancy, and removed `status`, `top_company`, `highlight_black`, `highlight_latinx`, `highlight_women`, `regions` to avoid potential bias. This doesn't necesssarily absolve YCRank from bias, but it's a reasonable start.
 
-YCRank examines abbreviated descriptions like the one below to predict a logit score, which is then used to sort against other companies. I also employed a data augmentation trick where I generated a small number of permutations of the input string based on re-ordering the metadata. For example, presenting the description of the company before its name.
+YCRank examines abbreviated descriptions like the one below to predict a logit score, which is then used to sort against other companies.
 
 ```
 'SimpleHash'
@@ -149,7 +149,7 @@ Some observations:
 - I was very intrigued by Strong Compute while reading, but it seemed to be rated pretty low.
 - I invested in one of the companies prior to building YCRank. It ranked in the 100-150s range 😅. Oops. I did think that the companies immediately above and below it were adequately ranked, so that was pretty cool.
 - I confirmed that the lowest-ranking companies were indeed not that interesting to me - mostly fintech. In the middle of the pack was a large swath of B2B SaaS startups that made me want to throw myself off a cliff when reading their descriptions.
-- It will take me some more time to understand if there were any interesting false positives / negatives in this ranking, so I'd appreciate if my readers can point out anything interesting.
+- It will take me some more time to understand if there were any interesting false positives / negatives in this ranking, so I'd appreciate if my readers can point out anything interesting. There may be many limitations yet-undiscovered about this model, and I'm quite sure that the model is overfitting to coarser statistics rather than a deep understanding of comparative investment.
 
 Please don't take it personally if your company ranks low on this list, this is more of a proof-of-concept of how to train models to reflect one person's opinions. You can take solace in that I'm not a particularly great investor - if you invert this list you might actually do quite well.
 
