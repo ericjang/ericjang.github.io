@@ -11,6 +11,7 @@ Suppose a seed investor's entire worldview and investment framework can be disti
 
 Can we shrink our estimate of the upper bound of the [Kolmogorov complexity](https://en.wikipedia.org/wiki/Kolmogorov_complexity) of a seed investor? To investigate this, I made a neural network, YCRank, trained it on a handful of hand-labeled pairwise comparisons, and then used the learned comparator to sort the companies in the most recent W'22 batch. 
 
+*Disclaimer: Please don't take it personally if your company ranks low on this list, this is more of a proof-of-concept of how to train models to reflect one person's opinions. The ordering deliberately ignores a lot of things, and by construction does not consider important analyses like product-market fit, founding team strength, and technological edge. The current YC Rank model predicts ordering from a miniscule amount of context. You can take solace in that I'm not a particularly great investor - if you invert this list you might actually do quite well.*
 
 # Model Inputs
 
@@ -150,8 +151,6 @@ Some observations:
 - I invested in one of the companies prior to building YCRank. It ranked in the 100-150s range 😅. Oops. I did think that the companies immediately above and below it were adequately ranked, so that was pretty cool.
 - I confirmed that the lowest-ranking companies were indeed not that interesting to me - mostly fintech. In the middle of the pack was a large swath of B2B SaaS startups that made me want to throw myself off a cliff when reading their descriptions.
 - It will take me some more time to understand if there were any interesting false positives / negatives in this ranking, so I'd appreciate if my readers can point out anything interesting. There may be many limitations yet-undiscovered about this model, and I'm quite sure that the model is overfitting to coarser statistics rather than a deep understanding of comparative investment.
-
-Please don't take it personally if your company ranks low on this list, this is more of a proof-of-concept of how to train models to reflect one person's opinions. You can take solace in that I'm not a particularly great investor - if you invert this list you might actually do quite well.
 
 
 # Want to Try it Out?
