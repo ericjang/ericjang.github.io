@@ -80,7 +80,7 @@ The moat I am personally betting on (by joining Halodi) is a "humanoid robot tha
 
 Embodied AI and robotics research has lost some of its luster in recent years, given that large language models can now explain jokes while robots are [still doing pick-and-place with unacceptable success rates](https://sites.google.com/view/bc-z/home). But it might be worth taking a contrarian bet that training on the world of bits is not enough, and that Moravec's Paradox is not a paradox at all, but rather a consequence of us not having solved the "bulk of intelligence".
 
-[Reality has a surprising amount of detail](http://johnsalvatier.org/blog/2017/reality-has-a-surprising-amount-of-detail), and I believe that embodied humanoids can be used to index that all that untapped detail into data. Just as web crawlers index the world of bits, humanoid robots will index the world of atoms. If embodiment does end up being a bottleneck for Foundation Models to realize their potential, then a humanoid robot company stand to win everything.
+[Reality has a surprising amount of detail](http://johnsalvatier.org/blog/2017/reality-has-a-surprising-amount-of-detail), and I believe that embodied humanoids can be used to index that all that untapped detail into data. Just as web crawlers index the world of bits, humanoid robots will index the world of atoms. If embodiment does end up being a bottleneck for Foundation Models to realize their potential, then a humanoid robot companies will stand to win everything.
 
 # Want Intros to ML Startups?
 
