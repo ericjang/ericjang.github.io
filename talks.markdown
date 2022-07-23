@@ -4,6 +4,16 @@ title: Talks
 permalink: /talks/
 ---
 
+<ins>Jun 2022 - RSS [Workshop on Learning from Diverse Offline Datasets](https://sites.google.com/view/l-dod-rss2022)</ins>
+
+- Links: [Youtube](https://youtu.be/lHXp6j6YrY4?t=4870)
+
+<ins>Jun 2022 - Fireside Chat for RSS</ins>
+
+- Host: Peter Fagan
+- Links: [Video](https://drive.google.com/file/d/1z4ge6mpFAo3nyyYRJrBR8cuYz8XuKqHx/view)
+- Summary: We discuss big-picture aspects of robotic deep learning, such as why robotic imitation learning makes sense from a product standpoint.
+
 <ins>Jan 2022 - Casual Robotics</ins>
 
 - Host: Kevin Zakka
