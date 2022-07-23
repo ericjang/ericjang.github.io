@@ -5,11 +5,11 @@ date:  2022-07-23
 summary: How we can learn from large-scale datasets for training robotic systems. However, this is not so much about how we take gradient steps or train our models, but rather how we as researchers can iterate quickly on such systems. I'll cover both algorithmic and engineering processes in service of this goal.
 ---
 
-I recently [gave a 45-minute talk (YouTube)](https://www.youtube.com/watch?v=lHXp6j6YrY4&t=4921s) at the [RSS'22 L-DOD workshop](https://sites.google.com/view/l-dod-rss2022). Here's the transcript and slides of the talk, in blog form. 
+I recently [gave a talk (YouTube)](https://www.youtube.com/watch?v=lHXp6j6YrY4&t=4921s) at the [RSS'22 L-DOD workshop](https://sites.google.com/view/l-dod-rss2022). Here's the transcript and slides of the talk, in blog form, lightly edited. 
 
-Since this is a workshop about large offline datasets for robotic learning, I don't need to convince the audience that when it comes to making robots that are capable, what often matters the most is the quality of the data, especially when it comes to handling situations you haven't quite seen before. In the broader field of machine learning, they call this "out of distribution generalization (OoD)". In robotics we call it "working in unstructured environments". They really mean the same thing.
+Since this is a workshop about large offline datasets for robotic learning, I don't need to convince the audience that when it comes to making robots that are capable, what often matters the most is the quality of the data. Data is especially helpful because it can help your software systems handle situations not seen prior to test time. In the broader field of machine learning, they call this "out of distribution generalization (OoD)". In robotics we call it "working in unstructured environments". They really mean the same thing.
 
-We believe in the simplicity and elegance of deep learning methods, and we know the recipe works. Here are some snapshots of works I've contributed to while I was at Google:
+We (the learning community) believe in the simplicity and elegance of deep learning methods, and we know that the recipe works. Here are some snapshots of works I've contributed to while I was at Google:
 
 ![rss1](/assets/rss22/slide1.png)
 
