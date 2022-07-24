@@ -187,11 +187,11 @@ To conclude, here's a table that summarizes the comparison between optimization,
 
 **What do you think about model-based methods?**
 
-Generative models used for visual model-predictive control are nice because they directly reuse a lot of the latest advances from generative modeling of images and video. However, the challenge remains that if you're not evaluating on a robot is that it's hard to know how reduction in bits-per-dim (or ELBO likelihood) for your modeling task translates to actual performance. While model-based learning is super practical for optimization dimension, you still need to find a way to connect it to your evaluation.
+Generative models used for visual model-predictive control are nice because they directly reuse a lot of the latest advances from generative modeling of images and video. However, the challenge remains that if you're not evaluating on a robot, it's still hard to know how reduction in bits-per-dim (or ELBO likelihood) for your modeling task translates to actual performance. While model-based learning is super practical for optimizing in a generalization-friendly way, you still need to find a way to connect it to your evaluation.
 
 **If model-based learning is practical, why haven't you applied it to BC-Z data?**
 
-When setting up a robotic learning codebase, you want to de-risk the infrastructure and make sure the basics like logging are implemented correctly, so often it's a good idea to start with a simple algorithm. Imitation learning was the simple algorithm we started with, but obviously once that works then it makes sense to branch out to more complex things like model-based RL.
+When setting up a robotic learning codebase, you want to de-risk the infrastructure and make sure the basics like logging are implemented correctly. Often it's a good idea to start with a simple algorithm, even if it's a naive baseline. Imitation learning was the simple algorithm we started with, but obviously once that works then it makes sense to branch out to more complex things like model-based RL.
 
 **Is it possible to deploy black-box learned systems (e.g. end-to-end neural network control) in real-world applications, given that they don't have safety guarantees?**
 
@@ -200,3 +200,5 @@ This is an open question for the ML field at large, as to what responsible deplo
 **Do you have a notion of what proxy tasks make sense for robotics?**
 
 At the very top of the evaluation pyramid, you have the question "does the robot do the task successfully?" and lower down the evaluation pyramid you have many proxy metrics that you would hope inform you about the performance of the system. One analogy you can draw from the language modeling community is that bits-per-dim is your proxy metric, while a Turing Test is your end-to-end metric. You don't necessarily know how well the Turing Test is going to go, given a reduction in perplexity, but you know that because language models are lossless compressors, that as you approach the limit of human-level compression, it will solve the harder task. So we should be drawing plots of how the end-to-end metric you care about scales with each proxy metric. I suspect a lot of surrogate metrics (e.g. object detection mAP) will probably plateau quickly.
+
+As to a specific proxy metric for robotics, I think simulated task success, and hand-curated "evaluation scenarios" that test for robust policy behavior in critical states are a reasonable start.
