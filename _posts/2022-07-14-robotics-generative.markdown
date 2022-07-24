@@ -52,7 +52,7 @@ Rich Sutton's essay [The Bitter Lesson](http://www.incompleteideas.net/IncIdeas/
 
 What gives us the most generalization in this regime? You have large over-parameterized models that can handle bigger datasets, and are able to attend to all the features in the prior layers (attention, convolutions, MLPs). Finally, if you have a lot of compute and a stable training objective (Cross Entropy loss), deep learning will almost always work. 
 
-I asked DALL-E 2 to draw "a pack mule standing on top of a giant wave", and this is how I think of generative modeling taking advantage of the Bitter Lesson. You have a huge wave of compute, you have a "workhorse" that is a large transformer, or a modern resnet, and at the very top you can choose whatever algorithm you like for modeling: VQVAE, Diffusion, GAN, Autoregressive, etc. Scale and good architectures is what enables all that progress.
+I asked DALL-E 2 to draw "a pack mule standing on top of a giant wave", and this is how I think of generative modeling taking advantage of the Bitter Lesson. You have a huge wave of compute, you have a "workhorse" that is a large transformer, or a modern resnet, and at the very top you can choose whatever algorithm you like for modeling: VQVAE, Diffusion, GAN, Autoregressive, et cetera. The algorithmic details matter today but they probably won't in a few years once compute lifts all boats; Scale and good architectures is what enables all that progress in the long term.
 
 ![rising-tide2](/assets/rss22/rising-tide2.png)
 
