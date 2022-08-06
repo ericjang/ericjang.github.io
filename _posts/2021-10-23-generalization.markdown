@@ -114,7 +114,7 @@ This phenomenon has been observed and developed in several prior and concurrent 
 
 At a high level, DTs condition the supervised learning objective on some high level description $$g$$ that partitions what the policy will do in the future based on that value of $$g$$. The return-to-go is an especially salient quantity for a reinforcement learning task, but you can also express the future outcomes via a [goal state][hindsight-experience-replay] or StarCraft build order or even a natural language description of what was accomplished.
 
-In [Learning Latent Plans from Play][lfp], the authors pair arbitrary trajectories with post-hoc natural language descriptions, and then train a model to clone those behaviors conditioned on language. At test time, they simply "ask" the policy to do a novel task in a zero-shot manner. The nice thing about these techniques is that they are indispensable for reaching sparse goals on RL tasks like Ant-Maze. This lends support to the claim that *generalization and inference* across goal-conditioning can do far better than brute force search for a single sparse goal in a long-horizon task.
+In [Language Conditioned Imitation Learning over Unstructured Data][lfp], the authors pair arbitrary trajectories with post-hoc natural language descriptions, and then train a model to clone those behaviors conditioned on language. At test time, they simply "ask" the policy to do a novel task in a zero-shot manner. The nice thing about these techniques is that they are indispensable for reaching sparse goals on RL tasks like Ant-Maze. This lends support to the claim that *generalization and inference* across goal-conditioning can do far better than brute force search for a single sparse goal in a long-horizon task.
 
 Language is a particularly nice choice for conditioning because it can be used to partition a trajectory not just on skill level, but also by task, by how much the policy explores, how "animal-like" it is, and any other observations a human might make about the trajectory. Clauses can be composed ad-hoc without developing a formal grammar for all outcomes that the robot might accomplish. Language is an ideal "fuzzy" representation for the diversity of real-world outcomes and behaviors, which will become increasingly important as we want to partition increasingly diverse datasets.
 
@@ -311,7 +311,7 @@ I agree that having a bit of light search in your program can be immensely helpf
 
 <!-- HER -->
 [hindsight-experience-replay]: https://arxiv.org/abs/1707.01495
-[lfp]: https://learning-from-play.github.io/
+[lfp]: https://language-play.github.io/
 [d-rex]: https://arxiv.org/abs/1907.03976
 [wtl]: https://sites.google.com/view/watch-try-learn-project
 [cond-gen]: http://proceedings.mlr.press/v119/jun20a/jun20a.pdf
