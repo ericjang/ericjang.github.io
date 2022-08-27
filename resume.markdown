@@ -1,7 +1,7 @@
 ---
 layout: default
-title: "Resume"
-permalink: /resume/
+title: "About"
+permalink: /about/
 ---
 
 \[firstname\]\[lastname\]2004@gmail.com
@@ -24,7 +24,7 @@ The last decade of Machine Learning research has shown that rich data + simple l
 - Several of my publications are featured on the Google AI blog: [Semantic Grasping](https://ai.googleblog.com/2017/07/teaching-robots-to-understand-semantic.html), [QT-Opt](https://ai.googleblog.com/2018/06/scalable-deep-reinforcement-learning.html), [Grasp2Vec](https://ai.googleblog.com/2018/12/grasp2vec-learning-object.html), [RetinaGAN](https://ai.googleblog.com/2021/06/toward-generalized-sim-to-real-transfer.html), [BC-Z](https://ai.googleblog.com/2022/02/can-robots-follow-instructions-for-new.html).
 - Developed [Tensor2Robot](https://github.com/google-research/tensor2robot), a ML framework used by the robotics manipulation team and [Everyday Robots](https://everydayrobots.com/) (until TensorFlow 1 was deprecated).
 - First author on 7 papers, coauthored 15+ more. [Select works described here](/projects), and a full list of publications can be found on [Google Scholar](https://scholar.google.com/citations?user=JOYf6ygAAAAJ&hl=en&oi=ao).
-- Area-chair for ICML, CoRL, and reviewer for many other conferences and workshops.
+- Area-chair for ICML, CoRL, NeurIPS and reviewer for many other conferences and workshops.
 
 **2013-2015**: [Various internships]({% post_url 2015-08-17-internship-experiences %}).
 
