@@ -1,7 +1,7 @@
 ---
 layout: default
-title: "Advising"
-permalink: /advising/
+title: "Office Hours"
+permalink: /officehours/
 ---
 
 # ML Office Hours, v.2.0
