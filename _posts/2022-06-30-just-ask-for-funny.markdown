@@ -1,0 +1,1 @@
+Train neural net to look at images and write funny twitter captions, conditioned on the number of retweets and ratio you want.
