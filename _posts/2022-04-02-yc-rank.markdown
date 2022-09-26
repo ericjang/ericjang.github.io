@@ -11,7 +11,7 @@ Suppose a seed investor's entire worldview and investment framework can be disti
 
 Can we shrink our estimate of the upper bound of the [Kolmogorov complexity](https://en.wikipedia.org/wiki/Kolmogorov_complexity) of a seed investor? To investigate this, I made a neural network, YCRank, trained it on a handful of hand-labeled pairwise comparisons, and then used the learned comparator to sort the companies in the most recent W'22 batch. 
 
-*Disclaimer: Please don't take it personally if your company ranks low on this list, this is more of a proof-of-concept of how to train models to reflect one person's opinions. The ordering deliberately ignores a lot of things, and by construction does not consider important analyses like product-market fit, founding team strength, and technological edge. The current YC Rank model predicts ordering from a miniscule amount of context. You can take solace in that I'm not a particularly great investor - if you invert this list you might actually do quite well.*
+*Disclaimer: Please don't take it personally if your company ranks low on this list, this is more of a proof-of-concept of how to train models to reflect one person's opinions. The ordering deliberately ignores a lot of things, and by construction does not consider important analyses like product-market fit, founding team strength, and technological edge. The current YC Rank model predicts ordering from a miniscule amount of context. You can take solace in that I'm not a particularly great investor: if you invert this list you might actually do quite well.*
 
 # Model Inputs
 
