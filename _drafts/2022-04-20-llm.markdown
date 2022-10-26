@@ -1,0 +1,10 @@
+
+
+A tutorial on large language models research
+
+- megatron NLU LM
+
+- massive amounts of infrastructure (see Gopher and PaLM papers https://storage.googleapis.com/pathways-language-model/PaLM-paper.pdf)
+
+
+https://openai.com/dall-e-2/

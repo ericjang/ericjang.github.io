@@ -1,10 +1,30 @@
 ---
 layout: post
-title:  "ML Mentorship Q/A"
+title:  "ML Mentorship Update"
 date:   2021-10-28
 categories:
 summary: A compilation of research and career advice I've given mentees over the last year.
 ---
+
+I've been doing free office hours for non-traditional ML researchers for 2 years, usually during Sunday weekends.
+
+This has culminated in one paper.
+
+
+
+
+# Things that didn't work
+
+- regular meeting cadence. most mentees could not keep up regular progress updates on a weekly basis, and after awhile I would never hear back from them.
+
+- a slack channel. there was very little activity. I suppose organizing popular discords and slack requires some amount of community manager activity, something that I don't really enjoy doing.
+
+
+
+
+# Combatting Adverse Selection
+
+Unfortunately, students without PhDs tend to be not as good at doing research.  
 
 Test
 

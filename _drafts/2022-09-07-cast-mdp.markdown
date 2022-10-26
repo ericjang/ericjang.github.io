@@ -1,0 +1,10 @@
+offline RL you write some logs for one MDP, then you want to convert them into logs for another mdp
+
+
+discrete action -> go down, close gripper, go back up
+
+in the above example, separation between agent and environment is the boundary between the discrete action being translated into real world robot behavior
+
+so given some program trace and log of computational events, you want to do "data surgery" where you "move" this boundary.
+
+

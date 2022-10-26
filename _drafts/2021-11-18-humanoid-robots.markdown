@@ -40,6 +40,8 @@ simulators:
 https://arxiv.org/pdf/2008.04627.pdf
 
 
+LIMS Ambidex arms - well designed cable system and wrist. 
+https://www.youtube.com/watch?v=7INPj1hdnyA&feature=youtu.be
 
 halodi
 instead of high-ratio gearboxes, use high torque with low transmission ratios. increase motor's inertia and reduce gear ratio - lower motor inertia reflected to end-effector.

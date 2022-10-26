@@ -54,3 +54,5 @@ which increases when the traffic on the blockchain increases. Compared to Ethere
 Bridges
 
 https://hackernoon.com/blockchain-bridges-how-do-they-even-work
+
+two smart contracts, one on each chain.
