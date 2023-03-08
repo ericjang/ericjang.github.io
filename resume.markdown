@@ -12,7 +12,7 @@ My career goal is to build machines that improve exponentially 📈.
 
 ### Work Experience
 
-**2022 - Present** Vice President of AI, [Halodi Robotics](https://halodi.com)
+**2022 - Present** Vice President of AI, [1X Technologies](https://1x.tech) (Formerly [Halodi Robotics](https://twitter.com/ericjang11/status/1632850739130408960?s=20))
 
 **2016 - 2022**  Senior Research Scientist at [Robotics at Google](https://research.google/teams/brain/robotics/)
 
