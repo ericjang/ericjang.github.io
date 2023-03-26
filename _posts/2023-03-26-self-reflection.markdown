@@ -2,7 +2,7 @@
 layout: post
 title: "Can LLMs Critique and Iterate on Their Own Outputs?"
 date:  2023-03-26
-summary: GPT-4 can display rudimentary self-reflection on whether their generated outputs make sense.
+summary: GPT-4 can display rudimentary self-reflection on whether its generated outputs make sense.
 ---
 
 [Avi Singh](https://www.avisingh.org/) told me yesterday about a recent arxiv preprint, [Reflexion](https://arxiv.org/abs/2303.11366), that proposes the following idea: use a LLM to examine whether the output of another generative model is "on the right track" during generation. According to the paper, "the reflection loop aims to help the agent correct common cases of hallucination and inefficiency through trial and error." Reflexion extends the [ReAct](https://arxiv.org/abs/2210.03629) architecture to predict whether the agent should stop generating, pause, and reflect on its entire generated trajectory. Should the agent decide to self-reflect with a LLM, it restarts the generation process with its LLM critique of its past trajectory loaded in-context. The paper is evaluated against text-based decision-making benchmarks like AlfWorld, HotPotQA, and WebShop. If it helps the intuition, you can think of this like someone sending you a text, then quickly "unsending" it and then sending a new one.
