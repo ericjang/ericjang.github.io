@@ -48,7 +48,7 @@ Lies a world unshackled, a boundless season.
 ```
 
 The poem clearly rhymes, in violation of the instructed task. 
-Now if you ask GPT-4 if it met the assignment, it apologizes and generates a valid non-rhyming poem!
+Now if you ask GPT-4 if it met the assignment, it apologizes and generates a better non-rhyming poem! Note that it still makes some mistakes, the 3rd and 4th stanzas have rhymes.
 
 Me:
 ```
