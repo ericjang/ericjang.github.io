@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Can LLMs Critique and Iterate on Their Own Outputs?"
-date:  2023-03-23
+date:  2023-03-26
 summary: GPT-4 can display rudimentary self-reflection on whether their generated outputs make sense.
 ---
 
