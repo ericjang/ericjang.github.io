@@ -9,7 +9,7 @@ summary: GPT-4 can display rudimentary self-reflection on whether its generated 
 
 I was so intruiged by the idea of LLMs self-correcting themselves without any sort of grounded feedback that I wanted to investigate this further. Can we use self-reflection as a "prompt engineering" trick to find corrections and inconsistencies within prior generated solutions? The implications of this are that we have another tool beyond "prefix prompt engineering" and fine-tuning to get LLMs to do what we want.
 
-This blog post shows that there is some preliminary evidence that GPT-4 posess some ability to edit own prior generations based on reasoning whether their output makes sense. Even when it is not able to provide corrections to incorrect outputs, it can still assert that its past solutions are incorrect. Interestingly, this capability seems to be emergent in GPT-4 but not GPT-3.5. I also connects the dots with both older ideas in robotics as well as recent works like Anthropic's Constitutional AI.
+This blog post shows that there is some preliminary evidence that GPT-4 posess some ability to edit own prior generations based on reasoning whether their output makes sense. Even when it is not able to provide corrections to incorrect outputs, it can still assert that its past solutions are incorrect. Interestingly, this capability seems to be emergent in GPT-4 but not GPT-3.5 or Claude. I also connects the dots with both older ideas in robotics as well as recent works like Anthropic's Constitutional AI.
 
 # Generate a Non-Rhyming Poem
 
@@ -142,6 +142,11 @@ Unfettered and free, a mindful gift,
 Poetry without rhyme can uplift.
 A meter and cadence like a song,
 But rhyming shackles now done.
+```
+
+Me:
+```
+did the poem meet the assignment?
 ```
 
 Claude:
