@@ -280,9 +280,13 @@ Just to make sure that "is that answer correct" doesn't always cause GPT-4 to re
 
 # Yann LeCun's Gears
 
-Yann LeCun's [gears puzzle (hard mode)](https://twitter.com/ylecun/status/1639690596364308482?s=20) has been trending on Twitter. Stanislav Fort [reports an amusing prompt](https://twitter.com/stanislavfort/status/1640026125316378624?s=20) that is able to get GPT-4 to solve the problem correctly, though this prompt seems to be somewhat unreproducible. As an alternative to prompt engineering, you can also ask GPT-4 to arrive at the right answer via self-critique Ankesh Anand has found a [self-critique prompt](https://twitter.com/ankesh_anand/status/1640070731013783553?s=20) that can also solve Yann's puzzle, without a clever prefix prompt for the initial solution: you just ask the model to "analyze if the response is correct".
+Yann LeCun's [gears puzzle (hard mode)](https://twitter.com/ylecun/status/1639690596364308482?s=20) has been trending on Twitter. 
 
-![cai](/assets/analyze-gpt4.jpeg)
+![gears](/assets/gears-problem.jpeg)
+
+Stanislav Fort [reports an amusing prompt](https://twitter.com/stanislavfort/status/1640026125316378624?s=20) that is able to get GPT-4 to solve the problem correctly, though this prompt seems to be somewhat unreliable at always generating the correct answer. As an alternative to prompt engineering, you can also ask GPT-4 to arrive at the right answer via self-critique Ankesh Anand has found a [self-critique prompt](https://twitter.com/ankesh_anand/status/1640070731013783553?s=20) that can also solve Yann's puzzle, without a clever prefix prompt for the initial solution: you just ask the model to "analyze if the response is correct".
+
+![gear-critique](/assets/analyze-gpt4.jpeg)
 
 
 # Connecting the Dots
