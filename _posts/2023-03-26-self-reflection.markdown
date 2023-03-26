@@ -278,6 +278,12 @@ and I apologize for any confusion caused.
 
 Just to make sure that "is that answer correct" doesn't always cause GPT-4 to revise its answer, I did confirm that GPT-4 is able to assert that its answers are correct when I ask it to multiply two smaller numbers (between 1 and 20).
 
+# Yann LeCun's Gears
+
+Yann LeCun's [gears puzzle (hard mode)](https://twitter.com/ylecun/status/1639690596364308482?s=20) has been trending on Twitter. Stanislav Fort [reports an amusing prompt](https://twitter.com/stanislavfort/status/1640026125316378624?s=20) that is able to get GPT-4 to solve the problem correctly, though this prompt seems to be somewhat unreproducible. As an alternative to prompt engineering, you can also ask GPT-4 to arrive at the right answer via self-critique Ankesh Anand has found a [self-critique prompt](https://twitter.com/ankesh_anand/status/1640070731013783553?s=20) that can also solve Yann's puzzle, without a clever prefix prompt for the initial solution: you just ask the model to "analyze if the response is correct".
+
+![cai](/assets/analyze-gpt4.jpeg)
+
 
 # Connecting the Dots
 
@@ -289,7 +295,7 @@ Like most algorithmic ideas in probabilistic inference and optimal control, havi
 - Actor-critic algorithms in Deep RL combine function approximation (the actor) with sampling the critic to further refine the action proposal. This can happen at training time or inference time.
 - AlphaGo's use of Monte Carlo Tree Search on the predicted value function can be thought of as refining the initial action proposed by the policy network. This is used at both training time and inference time. 
 - It's well known in deep RL that learning a reward function or an episodic success detector is far easier than generating the episodic actions to succeed at the task
-- The ["Let's think step by step" paper](https://arxiv.org/abs/2205.11916) showed that LLMs can be instructed to reason more carefully during their generation process via Chain-of-Thought (CoT) prompting like "let's think step by step". Drawing an analogy to control, we are using the LLM's logical reasoning primitives to as the step-by-step planning process towards a solution. However, if autoregressive generation makes a mistake, CoT prompting cannot go back and fix the error. The benefit of self-reflection is that the model can identify mistakes (potentially using CoT prompting itself), and correct them by starting over entirely. As neural net context length in LLMs increase, I expect that self-reflection will become the more effective CoT prompting technique. If you really squint and stretch your imagination, you can think of reflection as similar to a denoising operator for LLM outputs, similar to diffusion modeling but operating in semantic and logical space.
+- The ["Let's think step by step" paper](https://arxiv.org/abs/2205.11916) showed that LLMs can be instructed to reason more carefully during their generation process via Chain-of-Thought (CoT) prompting like "let's think step by step". Drawing an analogy to control, we are using the LLM's logical reasoning primitives like a "logical world model" to generate a trajectory. However, if autoregressive generation makes a mistake, CoT prompting cannot go back and fix the error. The benefit of self-reflection is that the model can identify mistakes (potentially using CoT prompting itself), and correct them by starting over entirely. As neural net context length in LLMs increase, I expect that self-reflection will become the more effective CoT prompting technique. If you really squint and stretch your imagination, you can think of reflection as similar to a denoising operator for LLM outputs, similar to diffusion modeling but operating in semantic and logical space.
 - OpenAI researchers have investigated using [LLMs to help critique LLM answers](https://arxiv.org/abs/2206.05802), though it approaches it from the very reasonable angle of automating the workload of human raters. Self-reflection takes it a step further, asking whether the critiques can actually be used to generate a better output without human intervention.
 - The recent [Constitutional AI](https://arxiv.org/abs/2212.08073) paper by Anthropic explores a similar idea of having a LLM revise generated outputs to abide by a set of rules:
 
