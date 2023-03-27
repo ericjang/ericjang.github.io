@@ -233,7 +233,7 @@ assignment as it successfully transports all three items across the river
 
 GPT-4 is able to self-critique and identify its error, but not able to revise its solution to the correct one - it still proposes taking the goat first. Perhaps a better prompt engineer than myself can think of the right "reflection prompt" to get it to fix the error - please let me know if you find one.
 
-GPT-3.5 and Claude were both much weaker at this task, as they both asserted that they had the right solution. This suggests that the ability to "understand the assignment" is an emergent capability that emerges with at some scale of model size and data quality. Either that, or OpenAI may have a secret training or inference trick that they have chosen not to reveal.
+GPT-3.5, Claude, and Character 1.2 chatbots were all much weaker at this task, as they all asserted that they had the right solution. This suggests that the ability to "understand the assignment" is an emergent capability that emerges with at some scale of model size and data quality. Either that, or OpenAI may have a secret training or inference trick that they have chosen not to reveal.
 
 
 # Multiplying Numbers
