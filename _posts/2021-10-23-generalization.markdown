@@ -190,6 +190,20 @@ There are some important implementation details that I haven't fleshed out yet, 
 
 Thanks to Daniel Freeman, David Ha, Karol Hausman, Irwan Bello, Igor Mordatch, and Vincent Vanhoucke for feedback and discussion on earlier drafts of this work.
 
+# Citation
+
+If you want to cite this blog post, you can use:
+
+```
+@article{jang2021justask,
+  title   = "Just Ask for Generalization",
+  author  = "Jang, Eric",
+  journal = "evjang.com",
+  year    = "2021",
+  month   = "Oct",
+  url     = "https://evjang.com/2021/10/23/generalization.html"
+}
+```
 
 # References
 

@@ -96,6 +96,22 @@ Language Models [are far from perfect](https://arxiv.org/abs/2112.04359) even wh
 
 My friend Elijah invited me to give a talk at his company's algorithms seminar and I shared an early draft of these ideas there. Here is a [recording on YouTube](https://youtu.be/NOZNzUGqaXw).
 
+# Citation
+
+If you want to cite this blog post, you can use:
+
+```
+@article{jang2021language,
+  title   = "To Understand Language is to Understand Generalization",
+  author  = "Jang, Eric",
+  journal = "evjang.com",
+  year    = "2021",
+  month   = "Dec",
+  url     = "https://evjang.com/2021/12/17/lang-generalization.html"
+}
+```
+
+
 
 # Q/A
 
