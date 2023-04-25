@@ -295,6 +295,7 @@ What I've shown here is just a few anecdotal examples, so this would need substa
 
 Like most algorithmic ideas in probabilistic inference and optimal control, having an agent critique its decisions to make them better is an old idea that has been re-implemented over and over again. Here are some related works:
 
+- There have been quite a [few recent papers](https://selfrefine.info/) concurrently exploring the idea of using LLMs to verify samples, but the earliest demonstration of this capability in modern LLMs is the 2022 Anthropic Paper ["Language Models (Mostly) Know What They Know"](https://arxiv.org/abs/2207.05221). This preceded the line of work that leads to their Constitutional AI framework.
 - In robotics, model-predictive control algorithms and receding horizon planners perform search on some cost function to refine their initial guess. The "world model" is the critic and the refinement happens via sampling or convex optimization.
 - Actor-critic algorithms in Deep RL combine function approximation (the actor) with sampling the critic to further refine the action proposal. This can happen at training time or inference time.
 - AlphaGo's use of Monte Carlo Tree Search on the predicted value function can be thought of as refining the initial action proposed by the policy network. This is used at both training time and inference time. 
