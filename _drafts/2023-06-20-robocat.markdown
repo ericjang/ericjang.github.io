@@ -1,0 +1,82 @@
+---
+layout: post
+title: "Takeaways from DeepMind's RoboCat Paper"
+date:  2023-06-20
+summary: I read 50 pages to find the data and results I found most interesting
+---
+
+Yesterday DeepMind Robotics published a research paper titled ["RoboCat: A Self-Improving Foundation Agent for Robotic Manipulation (PDF)"](https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/robocat-a-self-improving-robotic-agent/robocat-a-self-improving-foundation-agent-for-robotic-manipulation.pdf). I studied the 50-page report and summarize what I found to be the most interesting takeaways that I found from the paper here. 
+
+This paper contains a treasure trove of really useful empirical data on task transfer, success vs. data, model pretraining, and various design choices for prediction objectives and input/action spaces. Unlike the SayCan /RT* papers, which was very focused on using LLMs to do long-horizon planning + a large-scale imitation learning policies, this paper is much more emphasized on multi-robot, multi-domain transfer. It's much more pertinent if you want to build a very capable low-level policy, and less if you want to focus on a high level task planning system (where a VLM planner would be more important)
+
+The high-level architecture of RoboCat is very simple, not unlike [SayCan](https://say-can.github.io/): 
+
+1. Collect a lot of diverse human demonstration data + autonomous rollouts of successful policies. 
+2. Train a big model on all the data.
+3. In a perfect world, pooling all the data together yields superior performance across all tasks, but prior works like [GATO](https://arxiv.org/pdf/2205.06175.pdf) and [Multi-Game Decision Transformers](https://arxiv.org/abs/2205.15241) show that while you do pretty well for sharing 1 set of hyperparams across all tasks, it still isn't quite at the level of specialized policies.
+4. If zero-shot generalization to new tasks and robots is not performing well, you can settle for the next best thing, which is showing that the RoboCat can be used as a "foundation model" that can be fine-tuned to new robots and tasks quickly. 
+
+
+Self-Imitation learning, a fancy way of saying "take the successful rollouts and concatenate them to the training buffer". 
+
+
+The paper involves training several independent models, which is a testament to how large-scale projects actually require fairly sophisticated infrastructure:
+
+- the VQ-GAN tokenizer that converts images into perceptual input tokens (and decode predicted image tokens back out)
+- the RoboCat transformer itself, and trained using hindsight goals via future imgaes
+- Learned reward model that also acts as a success detector used for evaluation
+
+## Will Visual Foundation Models Zero-Shot Robotics?
+
+A big question these days is whether foundation models like GPT4 + images will just zero-shot robotics. RoboCat authors study that question by fine-tuning two VLMs pretrained on internet-scale data (NFNet, Swin CLIP) on each task. they do ok in sim but pretty terrible in real compared to training the VLM from scratch. This does suggest that real-world collected data will remain quite valuable for the forseeable future (edited) 
+
+
+
+Firstly, I will point out the "Big Questions" (TM) that RoboCat sheds some clues on. The paper is by no means conclusive, but given that they explore several action modalities and many tasks, I am inclined to think their results will hold up in independent replication.
+
+
+
+
+
+
+
+
+The basic setup of the system is remarkably similar to many other large-scale end-to-end robotic systems at big labs. 
+
+
+
+The foundation model recipe is simple:
+
+1. Train a big model on a diverse set of data. Preferably [a data sponge][just-ask-generalization].
+2. 
+
+
+
+
+Without having visiblity into the unpublished experiments of this project, and not having talked to DeepMind researchers yet at conferences, I'm going to make some educated guesses around what components of this project will stand the test of time.
+
+
+The first thing that is very notable is that instead of GATO, which focuses on simulation + real world domains on Sawyer arms
+
+It is a great paper with a lot of empirical results and ablations across a diverse suite of tasks, state and action spaces.
+
+This is a very rare thing to see in the field of robotics, because usually getting the infra and ML models to work on a single robot is painful enough. 
+
+
+, which is very rare to see in the field of robotics. Getting things to work on 
+
+
+This project was put together by a team of 39 authors working over the course of a year to build infra, collect data, train, evaluate, run baselines, and compile the technical report. This was a titanic amount of work, and props to the team for doing this.
+
+This work was done prior to their merger with Google Robotics, so I expect there will be quite a lot of consolidation happening between the teams that developed RT1 and RoboCat transformer.
+
+
+Misc thoughts:
+- I assume RoboCat is a play on DeepMind's penchant for naming their big models after animals (Flamingo, Chinchilla), and `cat` is cute because it is programmer slang for "concat", as DeepMind has done with a bunch of disparate datasets.
+
+Research papers are hard to read sometimes because authors are incentivized to play up "novelty" and distinguish it from related works
+
+, but if you really read this paper carefully, you will find that RoboCat is a bunch of old ideas scaled up with 
+
+[just-ask-generalization]: https://evjang.com/2021/10/23/generalization.html
+
