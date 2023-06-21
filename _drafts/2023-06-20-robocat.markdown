@@ -2,37 +2,162 @@
 layout: post
 title: "Takeaways from DeepMind's RoboCat Paper"
 date:  2023-06-20
-summary: I read 50 pages to find the data and results I found most interesting
+summary: Why GPT-4 with vision is (probably) not going to zero-shot robotics
 ---
 
-Yesterday DeepMind Robotics published a research paper titled ["RoboCat: A Self-Improving Foundation Agent for Robotic Manipulation (PDF)"](https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/robocat-a-self-improving-robotic-agent/robocat-a-self-improving-foundation-agent-for-robotic-manipulation.pdf). I studied the 50-page report and summarize what I found to be the most interesting takeaways that I found from the paper here. 
+Yesterday DeepMind Robotics published the paper ["RoboCat: A Self-Improving Foundation Agent for Robotic Manipulation (PDF)"](https://storage.googleapis.com/deepmind-media/DeepMind.com/Blog/robocat-a-self-improving-robotic-agent/robocat-a-self-improving-foundation-agent-for-robotic-manipulation.pdf). I read the 50-page report and summarize in this post what I found to be the most interesting results from the paper. Some of my claims and inferences in this blog post are speculative because they draw from my experience working on similar projects ([BC-Z](https://sites.google.com/view/bc-z/home), [SayCan](https://say-can.github.io/), [MGDT](https://sites.google.com/view/multi-game-transformers), ongoing work at 1X). 
 
-This paper contains a treasure trove of really useful empirical data on task transfer, success vs. data, model pretraining, and various design choices for prediction objectives and input/action spaces. Unlike the SayCan /RT* papers, which was very focused on using LLMs to do long-horizon planning + a large-scale imitation learning policies, this paper is much more emphasized on multi-robot, multi-domain transfer. It's much more pertinent if you want to build a very capable low-level policy, and less if you want to focus on a high level task planning system (where a VLM planner would be more important)
+For a broad-audience overview of what RoboCat is, please check out [DeepMind's blog post](https://www.deepmind.com/blog/robocat-a-self-improving-robotic-agent). If any Google DeepMinders want to point out any factual inaccuracies with this post, please reach out via [Twitter](https://twitter.com/ericjang11) or [Email](/about).
 
-The high-level architecture of RoboCat is very simple, not unlike [SayCan](https://say-can.github.io/): 
+# Overview
 
-1. Collect a lot of diverse human demonstration data + autonomous rollouts of successful policies. 
-2. Train a big model on all the data.
-3. In a perfect world, pooling all the data together yields superior performance across all tasks, but prior works like [GATO](https://arxiv.org/pdf/2205.06175.pdf) and [Multi-Game Decision Transformers](https://arxiv.org/abs/2205.15241) show that while you do pretty well for sharing 1 set of hyperparams across all tasks, it still isn't quite at the level of specialized policies.
-4. If zero-shot generalization to new tasks and robots is not performing well, you can settle for the next best thing, which is showing that the RoboCat can be used as a "foundation model" that can be fine-tuned to new robots and tasks quickly. 
+The overarching research question many academic robotics labs are focused on right now is "how do we get one big transformer model to do all the robotic tasks, much the same way that transformers can [do all the language tasks](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf) and [do all the vision tasks](https://arxiv.org/abs/2010.11929)?" The tried-and-true recipe of the last few years of ML research is that if you can cast your prediction problem into sequences of discrete input tokens and output tokens, then you can basically outsource the machine learning to NLP (e.g. a [vanilla Transformer](https://arxiv.org/abs/1706.03762)). NLP is the domain that is at the forefront of [generalization as humans understand it]({{ site.baseurl }}{% link _posts/2021-12-17-lang-generalization.markdown %}), so it's no surprise that the models that generalize for NLP also generalize for anything else that can be cast into tokens. All the models are [consolidating to transformers](https://twitter.com/karpathy/status/1468370605229547522?s=20) anyway, so it's about time for robotics to do the same. 
+
+The themes of this work are *generalization* and *transfer*. In machine learning, *generalization* typically refers to how much training on A benefits *testing* on B, especially when B might differ from A in some way.
+
+*Transfer* typically refers to how much pre-training on A benefits *training* on B, especially when B might differ from A in some way. Transfer learning is what you talk about in your paper when your generalization results aren't super strong yet. For in-context and k-shot learning (you give the model a few examples and it can figure out how to do the new task afterwards), the boundaries between transfer and generalization are blurry.
+
+Based on the author list and infrastructure, RoboCat can be thought of as the sequel to the [GATO](https://arxiv.org/pdf/2205.06175.pdf) paper. I've previously tweeted some [thoughts about GATO here](https://twitter.com/ericjang11/status/1525002023816634368). I'm guessing RoboCat authors decided to focus on cross-robot transfer because it was very unclear whether the vision and Atari tasks in GATO actually helped learn the robotics tasks. 
+
+*Engineering lesson: When doing research on transfer learning, if you are not seeing positive transfer between tasks, you should try to pre-training on something closer to your test set.*
+
+From a model architecture standpoint, RoboCat is very similar to [RT-1](https://robotics-transformer.github.io/): learn a tokenizer for robotics images, tokenize your proprioception and future actions in a fairly naive way, then throw the tokens into a transformer. While the RT-1 paper emphasizes LLM-enabled unseen instruction generalization and the visual complexity afforded by mobile manipulation, RoboCat focuses on harder manipulation tasks (e.g. NIST-i gears, inverted pyramid, tower building) and comparing transfer learning performance on their RoboCat foundation models vs. Internet-scale foundation models. In a big picture sense, both these projects are headed in the same direction and I would not be surprised if they are soon consolidated into the same team.
+
+In terms of scientific contributions, the RoboCat paper contains a trove of empirical data on how to unify multiple action and perception modalities in a single model, how much cross-task transfer to expect, how well learning recipes work when transferred from sim to real, the magnitude of data required, the importance of architecture search, comparing between tokenization strategies for perception, how to set up effective evaluation in the real world for multi-task policies. 
+
+What I find most impressive is that they evaluate these questions on 1) 253 tasks in the real world 2) they did it 5 times, once for each robot (sim sawyer, sim panda, real sawyer, real panda, real kuka). Everyone who works on real-world robots knows that getting one task to work on a single robot in the real world is enough pain as it is. It's pretty clear from this paper that the DM team went to great lengths to detail the training data set and evaluation protocols and show consistent results on all the robots and action spaces. My team at [1X](https://1x.tech/) is working on our own "big model to do all the tasks", so the tables and graphs in this paper give us a lot of clues to questions we're tackling now.
+
+# On Action Spaces
+
+Choice of action spaces have incredibly large effects on the performance of a robotic system. Arguably, it is the most important choice to make when setting up a robotic machine learning problem. My rule of thumb is that task difficulty is exponential in the length of the episode required for solving a task and exponential in the number of independent dimensions of the action space at each decision. RoboCat predicts cartesian 4 or 6 DoF cartesian velocities (e.g. pose deltas) for the arm, and 1 or 8 DoF depending on gripper vs. 3-finger hand. This results in a single neural network that can handle 5, 7, or 14-DoF action spaces, and a variable proprioception sizes, which I find very neat.
+
+Sequence modeling essentially gives you a universal interface for mixing action spaces, and the RoboCat paper shows that you can get positive transfer when you train these together. If one robot has a 4-DoF manipulator, you predict 4 tokens. If another arm has a 6-DoF end effector (e.g. xyz translation and rpy rotation), you can just predict 6 tokens. If you have a dataset with hundreds of robot morphologies, this is the right way to scale instead of having one prediction head for each action modality, branching off a "network torso". We are starting to see this "just map all outputs to a 1D sequence" trend in [perception](https://ai.googleblog.com/2022/04/pix2seq-new-language-interface-for.html), so I expect eventually everyone just converges to VQA research.
+
+# Will Visual Foundation Models Zero-Shot Robotics?
+
+The [Flamingo paper](https://arxiv.org/abs/2204.14198) gave some preliminary evidence that at some sufficiently large scale, foundation models trained on Internet-scale [data might outperform training on in-domain data](https://twitter.com/ericjang11/status/1519730951219081217?s=20). A big question these days is whether foundation models like GPT4 + Images will just zero-shot robotics, with no thanks to the roboticists. When I talk to OpenAI employees, they certainly express this optimism.
+
+RoboCat authors study that question by fine-tuning **59** VLMs pretrained on Internet-scale data on each task. Thank goodness for labs that have the resources to do this. They selected the best two models for sim real world evaluation: CLIP-pretrained NFNet-f6 and CLIP-pretrained Swin-L
+
+This does ok in sim but pretty terrible in real compared to training their RoboCat transformer from scratch. This does suggest that real-world collected data will remain quite valuable for the forseeable future. 
+
+Interestingly, Swin-l-CLIP outperforms NFNet-f6-CLIP a lot in sim and real (Fig 5, Fig 6) but the trend is reversed in the few-shot context. In Table 17 of the appendix, I can see no discernable pattern of how dataset, training objective, or model architecture affect the transfer performance. To palagarize Tolstoy, *"all good models are the same, all crappy baselines are bad in their own unique way"*
+
+Non-frozen fine-tuning still performs best, which suggests to me that for big models, adapters will continue to be important.
+
+The extensiveness of the VFM baselines sweep almost makes me wonder if the project began as an effort to simply get one of these foundation models to work out of the box, and then the team ended up having to train their own model as a result of the baselines not working in real, perhaps merging efforts with a larger DM project that had set up the real world data collection infra.
+
+![vfm1](/assets/robocat/vfm-baseline1.png)
+<!-- ![vfm2](/assets/robocat/vfm-baseline2.png) -->
+
+
+## Ideas I liked
+
+- The choice of VQ-GAN was smart, because it provides a clear way to evaluate the quality of perceptual tokenization separately from training an end-to-end policy. An added benefit is that if you predict perception tokens, you can decode them to visualize what the model thinks will happen in the future. You can test for generalization by seeing if predictions on images for held-out tasks look reasonable.
+
+
+
+## On reproducibility
+
+In 2023, robotics research continues to be largely unreproducible. It is the elephant in the room of all robotics work. If this project were re-started from scratch in a different lab, I suspect the experimental results would turn out different. If the project were re-started on a different set of manipulation tasks and robot hardware, the results are almost guaranteed to be different. The same is true for all the robotics projects I ever worked on. Sometimes the smallest changes like where you put the camera or the friction coefficient of your gripper or the protocol by which your teleoperators gathered the data can have a drastic effect on the performance of baselines. All that being said, it's clear from reading this paper that the RoboCat authors spent a considerable amount of time
+
+Table 18 in the appendix shows that if you fix the NIST-i board to the table so that it can't move, the success rate goes to nearly perfect. 
+
+These sorts of results should strike fear into the heart of every roboticist, because it means that the choice of whether you fix the board or not to the table has a larger effect on success rate than literally any of the algorithmic choices made in the paper. One should only hope that the algorithms 
+
+![nist-easy](/assets/robocat/nist-easy.png)
+
+## Questions
+
+- The fine-tuning experiments involved substantial amounts of data (500-1000 episodes), which begs the question of why DeepMind didn't add more in-context learning experiments.
+
+- I would be curious to see how validation cross entropy loss scales with task success rate. The Gato paper mentions "We decided not to report validation loss over held-out data because we found that it did not correlate well with episode return on the held-out tasks.", but I find this to be an extremely practical area of study.
+
+## Auxiliary Prediction Objectives
+
+Turn this into a Muzero style system capable of doing search and planning in token space.
+
+my guess is that pixels can be made to work, but a secret of deep learning is that if you m
+
+The kung fu of a deep learning researcher is knowing how far you can push an algorithm without breaking the model
+
+![nist-easy](/assets/robocat/pixels-vs-tokens.png)
+
+
+# What models did they train?
+
+The paper involves training several independent models, which is a testament to how large-scale projects actually require fairly sophisticated infrastructure:
+
+- The VQ-GAN tokenizer that converts images into perceptual input tokens (and decode predicted image tokens back out).
+- The RoboCat transformer itself is trained using hindsight goals via future images
+- Learned reward model that also acts as a success detector used for evaluation
+
+From an execution standpoint, separating the tokenizer from the model is a good idea.
+RoboCat does a few modeling choices that I think are superior to RT-1. 
+- Use a VQ-GAN perception tokenizer instead of a token-learner. They actually train the VQ-GAN
+Here are the ideas I think will go away if the system is scaled up:
+
+
+Firstly, I will point out the "Big Questions" (TM) that RoboCat sheds some clues on. The paper is by no means conclusive, but given that they explore several action modalities and many tasks, I am inclined to think their results will hold up in independent replication.
+
+
+# Background Work
+
+# Numbers I think are less likely to reproduce 
+
+- Figure 9 shows that training on all the tasks improves performance slightly on the RoboCat-lim set. I think these results are all pretty close that a slightly different choice of tasks or making the task setup (e.g. not restricting the tasks to a convex bin) would not reproduce.
+
+
+
+I have 
+
+
+
+# Overview
+
+
+
+Let's dive in.
+
+
+RoboCat can be thought
+
+You may notice that the 
+
+
+- How well the same algorithm works when transferred from sim to real.
+- Cross-task transfer: how well learning one task benefits learning another task
+- 
+
+
+ running ablations on a multi-task model, and given that they got the same system to work on 3 real robots and 2 sim robots, this is just about the maximum amount of reproducibility we can hope to see in a real-world robotics paper.
+
+
+
+ task transfer, success vs. data, model pretraining, and various design choices for prediction objectives and input/action spaces. Unlike the SayCan /RT* papers, which was very focused on using LLMs to do long-horizon planning + a large-scale imitation learning policies, this paper is much more emphasized on multi-robot, multi-domain transfer. It's much more pertinent if you want to build a very capable low-level policy, and less if you want to focus on a high level task planning system (where a VLM planner would be more important)
+
+
+, not unlike [SayCan] and . 
+
+
+The high-level recipe of RoboCat looks a lot like standard Foundation Model training recipe that all other domains are converging to 
+
+1. Collect a lot of diverse data 
+2. Train [a data sponge]({{ site.baseurl }}{% link _posts/2021-10-23-generalization.markdown %}) on all the data.
+3. Fine-tune the foundation model to specialize at certain capabilities, or a new task altogether
+4. 
+
+
+If zero-shot generalization to new tasks and robots is not performing well, you can settle for the next best thing, which is showing that the RoboCat can be used as a "foundation model" that can be fine-tuned to new robots and tasks quickly. 
+
+
+3. In a perfect world, pooling all the data together yields superior performance across all tasks, but prior works like  and [Multi-Game Decision Transformers](https://arxiv.org/abs/2205.15241) show that while you do pretty well for sharing 1 set of hyperparams across all tasks, it still isn't quite at the level of specialized policies.
 
 
 Self-Imitation learning, a fancy way of saying "take the successful rollouts and concatenate them to the training buffer". 
 
 
-The paper involves training several independent models, which is a testament to how large-scale projects actually require fairly sophisticated infrastructure:
 
-- the VQ-GAN tokenizer that converts images into perceptual input tokens (and decode predicted image tokens back out)
-- the RoboCat transformer itself, and trained using hindsight goals via future imgaes
-- Learned reward model that also acts as a success detector used for evaluation
-
-## Will Visual Foundation Models Zero-Shot Robotics?
-
-A big question these days is whether foundation models like GPT4 + images will just zero-shot robotics. RoboCat authors study that question by fine-tuning two VLMs pretrained on internet-scale data (NFNet, Swin CLIP) on each task. they do ok in sim but pretty terrible in real compared to training the VLM from scratch. This does suggest that real-world collected data will remain quite valuable for the forseeable future (edited) 
-
-
-
-Firstly, I will point out the "Big Questions" (TM) that RoboCat sheds some clues on. The paper is by no means conclusive, but given that they explore several action modalities and many tasks, I am inclined to think their results will hold up in independent replication.
 
 
 
@@ -47,7 +172,7 @@ The basic setup of the system is remarkably similar to many other large-scale en
 
 The foundation model recipe is simple:
 
-1. Train a big model on a diverse set of data. Preferably [a data sponge][just-ask-generalization].
+1. Train a big model on a diverse set of data. 
 2. 
 
 
@@ -78,5 +203,8 @@ Research papers are hard to read sometimes because authors are incentivized to p
 
 , but if you really read this paper carefully, you will find that RoboCat is a bunch of old ideas scaled up with 
 
-[just-ask-generalization]: https://evjang.com/2021/10/23/generalization.html
 
+I try to make educated guesses about what ideas from this paper will stand the test of time.  . 
+
+
+All robotics papers (especially my own) should be read with a grain of salt that the numbers are not always exactly reproducible. Evaluating multi-task robots is nearly impossible, much in the same way that it's nearly impossible to know whether one language model is better than another. I'm not saying that a clean-room reproduction of RoboCat with the same robots would yield the exact same numbers, or even overlapping *error bars*, but 
