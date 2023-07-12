@@ -15,4 +15,4 @@ Since leaving Google, I've since expanded my services to be more broad in scope.
 - If you're asking for my advice in a commercial context (i.e. you're working for a startup or plan to use the knowledge gained for your industry job), I will charge a consulting fee, provided that the advising does not present a conflict of interest with my full-time job. I am extremely reluctant to sign NDAs.
 - I welcome research engineering questions (e.g. "can you give me some feedback on this research tool I built") in addition to research questions.
 
-If you are interested, please fill out this form: [https://forms.gle/UZVgmnW3KwXp8YgD7](https://forms.gle/UZVgmnW3KwXp8YgD7) and I will get in touch.
+If you are interested, please fill out this form: [https://forms.gle/UZVgmnW3KwXp8YgD7](https://forms.gle/UZVgmnW3KwXp8YgD7) and I will get in touch. I have also distilled a lot of my research career advice [into a book](/book) - consider checking that out.
