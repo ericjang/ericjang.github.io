@@ -2,24 +2,54 @@
 layout: book
 title: "AI is Good for You"
 fulltitle: "AI is Good for You"
-summary: "The Last 10 Years and the Next 10 Years of Artificial Intelligence"
+summary: "I wrote a book about the last 10 Years and the next 10 Years of Artificial Intelligence"
 permalink: /book/
 # redirect_to: https://www.amazon.com/dp/B0C1WRN9VR
 ---
 
-<!-- ![paperback](/assets/book/paperback.jpg) -->
-<!-- <img src="/assets/book/paperback.jpg" alt="paperback" width="300"/> -->
+![paperback on display](/assets/book/promo.jpg)
+<!-- <img src="/assets/book/promo.jpg" alt="paperback" width="300"/> -->
 
-# Buy the Book!
+[Paperback (Amazon)](https://www.amazon.com/gp/product/B0C9SH1GPV/) 
 
-[[paperback]](https://www.amazon.com/gp/product/B0C9SH1GPV/) 
+[Kindle (Amazon)](https://www.amazon.com/dp/B0C1WRN9VR)
 
-[[kindle]](https://www.amazon.com/dp/B0C1WRN9VR)
+[Feedback & Errata Form](https://forms.gle/iruzZMT1eM6EMs9c8)
 
-[Feedback/Comments/Errata](https://forms.gle/iruzZMT1eM6EMs9c8)
 
-Free preview of the first chapter:
+When we think of “AI”, our imagination often drifts to scary places: the killer robots in *Terminator* and *The Matrix* and *A Space Odessey*. Even in sci-fi stories where the humans remain in charge, AI is often portrayed as an enabler of dystopian futures where technology has created a huge rifts between the rich and the poor.
 
+Given how bleak most science fiction covering AI is, it’s no surprise that media coverage about AI technology approach the topic with mysticism and trepidation. How do we control AI if it becomes smarter than humans? What kinds of jobs will our children have if all jobs can be done by robots? The media is all-too-willing to amplify these doomsday scenarios to drive engagement.
+
+Instead of adding fuel to the narratives about how AI technology can go horribly wrong, I want to share my optimistic take on how AI technology can make things go wonderfully right. I want to explore how AI technology can create unfathomable abundance in everyone’s lives. Not only am I optimistic that human-level AI be good for society, but that it is technologically feasible within the decade. I will share a blueprint on how to do just that.
+
+This book is divided into three parts: (1) where AI technology is today, (2) six ingredients for accelerating us towards increasingly general AI in the next decade, and (3) the societal consequences of achieving this. This book draws from the author's experience working as a robotics researcher at Google, as well as his current role as Vice President of AI at 1X Technologies.
+
+# Contents
+
+1. Introduction
+2. What is Intelligence?
+3. Artificial Intelligence
+4. Software 2.0: The Hard Parts
+5. Four ways to create an AGI
+6. The Neurobiological Software Stack
+7. Artificial Life
+8. Jungle Basketball
+9. Human-in-the-Loop Learning
+10. Just ask for Generalization
+11. Learning Robots in the Real World
+12. Building an AGI Team
+13. Why AGI is Good for You
+14. The Power Struggle for AI
+15. Reality, Just the Way You Like It
+16. AI Beauty
+17. Project Ideas
+
+# Who is this book for?
+
+I wrote this book for a younger versions of myself: when I was just starting to do science fair projects in high school and when I had started my first research engineering job at Google. This book is the culmination of all the practical wisdom I have on making AI systems work, accumulated over a decade of research projects. It will be useful for students who want to think about biological and machine intelligence in a unified way, or to technologists charting their own path to creating Artificial General Intelligence. 
+
+# Preview (First Chapter)
 
 <div class="heading2">
 <h1>Introduction</h1>
@@ -118,6 +148,4 @@ Achieving AGI on an aggressive 10-year timeline requires a significant change in
 
 I look forward to you joining me on this journey.
 
-
-
-Eric Jang
+[Continue Reading](https://www.amazon.com/gp/product/B0C9SH1GPV/) 
