@@ -1,6 +1,6 @@
 ---
 layout: book
-title: "AI is Good for You"
+title: "New Book: AI is Good for You"
 fulltitle: "AI is Good for You"
 summary: "I wrote a book about the last 10 Years and the next 10 Years of Artificial Intelligence"
 permalink: /book/
@@ -10,11 +10,11 @@ permalink: /book/
 ![paperback on display](/assets/book/promo.jpg)
 <!-- <img src="/assets/book/promo.jpg" alt="paperback" width="300"/> -->
 
-[Paperback (Amazon)](https://www.amazon.com/gp/product/B0C9SH1GPV/) 
+[LINK TO PAPERBACK](https://www.amazon.com/gp/product/B0C9SH1GPV/) 
 
-[Kindle (Amazon)](https://www.amazon.com/dp/B0C1WRN9VR)
+[LINK TO KINDLE](https://www.amazon.com/dp/B0C1WRN9VR)
 
-[Feedback & Errata Form](https://forms.gle/iruzZMT1eM6EMs9c8)
+[FEEDBACK AND ERRATA FORM](https://forms.gle/hJqZvxxQFRkHtm797)
 
 
 When we think of “AI”, our imagination often drifts to scary places: the killer robots in *Terminator* and *The Matrix* and *A Space Odessey*. Even in sci-fi stories where the humans remain in charge, AI is often portrayed as an enabler of dystopian futures where technology has created a huge rifts between the rich and the poor.
@@ -24,6 +24,7 @@ Given how bleak most science fiction covering AI is, it’s no surprise that med
 Instead of adding fuel to the narratives about how AI technology can go horribly wrong, I want to share my optimistic take on how AI technology can make things go wonderfully right. I want to explore how AI technology can create unfathomable abundance in everyone’s lives. Not only am I optimistic that human-level AI be good for society, but that it is technologically feasible within the decade. I will share a blueprint on how to do just that.
 
 This book is divided into three parts: (1) where AI technology is today, (2) six ingredients for accelerating us towards increasingly general AI in the next decade, and (3) the societal consequences of achieving this. This book draws from the author's experience working as a robotics researcher at Google, as well as his current role as Vice President of AI at 1X Technologies.
+
 
 # Contents
 
@@ -44,6 +45,7 @@ This book is divided into three parts: (1) where AI technology is today, (2) six
 15. Reality, Just the Way You Like It
 16. AI Beauty
 17. Project Ideas
+
 
 # Who is this book for?
 
