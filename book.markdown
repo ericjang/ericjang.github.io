@@ -49,7 +49,7 @@ This book is divided into three parts: (1) where AI technology is today, (2) six
 
 # Who is this book for?
 
-I wrote this book for a younger versions of myself: when I was just starting to do science fair projects in high school and when I had started my first research engineering job at Google. This book is the culmination of all the practical wisdom I have on making AI systems work, accumulated over a decade of research projects. It will be useful for students who want to think about biological and machine intelligence in a unified way, or to technologists charting their own path to creating Artificial General Intelligence. 
+I wrote this book for the 14 year old version of myself, when I was starting to do science fair projects in high school and think about what it meant to be intelligent. I also wrote this book for the 22 year old version of myself, having just started my first research engineering job at Google and getting my feet wet in deep learning and robotics. This book is the culmination of all the practical wisdom I have on making AI systems work, accumulated over a decade of research projects. It will be useful for students who want to think about biological and machine intelligence in a unified way, or to technologists charting their own path to creating Artificial General Intelligence. 
 
 # Preview (First Chapter)
 
