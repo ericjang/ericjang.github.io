@@ -17,11 +17,11 @@ permalink: /book/
 [FEEDBACK AND ERRATA FORM](https://forms.gle/hJqZvxxQFRkHtm797)
 
 
-When we think of “AI”, our imagination often drifts to scary places: the killer robots in *Terminator* and *The Matrix* and *A Space Odessey*. Even in sci-fi stories where the humans remain in charge, AI is often portrayed as an enabler of dystopian futures where technology has created a huge rifts between the rich and the poor.
+When we think of “AI”, our imagination often drifts to scary places: the killer robots in Terminator and The Matrix and A Space Odessey. Even in sci-fi stories where the humans remain in charge, AI is often portrayed as an enabler of dystopian futures where technology has created a huge rift between the rich and the poor.
 
-Given how bleak most science fiction covering AI is, it’s no surprise that media coverage about AI technology approach the topic with mysticism and trepidation. How do we control AI if it becomes smarter than humans? What kinds of jobs will our children have if all jobs can be done by robots? The media is all-too-willing to amplify these doomsday scenarios to drive engagement.
+Given how bleak most science fiction covering AI is, it’s no surprise that most news media approach the topic with mysticism and trepidation. How do we control AI if it becomes smarter than humans? What kinds of jobs will our children have if all jobs can be done by robots? Journalists are often all-too-willing to amplify these doomsday scenarios to drive engagement.
 
-Instead of adding fuel to the narratives about how AI technology can go horribly wrong, I want to share my optimistic take on how AI technology can make things go wonderfully right. I want to explore how AI technology can create unfathomable abundance in everyone’s lives. Not only am I optimistic that human-level AI be good for society, but that it is technologically feasible within the decade. I will share a blueprint on how to do just that.
+Instead of adding fuel to the narratives about how AI technology can go horribly wrong, I want to share my optimistic take on how AI technology can make things go wonderfully right. It has the potential to create unfathomable abundance in everyone’s lives. Not only am I optimistic that human-level AI be good for society, but that it is technologically feasible within the decade. I will share a blueprint on how to do just that.
 
 This book is divided into three parts: (1) where AI technology is today, (2) six ingredients for accelerating us towards increasingly general AI in the next decade, and (3) the societal consequences of achieving this. This book draws from the author's experience working as a robotics researcher at Google, as well as his current role as Vice President of AI at 1X Technologies.
 
