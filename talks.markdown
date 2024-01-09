@@ -4,6 +4,18 @@ title: Talks
 permalink: /talks/
 ---
 
+<ins>Jan 2024 - The Gradient Podcast</ins>
+
+- Host: Daniel Bashir
+- Links: [Youtube](https://youtu.be/lHXp6j6YrY4?t=4870) [Substack](https://thegradientpub.substack.com/p/eric-jang-ai-is-good-for-you) [Spotify](https://open.spotify.com/show/6onNcSqsP6hEEqmZ6TU2g8)
+- Summary: A guest podcast interview on The Gradient where Daniel and I chat about technical challenges in implementing humanoid robots and artificial life.
+
+<ins>Dec 2023 - Tomorrow Talk</ins>
+
+- Host: Sabrina Halper
+- Links: [Youtube](https://www.youtube.com/watch?v=RBuaYsyEu7A) [Spotify](https://open.spotify.com/episode/4T870ZNFIDvcTi9plHPKwy?si=poHhQ0W7RVGe2CcANf_OEw)
+- Summary: A guest podcast interview on the Tomorrow Talk podcast where Sabrina and I chat about artificial general intelligence, robots, and the future of AI as covered in [my book](/book).
+
 <ins>Jun 2022 - RSS [Workshop on Learning from Diverse Offline Datasets](https://sites.google.com/view/l-dod-rss2022)</ins>
 
 - Links: [Youtube](https://youtu.be/lHXp6j6YrY4?t=4870)
