@@ -14,6 +14,8 @@ My career goal is to build machines that improve exponentially 📈.
 
 **2022 - Present** Vice President of AI, [1X Technologies](https://1x.tech) (Formerly [Halodi Robotics](https://twitter.com/ericjang11/status/1632850739130408960?s=20))
 
+**2023 - Present** Chief Science Advisor (part-time), [Tortus](https://tortus.ai/)
+
 **2016 - 2022**  Senior Research Scientist at [Robotics at Google](https://research.google/teams/brain/robotics/)
 
 The last decade of Machine Learning research has shown that rich data + simple learning algorithms + powerful computational resources outperforms hand-engineered systems in computer vision, translation, and NLP problems. My research focused on applying that principle to the domain of robotics.
