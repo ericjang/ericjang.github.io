@@ -6,9 +6,9 @@ permalink: /talks/
 
 <ins>Mar 2024 - Data Engines for Humanoid Robots</ins>
 
-- Host: Penn GRASP Seminar Series
+- Host: GRASP Lab Seminar Series
 - Links: [Youtube](https://youtu.be/laeJn2-CBTk?si=n19W7mdMeFqK1TAb)
-- Summary: 1X’s mission is to create an abundant supply of physical labor through androids that work alongside humans. I will share some of the progress 1X has been making towards general-purpose mobile manipulation. We have scaled up the number of tasks our androids can do by combining an end-to-end learning strategy with a no-code system to add new robotic capabilities. Our Android Operations team trains their own models on the data they gather themselves, producing an extremely high-quality “farm-to-table” dataset that can be used to learn extremely capable behaviors.
+- Summary: An invited talk I gave at UPenn's GRASP Lab on 1X's AI progress. We have scaled up the number of tasks our androids can do by combining an end-to-end learning strategy with a no-code system to add new robotic capabilities. Our Android Operations team trains their own models on the data they gather themselves, producing an extremely high-quality “farm-to-table” dataset that can be used to learn extremely capable behaviors.
 
 <ins>Jan 2024 - The Gradient Podcast</ins>
 
