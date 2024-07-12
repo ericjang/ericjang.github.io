@@ -1,0 +1,28 @@
+---
+layout: post
+title: "Questions about ARC Prize"
+date:  2024-07-11
+summary: 
+---
+
+[ARC Prize](https://arcprize.org/) is an intelligence benchmark intended to be hard for AI and easy for humans. With a grand prize of $1,000,000, it is currently the [most popular contest](https://www.kaggle.com/competitions/arc-prize-2024) on Kaggle. Most AI systems (e.g. GPT4) perform much worse than human children on the benchmark.
+
+**CLAIM**: *human-level intelligence can be solved by Deep Learning alone (e.g. training a decoder-only transformer with backpropagation and using autoregressive decoding for inference to directly predict outputs)*
+
+A pluraity, if not majority of researchers believe **CLAIM** to be false. I believe François Chollet and Mike Knoop (ARC Prize hosts) count themselves among this group, as well as [Yann LeCun](https://drive.google.com/file/d/1BU5bV3X5w65DwSMapKcsr0ZvrMRU_Nbi/view), [Gary Marcus](https://nautil.us/deep-learning-is-hitting-a-wall-238440/), Alex Krizhevsky, [Noam Brown](https://www.youtube.com/watch?v=ceCg90Q9N6Y) and many others. Everyone thinks neural nets are an important ingredient of general intelligence, but each has a slightly different way of expressing what it would take to fix those limitations.
+
+If you do not believe **CLAIM**, I have a series of questions for you:
+
+1. Do you believe that human-level intelligence is computable -- there can exist a generally intelligent computer program that can be executed on silicon hardware? If you answered NO, you can stop reading as the remaining questions rest on this assumption.
+
+2. Suppose I wrote down a software system that solves the ARC prize, perhaps in a way that Chollet's [On the Measure of Intelligence](https://arxiv.org/pdf/1911.01547) would find aesthetically sensible: some beautiful combination of System I + System II, program synthesis engines, hard-coded Core Knowledge Priors, proposal and evaluation of Domain Specific Languages (DSL), and deep neural networks. Do you think that you could transpile this solution into a transformer using a [RASP](https://arxiv.org/abs/2301.05062) DSL? If no, why not?
+
+3. If you answered yes to (2), but still do not believe **CLAIM**, then do you believe that optimal weights exist for the function approximator (i.e. achievable by translating from the true solution to a RASP DSL) but the problem is that the parameters will never reach these weights from backprop + finite training set? 
+
+4. If you answered yes to (3), do you think that the training set that produces the solution in (2) cannot be collected? Does your answer change if you could use other optimizers besides backprop? 
+
+5. If you answered yes to (2), do you think that the limitation is a practical one, i.e. scaling works but solving ARC with GPT would require more energy than we can produce on Earth? If so, what makes some circuits [Grokkable](https://arxiv.org/abs/2201.02177s) and others not?
+
+6. Core Knowledge Priors discussed in the [ARC paper (Section III.1.2)](https://arxiv.org/pdf/1911.01547) discuss a few rules around the ARC data like "object cohesion", "object persistence", "object influence via contact", geometry and topology priors, and others. These are meant to be abstractions of data patterns we might obseve in visual perception of the natural world. Do you think these knowledge priors can be acquired from purely non-real world data (e.g. 2D grids like ARC, Conway's Game of Life). Or do you think that these abstractions only emerge when training on real world data (e.g. real world images and real world consequences).
+
+7. Learning from a small number of examples (or even zero examples) is often cited as a clear advantage human intelligence has over neural networks. Suppose one assembles a large dataset of "meta-learning" tasks where the prediction task of a single neural network pass is to ingest a few examples of a new task and solve a new instance of the task given the examples as context. Of course, this remains brittle in the same way that neural networks are for single tasks. If we show the model a meta-learning task that is outside the training distribution of its meta-training tasks, it will probably fail. Suppose now that we go more meta and train the model to do meta-meta-learning: On each forward pass, the network ingests M examples from N tasks, and also a completely new N+1'th task that is only related to the N tasks by some Core Knowledge Priors but otherwise out of distribution in several ways. And so on. Does this take care of the sample-efficiency concern?
