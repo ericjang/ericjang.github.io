@@ -1,0 +1,143 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel Collision Simulation</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        canvas { border: 1px solid #000; }
+        .controls { margin-top: 10px; }
+        input { width: 50px; }
+        #collisionInfo { margin-top: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <canvas id="simulationCanvas2" width="600" height="300"></canvas>
+    <div class="controls">
+        <label for="mass">Mass (kg): </label>
+        <input type="number" id="mass2" value="1.5" min="0.1" step="0.1">
+        <label for="speed">Angular Speed (rad/s): </label>
+        <input type="number" id="speed2" value="5" min="0.1" step="0.1">
+        <label for="gearRatio">Gear Ratio: </label>
+        <input type="number" id="gearRatio" value="10" min="1" step="1">
+        <button id="startBtn2">Start Simulation</button>
+    </div>
+    <div id="collisionInfo2"></div>
+    
+    <script>
+        (function() {
+            const canvas = document.getElementById('simulationCanvas2');
+            const ctx2 = canvas.getContext('2d');
+            const massInput = document.getElementById('mass2');
+            const speedInput = document.getElementById('speed2');
+            const gearRatio = document.getElementById('gearRatio');
+            const startBtn = document.getElementById('startBtn2');
+            const collisionInfo = document.getElementById('collisionInfo2');
+
+            let wheelRadius = 40; // 0.4 meters * 100 pixels/meter
+            let wheelX = canvas.width / 2;
+            let wheelY = canvas.height / 2;
+            let angle = -3 * Math.PI / 2; // Starting at -270 degrees
+            let angle2 = angle;
+            
+            let angularSpeed = 5;
+            let mass = 1.5;
+            let isSpinning = true;
+            let animationId;
+
+            function drawWheel() {
+                ctx2.beginPath();
+                ctx2.arc(wheelX, wheelY, wheelRadius, 0, Math.PI * 2);
+                ctx2.stroke();
+
+                // Draw lever arm
+                let leverLength = wheelRadius * 1.5;
+                let leverEndX = wheelX + Math.cos(angle) * leverLength;
+                let leverEndY = wheelY + Math.sin(angle) * leverLength;
+                ctx2.beginPath();
+                ctx2.moveTo(wheelX, wheelY);
+                ctx2.lineTo(leverEndX, leverEndY);
+                ctx2.stroke();
+            }
+
+            function drawWheel2() {
+                ctx2.beginPath();
+                let wheelX2 = wheelX - 2*wheelRadius;
+                ctx2.arc(wheelX2, wheelY, wheelRadius, 0, Math.PI * 2);
+                ctx2.stroke();
+
+                // Draw lever arm
+                let leverLength = wheelRadius * 1;
+                let leverEndX = wheelX2 + Math.cos(angle2) * leverLength;
+                let leverEndY = wheelY + Math.sin(angle2) * leverLength;
+                ctx2.beginPath();
+                ctx2.moveTo(wheelX2, wheelY);
+                ctx2.lineTo(leverEndX, leverEndY);
+                ctx2.stroke();
+            }
+
+
+            function drawBlock() {
+                let blockWidth = 20;
+                let blockHeight = 40;
+                let blockX = wheelX + wheelRadius + 2; // 2 pixels gap
+                let blockY = wheelY - blockHeight / 2;
+                ctx2.fillRect(blockX, blockY, blockWidth, blockHeight);
+            }
+
+            function animate() {
+                ctx2.clearRect(0, 0, canvas.width, canvas.height);
+                
+                drawBlock();
+                drawWheel();
+                drawWheel2();
+
+                if (isSpinning) {
+                    angle += angularSpeed * 0.016; // 0.016 is roughly 60 FPS
+                    angle2 += angularSpeed * gearRatio.value * 0.016;
+
+                    console.log(angle2);
+
+                    // Check for collision
+                    let leverLength = wheelRadius * 1.5;
+                    let leverEndX = wheelX + Math.cos(angle) * leverLength;
+                    let leverEndY = wheelY + Math.sin(angle) * leverLength;
+                    
+                    if (leverEndX >= wheelX + wheelRadius + 2 && // 2 pixels gap
+                        leverEndY >= wheelY - 20 && leverEndY <= wheelY + 20) {
+                        isSpinning = false;
+                        let r = wheelRadius / 100
+                        let kE1 = calculateKineticEnergy(mass, r, angularSpeed)
+                        let kE2 = calculateKineticEnergy(mass, r, angularSpeed * gearRatio.value)
+                        let kE = kE1 + kE2
+                        collisionInfo.textContent = `Collision! ${kE.toFixed(2)} joules`;
+                    }
+                }
+
+                if (isSpinning) {
+                    animationId = requestAnimationFrame(animate);
+                }
+            }
+
+            function calculateKineticEnergy(mass, r, angularSpeed) {
+                let I = 0.5*mass*r*r;
+                return 0.5*I*angularSpeed*angularSpeed;
+            }
+
+            function startSimulation() {
+                cancelAnimationFrame(animationId);
+                mass = parseFloat(massInput.value);
+                angularSpeed = parseFloat(speedInput.value);
+                angle = -3 * Math.PI / 2; // Start at -270 degrees
+                isSpinning = true;
+                collisionInfo.textContent = '';
+                animate();
+            }
+
+            startBtn.addEventListener('click', startSimulation);
+            startSimulation();
+        })();
+
+    </script>
+</body>
+</html>
