@@ -61,7 +61,10 @@ An often-mentioned idea in robotic learning is to train policies on first-person
 
 Before you go and scale this type of data collection up, consider that humans and animals are much safer than robots because we don't have fast-spinning parts inside of our bodies. Muscles have very low kinetic energy compared to a 5000 RPM motor, and we carry much less effective mass when moving around. Although the robot might be able to approximately match the joint angles of a human, it may have too much effective mass (via spinning motors) to perform agile tasks like flipping open light switches without looking or running gracefully. You may find that even if you can train a great position-controlled policy, your robot cannot apply those actions at human-speed because the forces it would apply upon contact would be so different from those of a human.
 
-If you want to turn videos of humans moving quickly into policies, you will need a very compliant and agile robot like NEO, or you will need to slow down the reference trajectories, or you will need to decouple kinematic planning and dynamic planning, where the first is done with respect to human morphologies while the latter is done with respect to your specific robot.
+If you want to turn videos of humans moving quickly into policies, you may need one or more of the following:
+1. A very compliant and agile robot like NEO
+2. Slow down the reference trajectories to reduce effective mass. Difficult for contact-rich tasks like folding clothes and prepping food in a kitchen.
+3. Decouple kinematic planning and dynamic planning, where kinematic plans optimize for matching the target positions while dynamic planning optimizes to match contact forces upon collision.
 
 ## Acknolwedgements
 
