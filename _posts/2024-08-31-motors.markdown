@@ -25,7 +25,7 @@ Before the collision, rotational kinetic energy is given by **½ I ω²** where 
 
 If the block was drifting in space, the wheel and block would collide and then move together at some new angular velocity, due to conservation of angular momentum. In an inelastic collision, the total momentum of the wheel and block would be conserved while their total kinetic energy is not. The wheel and block would have less than 3 joules of kinetic energy resulting from its new velocity (implied by its new momentum). 
 
-Energy is a conserved quantity, so where did the rest of the kinetic energy go? The answer is that the remainder of kinetic energy not converted into motion is dissipated as heat, sound and material deformation. If you are having trouble understanding how kinetic energy can be dissipated into material deformation, try to visualize the block and lever being made up of tiny springs that compress upon impact, converting kinetic energy into stored potential energy of the springs. The springs never bounce back, thus dissipating the energy. When you hear a robot making loud noises when it's moving, that's because inefficiencies in the mechanical transmission are turning work into wasted energy (sound).
+Energy is a conserved quantity, so where did the rest of the kinetic energy go? The answer is that some of the kinetic energy is conserved as motion, but the remainder of kinetic energy is dissipated as heat, sound and internal material deformation. When you hear a robot making loud noises while moving, that's due to the inefficiencies in the transmission turning mechanical work into wasted energy (sound).
 
 In our example the block is prevented from moving. The new velocity is 0, the new kinetic energy is also 0, which implies that forcing the wheel to come to rest requires all the kinetic energy to be dissipated. Fortunately, 3 joules is not a lot of energy; it is the equivalent of a small-medium dog (6 kg) trotting into you (1 m/s) and coming to a stop.
 
@@ -63,7 +63,7 @@ Before you go and scale this type of data collection up, consider that humans an
 
 If you want to turn videos of humans moving quickly into policies, you may need one or more of the following:
 1. A very compliant and agile robot like NEO
-2. Slow down the reference trajectories to reduce effective mass. Difficult for contact-rich tasks like folding clothes and prepping food in a kitchen.
+2. Have the robot track the kinematic trajectories of video at slower than 1x speed, without attempting to track the dynamics of "human hardware". This only works on static manipulation tasks and has many issues for contact-rich tasks like folding clothes and prepping food in a kitchen.
 3. Decouple kinematic planning and dynamic planning, where kinematic plans optimize for matching the target positions while dynamic planning optimizes to match contact forces upon collision.
 
 ## Acknolwedgements
