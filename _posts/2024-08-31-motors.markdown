@@ -47,7 +47,7 @@ The underlying cause of why most humanoid robots are dangerous around people, an
 
 Why do people still use gears if they are so high-energy and unsafe? The reason is that gearboxes provide needed mechanical leverage: most motors are not strong enough to apply lots of torque, so mechanical engineers take a high-speed motor and add a gear to it to trade of speed for torque. Such geared systems are known as "stiff" and not "backdriveable", since it takes a lot more work to resist the fast motor spinning at the other side of the gearbox. 
 
-Fortunately, 1X has invested the last decade in building high torque, low-speed motors, because our goal is to maximize the physical safety of our actuation systems. Our motors and actuation systems have low gear ratios and arelightweight, allowing us to be the first humanoid robot company to ship robots into homes and safely operate them around people.
+Fortunately, 1X has invested the last decade in building high torque, low-speed motors, because our goal is to maximize the physical safety of our actuation systems. Our motors and actuation systems have low gear ratios and are lightweight, allowing us to be the first humanoid robot company to ship robots into homes and safely operate them around people.
 
 
 ## Implications for Retargeting Human Videos
