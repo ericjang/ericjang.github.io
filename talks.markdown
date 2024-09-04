@@ -4,6 +4,12 @@ title: Talks
 permalink: /talks/
 ---
 
+<ins>Sep 2024 - First Principles</ins>
+
+- Host: Christian Keil
+- Links: [X](https://x.com/pronounced_kyle/status/1830637678507020533)
+- Summary: A sit-down interview with Christian Keil where I explain robot actuator safety from first principles and how 1X thinks about vertically integrated hardware and software.
+
 <ins>Mar 2024 - Data Engines for Humanoid Robots</ins>
 
 - Host: GRASP Lab Seminar Series
