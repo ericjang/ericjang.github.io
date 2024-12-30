@@ -114,6 +114,4 @@ I wrote this book for the 14 year old version of myself, when I was starting to 
 <p>I look forward to you joining me on this journey.</p>
 
 
-<p>I look forward to you joining me on this journey.</p>
-
 [Continue Reading](https://www.amazon.com/gp/product/B0C9SH1GPV/) 
