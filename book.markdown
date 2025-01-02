@@ -16,16 +16,6 @@ permalink: /book/
 
 [FEEDBACK AND ERRATA FORM](https://forms.gle/hJqZvxxQFRkHtm797)
 
-
-When we think of “AI”, our imagination often drifts to scary places: the killer robots in Terminator and The Matrix and A Space Odessey. Even in sci-fi stories where the humans remain in charge, AI is often portrayed as an enabler of dystopian futures where technology has created a huge rift between the rich and the poor.
-
-Given how bleak most science fiction covering AI is, it’s no surprise that most news media approach the topic with mysticism and trepidation. How do we control AI if it becomes smarter than humans? What kinds of jobs will our children have if all jobs can be done by robots? Journalists are often all-too-willing to amplify these doomsday scenarios to drive engagement.
-
-Instead of adding fuel to the narratives about how AI technology can go horribly wrong, I want to share my optimistic take on how AI technology can make things go wonderfully right. It has the potential to create unfathomable abundance in everyone’s lives. Not only am I optimistic that human-level AI be good for society, but that it is technologically feasible within the decade. I will share a blueprint on how to do just that.
-
-This book is divided into three parts: (1) where AI technology is today, (2) six ingredients for accelerating us towards increasingly general AI in the next decade, and (3) the societal consequences of achieving this. This book draws from the author's experience working as a robotics researcher at Google, as well as his current role as Vice President of AI at 1X Technologies.
-
-
 # Contents
 
 1. Introduction
@@ -53,16 +43,6 @@ AGI and Humanity
 16. AI Beauty
 17. Project Ideas
 
-
-# Who is this book for?
-
-I wrote this book for the 14 year old version of myself, when I was starting to do science fair projects in high school and think about what it meant to be intelligent. I also wrote this book for the 22 year old version of myself, having just started my first research engineering job at Google and getting my feet wet in deep learning and robotics. This book is the culmination of all the practical wisdom I have on making AI systems work, accumulated over a decade of research projects. It will be useful for students who want to think about biological and machine intelligence in a unified way, or to technologists charting their own path to creating Artificial General Intelligence. 
-
-# Introduction (First Chapter)
-
-<div class="heading2">
-<h1>Introduction</h1>
-</div>
 
 <div class="oneandhalf">
 <p>Artificial Intelligence (AI) is the engineering discipline of creating a machine that is as smart as a person. No one quite knows how to do this yet, so this is also an active field of research. Because AI concerns the lofty goals of understanding and replicating intelligent behavior that is on par with animals and humans, it is quite the multidisciplinary field, spanning neuroscience, robotics, biology, physics, computer chip design, and philosophy.</p>
@@ -113,5 +93,3 @@ I wrote this book for the 14 year old version of myself, when I was starting to 
 
 <p>I look forward to you joining me on this journey.</p>
 
-
-[Continue Reading](https://www.amazon.com/gp/product/B0C9SH1GPV/) 
