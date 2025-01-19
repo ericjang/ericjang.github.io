@@ -21,7 +21,7 @@ If you do not believe **CLAIM**, I have a series of questions for you:
 
 4. If you answered yes to (3), do you think that the training set that produces the solution in (2) cannot be collected? Does your answer change if you could use other optimizers besides backprop? 
 
-5. If you answered yes to (2), do you think that the limitation is a practical one, i.e. scaling works but solving ARC with GPT would require more energy than we can produce on Earth? If so, what makes some circuits [Grokkable](https://arxiv.org/abs/2201.02177s) and others not?
+5. If you answered yes to (2), do you think that the limitation is a practical one, i.e. scaling works but solving ARC with GPT would require more energy than we can produce on Earth? If so, what makes some circuits [Grokkable](https://arxiv.org/abs/2201.02177) and others not?
 
 6. Core Knowledge Priors discussed in the [ARC paper (Section III.1.2)](https://arxiv.org/pdf/1911.01547) discuss a few rules around the ARC data like "object cohesion", "object persistence", "object influence via contact", geometry and topology priors, and others. These are meant to be abstractions of data patterns we might obseve in visual perception of the natural world. Do you think these knowledge priors can be acquired from purely non-real world abstract data (e.g. 2D grids like ARC, Conway's Game of Life). Or do you think that these abstractions only emerge when training on real world data (e.g. real world images and real world consequences)? Another way of expressing this is - do we learn abstractions first, and then apply them to the real world, or must we first learn from the real world, and only by doing so can we find meaningful abstractions?
 
