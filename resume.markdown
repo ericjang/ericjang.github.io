@@ -14,7 +14,7 @@ My career goal is to build machines that improve exponentially 📈.
 
 **2022 - Present** Vice President of AI, [1X Technologies](https://1x.tech) (Formerly [Halodi Robotics](https://twitter.com/ericjang11/status/1632850739130408960?s=20))
 
-**2023 - Present** Chief Science Advisor (part-time), [Tortus](https://tortus.ai/)
+**2023 - 2025** Chief Science Advisor, [Tortus](https://tortus.ai/)
 
 **2016 - 2022**  Senior Research Scientist at [Robotics at Google](https://research.google/teams/brain/robotics/)
 
