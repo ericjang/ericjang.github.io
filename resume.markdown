@@ -14,6 +14,7 @@ My career goal is to build machines that improve exponentially 📈.
 
 **2022 - 2026** Vice President of AI, [1X Technologies](https://1x.tech)
 
+- Joined as the first California employee and helped 1X become a household name in Silicon Valley. [Order your NEO](https://www.1x.tech/neo)!
 - Built out the AI team, which works on RL whole body controllers, VLAs, VLMs, World Models for NEO, simulation, data engine.
 - Trained lots of models for EVE and NEO.
 
