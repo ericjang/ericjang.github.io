@@ -1,6 +1,6 @@
 ---
 layout: book
-title: "New Book: AI is Good for You"
+title: "Book: AI is Good for You"
 fulltitle: "AI is Good for You"
 summary: "I wrote a book about the last 10 Years and the next 10 Years of Artificial Intelligence"
 permalink: /book/

@@ -1,0 +1,34 @@
+---
+layout: post
+title: "Leaving 1X"
+date:  2026-01-21
+---
+
+Life update: I've decided to leave 1X.
+
+It's been an honor helping grow the company. I joined Halodi Robotics in 2022 (prior name of the company) as the only California-based employee. At the time, we were about 40 based out of Norway and 2 in Texas. My first hire and I worked from my garage for a few months to save money. Today, 1X is hundreds of people, with hardware, design, software, AI, manufacturing, product all relocated to the SF Bay area, firing on all cylinders and working on getting NEO ready for the home. A big thank you to all my colleagues that I worked with.
+
+It was a hard decision to leave. When working at an exciting startup that is growing fast, there's always so much to do and never a perfect time time to move on. We have several works in the pipeline that are so exciting because they greatly advance general autonomy and scalability of our deployment approach and really show a realistic path towards the product working. The recent World Model autonomy update is one example, and there's more coming. The 1X factory is so exciting. Things are accelerating at a speed I would have been surprised by a few years ago. 
+
+In 2022, most technologists and researchers and VCs were skeptical about humanoids and large scale imitation learning. "Why Legs?" "How could end-to-end learning ever be good enough?" "Why go for the home and not the factory?" "How will we ever gather enough data?"
+
+The Overton window on general-purpose robotics has shifted a lot since then. Although we are still early in our mission, I remain confident that soon, house robots will be as commonplace as air conditioners, cars, and ChatGPT. Just talk to the bot, and it will go and quietly get it done. Entire economies will eventually re-organize around this technology. People get it now.
+
+What's next?
+
+I believe that progress in applied deep learning generally rides on "harnessing the magic" of a few magical objects. These magical objects possess way more generalization power than one might normally expect. Just asking the LLM to understand what you want is magic. Video generation models are magic. Reasoning is magic. You don't run into a magic object every day, but when you do, you make sure to grab it and put it to work to make something useful in the robot somehow. 
+
+A lot of my early conviction for where robotics was headed was working on BC-Z from 2018-2021. The "magical object" I bet on at the time was the surprising data-absorption capabilities of supervised learning and "just ask for generalization". This pioneered a lot of the standard ingredients we see in VLAs today:
+- Generalization to unseen language commands
+- Human-Guided DAgger for policy improvement
+- Open-loop auxiliary predictions + receding horizon control, AKA action chunking
+- Manipulation keypoints to improve servoing 
+- Simple ResNet18 with FiLM conditioning on multi-modal inputs
+
+The next "magical object" we bet on at 1X was video models, because they are clearly magical objects that learn a data distribution not too dissimilar from what a robot needs to learn. They generalize surprisingly well.
+
+I am once again feeling that there are more magical objects in play now, which opens up a lot of new possibilities for robotics and beyond. I'm taking a few months to empty my cup of priors and gain fresh perspective. When I left Google in 2022, I spent about 2 weeks deciding what to do next. This time, I want to take a lot more time to catch up what has happened in the broader AI + robotics space.
+
+I've been re-implementing some deep learning papers. I'm working on a big tutorial for my blog. I'm learning all the Claude power user tricks. I'm reading the Thinking Machines blog posts to understand what kinds of experiments are being run at frontier labs. I'm reading Ben Katz's 2016 thesis on the Mini-cheetah actuator. I'm traveling to China in March to meet incredible companies in the Chinese robotics ecosystem. Now, more than ever, is the time for both humans and machines to learn. The next token of my life sequence will be an important one.
+
+To colleagues and investors that bet on 1X early, even before we became a household name - I thank you from the bottom of my heart. I won't forget it.

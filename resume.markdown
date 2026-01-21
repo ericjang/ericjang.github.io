@@ -12,9 +12,10 @@ My career goal is to build machines that improve exponentially 📈.
 
 ### Work Experience
 
-**2022 - Present** Vice President of AI, [1X Technologies](https://1x.tech) (Formerly [Halodi Robotics](https://twitter.com/ericjang11/status/1632850739130408960?s=20))
+**2022 - 2026** Vice President of AI, [1X Technologies](https://1x.tech)
 
-**2023 - 2025** Chief Science Advisor, [Tortus](https://tortus.ai/)
+- Built out the AI team, which works on RL whole body controllers, VLAs, VLMs, World Models for NEO, simulation, data engine.
+- Trained lots of models for EVE and NEO.
 
 **2016 - 2022**  Senior Research Scientist at [Robotics at Google](https://research.google/teams/brain/robotics/)
 
@@ -34,7 +35,7 @@ The last decade of Machine Learning research has shown that rich data + simple l
 
 - I write machine learning tutorials and miscellaneous thoughts about technology on my [blog](/).
 
-- I enjoy cooking and baking and backpacking. I am learning how to make a [Tornado Omlette](https://youtu.be/HeB4UgfNDQc?t=177), without much success. 
+- I enjoy cooking and baking and backpacking.
 
 
 ### Education
