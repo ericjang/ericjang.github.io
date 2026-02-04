@@ -69,6 +69,11 @@ body.scrollytelling .wrapper {
   max-width: 100%;
 }
 
+/* Standalone headings between scroll sections */
+.scroll-section + h2 {
+  margin-top: 4rem;
+}
+
 /* Scroll sections */
 .scroll-section {
   position: relative;
@@ -124,6 +129,11 @@ body.scrollytelling .wrapper {
 .scroll-narrative pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+/* Mobile notice — hidden on desktop */
+.mobile-notice {
+  display: none;
 }
 
 /* Mobile viz snapshot — hidden on desktop */
@@ -253,8 +263,8 @@ body.scrollytelling .wrapper {
   width: 100%;
   flex: 1 1 auto;
   flex-direction: column;
-  justify-content: center;
-  padding: 16px;
+  justify-content: flex-start;
+  padding: 20px 16px 16px;
   overflow-y: auto;
 }
 
@@ -353,6 +363,16 @@ body.scrollytelling .wrapper {
 
 /* ─── Mobile breakpoint ─── */
 @media (max-width: 900px) {
+  .mobile-notice {
+    display: block;
+    padding: 10px 16px;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    border-left: 3px solid #B8B6AD;
+  }
+
   body.scrollytelling .wrapper {
     max-width: 100%;
   }

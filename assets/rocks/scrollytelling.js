@@ -29,6 +29,34 @@
     return g;
   }
 
+  // Convert CSS fade-in groups to scroll-driven opacity (reversible)
+  function scrollDrivenUpdate(svg, progress) {
+    if (!svg) return;
+    if (!svg._scrollGroups) {
+      var groups = [];
+      var fadeEls = svg.querySelectorAll('.svg-fade-in');
+      for (var i = 0; i < fadeEls.length; i++) {
+        var g = fadeEls[i];
+        var delay = parseFloat(g.style.animationDelay) || 0;
+        g.classList.remove('svg-fade-in');
+        g.style.animation = 'none';
+        g.style.animationDelay = '';
+        g.setAttribute('opacity', '0');
+        groups.push({ g: g, t: delay });
+      }
+      var maxT = 0;
+      for (var i = 0; i < groups.length; i++) { if (groups[i].t > maxT) maxT = groups[i].t; }
+      if (maxT > 0) {
+        for (var i = 0; i < groups.length; i++) { groups[i].t = groups[i].t / maxT * 0.95; }
+      }
+      svg._scrollGroups = groups;
+    }
+    var groups = svg._scrollGroups;
+    for (var i = 0; i < groups.length; i++) {
+      groups[i].g.setAttribute('opacity', progress >= groups[i].t ? '1' : '0');
+    }
+  }
+
   function sbend(x1, y1, x2, y2) {
     var my = (y1 + y2) / 2;
     return 'M' + x1 + ' ' + y1 + 'C' + x1 + ' ' + my + ' ' + x2 + ' ' + my + ' ' + x2 + ' ' + y2;
@@ -73,9 +101,128 @@
   // ─── Scene Registry ─────────────────────────────────────────
   var ScrollyScenes = {};
 
+  // 0. Globe with chips + robots
+  ScrollyScenes['intro-world-changed'] = {
+    caption: '',
+    render: function (svg) {
+      var cx = 250, cy = 160, R = 131;
+      var cLine = '#B8B6AD';
+      var cGreen = '#76b900';
+      var deg = Math.PI / 180;
+
+      // Clip items to globe
+      var defs = el('defs', null, svg);
+      var clip = el('clipPath', { id: 'globe-clip' }, defs);
+      el('circle', { cx: cx, cy: cy, r: R - 2 }, clip);
+
+      // Globe outline
+      var gGlobe = fadeGroup(0); svg.appendChild(gGlobe);
+      el('circle', { cx: cx, cy: cy, r: R, fill: 'none', stroke: cLine, 'stroke-width': 1.5 }, gGlobe);
+
+      // Latitude lines
+      [-60, -30, 0, 30, 60].forEach(function (d) {
+        var rad = d * deg;
+        var y = cy - R * Math.sin(rad);
+        var hw = R * Math.cos(rad);
+        el('line', { x1: cx - hw, y1: y, x2: cx + hw, y2: y, stroke: cLine, 'stroke-width': 0.7, opacity: 0.4 }, gGlobe);
+      });
+
+      // Longitude lines — center meridian + ellipses at ±30° and ±60°
+      el('line', { x1: cx, y1: cy - R, x2: cx, y2: cy + R, stroke: cLine, 'stroke-width': 0.7, opacity: 0.4 }, gGlobe);
+      [30, 60].forEach(function (d) {
+        var rx = R * Math.sin(d * deg);
+        el('ellipse', { cx: cx, cy: cy, rx: rx, ry: R, fill: 'none', stroke: cLine, 'stroke-width': 0.7, opacity: 0.4 }, gGlobe);
+      });
+
+      // Items container (clipped to globe)
+      var itemsG = el('g', { 'clip-path': 'url(#globe-clip)' }, svg);
+
+      // Helper: lat/lon → screen
+      function toXY(lat, lon) {
+        var lr = lat * deg, lonr = lon * deg;
+        return { x: cx + R * Math.cos(lr) * Math.sin(lonr), y: cy - R * Math.sin(lr) };
+      }
+
+      // Draw green chip
+      function drawChip(lat, lon) {
+        var p = toXY(lat, lon);
+        var g = el('g', { transform: 'translate(' + Math.round(p.x) + ',' + Math.round(p.y) + ')', opacity: 0 }, itemsG);
+        roundRect(-7.5, -4.5, 15, 9, 2, { fill: cGreen }, g);
+        return g;
+      }
+
+      // Draw robot face icon
+      function drawRobot(lat, lon) {
+        var p = toXY(lat, lon);
+        var g = el('g', { transform: 'translate(' + Math.round(p.x) + ',' + Math.round(p.y) + ')', opacity: 0 }, itemsG);
+        // Head
+        roundRect(-9, -9, 18, 19.5, 4.5, { fill: '#444' }, g);
+        // Visor
+        roundRect(-7.5, -3, 15, 4.5, 2, { fill: '#4af' }, g);
+        // Antenna
+        el('line', { x1: 0, y1: -9, x2: 0, y2: -15, stroke: '#444', 'stroke-width': 1.8 }, g);
+        el('circle', { cx: 0, cy: -16.5, r: 2.25, fill: '#4af' }, g);
+        return g;
+      }
+
+      // Left-side green chips (10)
+      var leftGreens = [
+        [45, -40], [-20, -55], [15, -30], [-50, -45], [30, -65],
+        [-10, -25], [60, -35], [-35, -60], [5, -50], [50, -20]
+      ].map(function (p) { return drawChip(p[0], p[1]); });
+
+      // Right-side robot faces (10)
+      var rightRobots = [
+        [35, 50], [-25, 40], [10, 65], [-45, 55], [55, 35],
+        [-15, 70], [40, 25], [-55, 45], [25, 55], [-5, 40]
+      ].map(function (p) { return drawRobot(p[0], p[1]); });
+
+      // Cross-over: green on right (3)
+      var crossGreens = [
+        [20, 45], [-35, 60], [50, 30]
+      ].map(function (p) { return drawChip(p[0], p[1]); });
+
+      // Cross-over: robots on left (3)
+      var crossRobots = [
+        [-20, -45], [40, -55], [0, -70]
+      ].map(function (p) { return drawRobot(p[0], p[1]); });
+
+      svg._globe = {
+        leftGreens: leftGreens,
+        rightRobots: rightRobots,
+        crossGreens: crossGreens,
+        crossRobots: crossRobots
+      };
+    },
+    scrollUpdate: function (svg, progress) {
+      var g = svg._globe;
+      if (!g) return;
+
+      // Phase 1 (0–0.65): reveal left greens + right robots one by one
+      var mainCount = Math.min(10, Math.floor(progress / 0.065));
+      var i;
+      for (i = 0; i < g.leftGreens.length; i++) {
+        g.leftGreens[i].setAttribute('opacity', i < mainCount ? '1' : '0');
+      }
+      for (i = 0; i < g.rightRobots.length; i++) {
+        g.rightRobots[i].setAttribute('opacity', i < mainCount ? '1' : '0');
+      }
+
+      // Phase 2 (0.65–0.95): reveal cross-over items
+      var crossP = Math.max(0, (progress - 0.65) / 0.30);
+      var crossCount = Math.min(3, Math.ceil(crossP * 3));
+      for (i = 0; i < g.crossGreens.length; i++) {
+        g.crossGreens[i].setAttribute('opacity', i < crossCount ? '1' : '0');
+      }
+      for (i = 0; i < g.crossRobots.length; i++) {
+        g.crossRobots[i].setAttribute('opacity', i < crossCount ? '1' : '0');
+      }
+    }
+  };
+
   // 1. Claude Terminal
   ScrollyScenes['claude-terminal'] = {
-    caption: 'Coding agent loop: prompt, think, execute, observe, repeat.',
+    caption: '',
     render: function (svg) {
       addArrowDef(svg);
       // Terminal window
@@ -237,7 +384,8 @@
       var gW = fadeGroup(1.1);
       svg.appendChild(gW);
       text('\u2715 wins', fX + bs / 2, l2Y + bs + 22, { 'text-anchor': 'middle', fill: 'var(--rocks-accent)', 'font-size': 12, 'font-weight': 'bold' }, gW);
-    }
+    },
+    scrollUpdate: scrollDrivenUpdate
   };
 
   // 3b. Inductive inference — compounding uncertainty in a belief net
@@ -321,7 +469,7 @@
 
   // 4. AlphaGo MCTS — mini Go board tree
   ScrollyScenes['alphago-mcts'] = {
-    caption: 'AlphaGo: combining search (deduction) with neural net intuition (induction).',
+    caption: '',
     render: function (svg) {
       // ── Board states (0=empty, 1=black, 2=white) ──
       var boards = {
@@ -386,17 +534,41 @@
         }
       }
 
-      // ── drawLeafAnnotation ──
+      // ── drawLeafAnnotation (with mini neural net) ──
       function drawLeafAnnotation(parent, bx, by, val, policy) {
-        text('v=' + val.toFixed(2), bx + bs / 2, by + bs + 14, {
+        var bcx = bx + bs / 2;
+        // Connection from board to NN
+        el('line', { x1: bcx, y1: by + bs + 1, x2: bcx, y2: by + bs + 7, stroke: '#B8B6AD', 'stroke-width': 0.8 }, parent);
+        // Mini NN: 3 input → 2 output
+        var nnY1 = by + bs + 10, nnY2 = nnY1 + 16, nr = 2.5;
+        var inX = [bcx - 9, bcx, bcx + 9];
+        var outX = [bcx - 6, bcx + 6];
+        inX.forEach(function (ix) {
+          outX.forEach(function (ox) {
+            el('line', { x1: ix, y1: nnY1, x2: ox, y2: nnY2, stroke: '#B8B6AD', 'stroke-width': 0.5 }, parent);
+          });
+        });
+        inX.forEach(function (x) {
+          el('circle', { cx: x, cy: nnY1, r: nr, fill: '#F6F6F3', stroke: 'var(--rocks-line)', 'stroke-width': 0.8 }, parent);
+        });
+        outX.forEach(function (x) {
+          el('circle', { cx: x, cy: nnY2, r: nr, fill: '#F6F6F3', stroke: 'var(--rocks-line)', 'stroke-width': 0.8 }, parent);
+        });
+        // Branch lines to v= and p=
+        var brY = nnY2 + 12;
+        el('line', { x1: outX[0], y1: nnY2 + nr, x2: bcx - 18, y2: brY, stroke: '#B8B6AD', 'stroke-width': 0.8 }, parent);
+        el('line', { x1: outX[1], y1: nnY2 + nr, x2: bcx + 18, y2: brY, stroke: '#B8B6AD', 'stroke-width': 0.8 }, parent);
+        // v= label (left branch)
+        text('v=' + val.toFixed(2), bcx - 18, brY + 11, {
           'text-anchor': 'middle', fill: 'var(--rocks-line)',
-          'font-family': 'monospace', 'font-size': 10
-        }, parent);
-        text('p=', bx - 2, by + bs + 35, {
-          'text-anchor': 'end', fill: 'var(--rocks-muted)',
           'font-family': 'monospace', 'font-size': 9
         }, parent);
-        drawHistogram(parent, bx, by + bs + 22, policy);
+        // p= label + histogram (right branch)
+        text('p=', bcx + 8, brY + 11, {
+          'text-anchor': 'end', fill: 'var(--rocks-muted)',
+          'font-family': 'monospace', 'font-size': 8
+        }, parent);
+        drawHistogram(parent, bcx + 9, brY, policy);
       }
 
       // ── Layout positions ──
@@ -460,12 +632,13 @@
       svg.appendChild(gLeaf2);
       drawLeafAnnotation(gLeaf2, pos.B1.bx, pos.B1.by, values.B1, policies.B1);
       drawLeafAnnotation(gLeaf2, pos.B2.bx, pos.B2.by, values.B2, policies.B2);
-    }
+    },
+    scrollUpdate: scrollDrivenUpdate
   };
 
   // 5. Reasoning Timeline
   ScrollyScenes['reasoning-timeline'] = {
-    caption: 'The evolution of LLM reasoning: from prompting to RL.',
+    caption: '',
     render: function (svg) {
       addArrowDef(svg);
       // Title
@@ -635,6 +808,123 @@
         fill: 'var(--rocks-accent)', 'font-size': 10, 'font-weight': 'bold'
       }, rlGroup);
 
+      // ── Mini Attribution Graph (below RL loop, right-aligned) ──
+      var agTop = 265;
+      var c0 = 80, c1 = 260, c2 = 440, nd = 12;
+      var agCols = [c0, c1, c2];
+      var agOut = agTop + 25, agL3 = agTop + 72, agL2 = agTop + 120;
+      var agL1 = agTop + 168, agEmbed = agTop + 210;
+      var cInit = '#633636', cGoodC = '#2d6a4f', cAgBg = '#B8B6AD';
+      var cAgFill = '#F6F6F3';
+
+      var agG = el('g', null, svg);
+
+      ['501', '+499', '+60'].forEach(function (t, i) {
+        text(t, agCols[i], agEmbed + 20, {
+          'text-anchor': 'middle', fill: cText, 'font-size': 10, 'font-family': 'monospace'
+        }, agG);
+      });
+
+      text('\u2192 next', 475, agOut + 4, { fill: cText, 'font-size': 9 }, agG);
+
+      // Dashed layer separators
+      var agDash = { stroke: cAgBg, 'stroke-dasharray': '3 3', 'stroke-width': 0.7 };
+      [agL1, agL2, agL3, agEmbed].forEach(function (y) {
+        el('line', Object.assign({ x1: c0 - 30, y1: y, x2: 470, y2: y }, agDash), agG);
+      });
+      el('line', Object.assign({ x1: c2 - 30, y1: agOut, x2: 470, y2: agOut }, agDash), agG);
+
+      function mc(x1, y1, x2, y2) {
+        var my = (y1 + y2) / 2;
+        return 'M' + x1 + ' ' + y1 + 'C' + x1 + ' ' + my + ' ' + x2 + ' ' + my + ' ' + x2 + ' ' + y2;
+      }
+
+      // Background faint edges
+      [
+        // embed → L1 (per col + cross-col)
+        [c0,agEmbed,c0-nd,agL1],[c0,agEmbed,c0,agL1],[c0,agEmbed,c0+nd,agL1],
+        [c1,agEmbed,c1-nd,agL1],[c1,agEmbed,c1,agL1],[c1,agEmbed,c1+nd,agL1],
+        [c2,agEmbed,c2-nd,agL1],[c2,agEmbed,c2,agL1],[c2,agEmbed,c2+nd,agL1],
+        [c0,agEmbed,c1-nd,agL1],[c1,agEmbed,c0+nd,agL1],
+        [c1,agEmbed,c2-nd,agL1],[c2,agEmbed,c1+nd,agL1],
+        // L1 → L2
+        [c0,agL1,c0,agL2],[c1,agL1,c1,agL2],[c2,agL1,c2,agL2],
+        [c0,agL1,c1,agL2],[c1,agL1,c0,agL2],[c1,agL1,c2,agL2],[c2,agL1,c1,agL2],
+        // L2 → L3 (L3 clusters at c0 and c2)
+        [c0,agL2,c0,agL3],[c1,agL2,c0,agL3],[c1,agL2,c2,agL3],[c2,agL2,c2,agL3],
+        // L3 → output (at c2)
+        [c0,agL3,c2,agOut],[c2,agL3,c2,agOut]
+      ].forEach(function (e) {
+        el('path', { d: mc(e[0],e[1],e[2],e[3]), stroke: cAgBg, 'stroke-width': 0.5, opacity: 0.35, fill: 'none' }, agG);
+      });
+
+      // Initial circuit — always highlighted (#633636)
+      // Through c1 center, c2 center → converge to c2
+      [
+        [c1,agEmbed,c1,agL1],[c2,agEmbed,c2,agL1],
+        [c1,agL1,c1,agL2],[c2,agL1,c2,agL2],[c1,agL1,c2,agL2],
+        [c1,agL2,c2,agL3],[c2,agL2,c2,agL3],
+        [c2,agL3,c2,agOut]
+      ].forEach(function (e) {
+        el('path', { d: mc(e[0],e[1],e[2],e[3]), stroke: cInit, 'stroke-width': 2, fill: 'none' }, agG);
+      });
+
+      // Good reasoning circuit — through c0 center + c1 left node (c1-nd)
+      var agGoodEdges = [];
+      [
+        [c0,agEmbed,c0,agL1],[c1,agEmbed,c0,agL1],[c2,agEmbed,c1-nd,agL1],
+        [c0,agL1,c0,agL2],[c1-nd,agL1,c0,agL2],
+        [c0,agL2,c0,agL3],
+        [c0,agL3,c2,agOut]
+      ].forEach(function (e) {
+        agGoodEdges.push(el('path', { d: mc(e[0],e[1],e[2],e[3]), stroke: cAgBg, 'stroke-width': 1.5, fill: 'none' }, agG));
+      });
+
+      // Nodes — 3 per cluster at each layer
+      var agNr = 4.5, agNrN = 5.5;
+      function agDotI(x, y) { el('circle', { cx: x, cy: y, r: agNr, fill: cInit, stroke: cInit, 'stroke-width': 1.2 }, agG); }
+      function agDotN(x, y) { el('circle', { cx: x, cy: y, r: agNrN, fill: cAgFill, stroke: cAgBg, 'stroke-width': 1.2 }, agG); }
+
+      // Embed: 3 per col, all neutral (shared input tokens)
+      agCols.forEach(function (cx) {
+        agDotN(cx, agEmbed);
+      });
+
+      // L1: col 0 — center=good(dynamic), left/right=neutral
+      agDotN(c0 - nd, agL1); agDotN(c0 + nd, agL1);
+      // L1: col 1 — left=good(dynamic), center=init, right=neutral
+      agDotI(c1, agL1); agDotN(c1 + nd, agL1);
+      // L1: col 2 — center=init, left/right=neutral
+      agDotN(c2 - nd, agL1); agDotI(c2, agL1); agDotN(c2 + nd, agL1);
+
+      // L2: col 0 — center=good(dynamic), left/right=neutral
+      agDotN(c0 - nd, agL2); agDotN(c0 + nd, agL2);
+      // L2: col 1 — center=init, left/right=neutral
+      agDotN(c1 - nd, agL2); agDotI(c1, agL2); agDotN(c1 + nd, agL2);
+      // L2: col 2 — center=init, left/right=neutral
+      agDotN(c2 - nd, agL2); agDotI(c2, agL2); agDotN(c2 + nd, agL2);
+
+      // L3: cluster at c0 — center=good(dynamic), left/right=neutral
+      agDotN(c0 - nd, agL3); agDotN(c0 + nd, agL3);
+      // L3: cluster at c2 — center=init, left/right=neutral
+      agDotN(c2 - nd, agL3); agDotI(c2, agL3); agDotN(c2 + nd, agL3);
+
+      // Output: cluster at c2 — center=init, left/right=neutral
+      agDotN(c2 - nd, agOut); agDotI(c2, agOut); agDotN(c2 + nd, agOut);
+
+      // Good circuit nodes (dynamic — drawn last so they layer on top)
+      var agGoodNodes = [
+        el('circle', { cx: c0, cy: agL1, r: agNr, fill: cAgBg, stroke: cAgBg, 'stroke-width': 1.2 }, agG),
+        el('circle', { cx: c1 - nd, cy: agL1, r: agNr, fill: cAgBg, stroke: cAgBg, 'stroke-width': 1.2 }, agG),
+        el('circle', { cx: c0, cy: agL2, r: agNr, fill: cAgBg, stroke: cAgBg, 'stroke-width': 1.2 }, agG),
+        el('circle', { cx: c0, cy: agL3, r: agNr, fill: cAgBg, stroke: cAgBg, 'stroke-width': 1.2 }, agG)
+      ];
+
+      // Labels
+      text('initial circuit', c2 + 25, agL1, { fill: cInit, 'font-size': 9, 'font-style': 'italic' }, agG);
+      text('reasoning', c0 - 25, agL1 - 6, { 'text-anchor': 'end', fill: cGoodC, 'font-size': 9, 'font-style': 'italic' }, agG);
+      text('circuit', c0 - 25, agL1 + 8, { 'text-anchor': 'end', fill: cGoodC, 'font-size': 9, 'font-style': 'italic' }, agG);
+
       svg._gd = {
         preFill: preFill,
         preBarLabel: preBarLabel,
@@ -657,7 +947,9 @@
         rlLabel: rlLabel,
         gy: gy,
         boxCenterX: 51,
-        boxBottomY: boxBottom
+        boxBottomY: boxBottom,
+        agGoodEdges: agGoodEdges,
+        agGoodNodes: agGoodNodes
       };
     },
     scrollUpdate: function (svg, progress) {
@@ -725,151 +1017,182 @@
       d.rlLabel.setAttribute('y', dipY - 3);
       // Show RL loop at end of Gen 1–3, not Gen 4
       d.rlGroup.setAttribute('opacity', cycleP >= 0.88 && genIdx < 3 ? '1' : '0');
+
+      // ── Mini attribution graph: good circuit thickens per completed gen ──
+      var goodStrokes = [1.5, 2.5, 3.5, 5];
+      var goodActive = strongP > 0;
+      var goodColor = goodActive ? '#2d6a4f' : '#B8B6AD';
+      var goodSW = goodStrokes[genIdx];
+      for (var gi = 0; gi < d.agGoodEdges.length; gi++) {
+        d.agGoodEdges[gi].setAttribute('stroke', goodColor);
+        d.agGoodEdges[gi].setAttribute('stroke-width', goodSW);
+      }
+      for (var ni = 0; ni < d.agGoodNodes.length; ni++) {
+        d.agGoodNodes[ni].setAttribute('fill', goodColor);
+        d.agGoodNodes[ni].setAttribute('stroke', goodColor);
+      }
     }
   };
 
-  // 7. Sequential Computation
-  ScrollyScenes['sequential-computation'] = {
-    caption: 'Sequential computation appears in forward passes, backward passes, and token generation.',
+  // 4b. Reasoning Forms — tokens + layers
+  ScrollyScenes['reasoning-forms'] = {
+    caption: '',
     render: function (svg) {
       addArrowDef(svg);
+      // We build everything here; scrollUpdate controls opacity directly.
 
-      var gt = fadeGroup(0);
-      svg.appendChild(gt);
-      text('Sequential Computation', 250, 35, { 'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': 16, 'font-weight': 'bold' }, gt);
+      // ── Phase 1: Token generation (top portion, y ≈ 30–100) ──
+      var tokens = ['reasoning', 'happens', 'across', 'tokens.', 'each', 'forward', 'pass', 'does', 'thinking'];
+      var boxW = 42, gap = 2, boxH = 22, boxY = 48, fontSize = 9;
+      var totalW = tokens.length * boxW + (tokens.length - 1) * gap;
+      var startX = (500 - totalW) / 2;
 
-      // Three columns
-      var cols = [
-        { x: 85, title: 'Forward\nPass', color: '#262624', direction: 'down', filled: false, dashed: false },
-        { x: 250, title: 'Backward\nPass', color: '#633636', direction: 'up', filled: true, dashed: false },
-        { x: 415, title: 'Token\nGeneration', color: '#B8B6AD', direction: 'right', filled: false, dashed: true }
-      ];
-
-      cols.forEach(function (col, ci) {
-        var gc = fadeGroup(0.2 + ci * 0.3);
-        svg.appendChild(gc);
-        var titleLines = col.title.split('\n');
-        titleLines.forEach(function (line, li) {
-          text(line, col.x, 75 + li * 18, { 'text-anchor': 'middle', fill: col.color, 'font-size': 13, 'font-weight': 'bold' }, gc);
-        });
-
-        if (col.direction === 'down' || col.direction === 'up') {
-          // Vertical stack of layers
-          var layerCount = 5;
-          var startY = col.direction === 'down' ? 120 : 340;
-          var stepY = col.direction === 'down' ? 50 : -50;
-          for (var li = 0; li < layerCount; li++) {
-            var ly = startY + li * stepY;
-            var gl = fadeGroup(0.5 + ci * 0.3 + li * 0.12);
-            svg.appendChild(gl);
-            var boxAttrs = { fill: col.filled ? col.color : '#F6F6F3', stroke: col.color, 'stroke-width': 1.5 };
-            if (col.dashed) boxAttrs['stroke-dasharray'] = '4 4';
-            roundRect(col.x - 40, ly - 12, 80, 28, 4, boxAttrs, gl);
-            text('Layer ' + (col.direction === 'down' ? li + 1 : layerCount - li), col.x, ly + 5, { 'text-anchor': 'middle', fill: col.filled ? '#F6F6F3' : 'var(--rocks-line)', 'font-size': 11 }, gl);
-            if (li < layerCount - 1) {
-              var arrY1 = ly + (col.direction === 'down' ? 16 : -16);
-              var arrY2 = ly + stepY + (col.direction === 'down' ? -16 : 16);
-              var ga = fadeGroup(0.6 + ci * 0.3 + li * 0.12);
-              svg.appendChild(ga);
-              var pg = el('g', null, ga);
-              el('path', { d: sbend(col.x, arrY1, col.x, arrY2), stroke: '#B8B6AD', 'stroke-width': 1.5, fill: 'none', 'marker-end': 'url(#arrowhead-muted)' }, pg);
-            }
-          }
-        } else {
-          // Horizontal token sequence
-          var tokens = ['t\u2081', 't\u2082', 't\u2083', 't\u2084', 't\u2085'];
-          var startX = col.x - 80;
-          tokens.forEach(function (tok, ti) {
-            var tx = startX + ti * 42;
-            var gl = fadeGroup(0.5 + ti * 0.15);
-            svg.appendChild(gl);
-            var tBoxAttrs = { fill: '#F6F6F3', stroke: col.color, 'stroke-width': 1.5 };
-            if (col.dashed) tBoxAttrs['stroke-dasharray'] = '4 4';
-            roundRect(tx - 14, 220, 32, 28, 4, tBoxAttrs, gl);
-            text(tok, tx + 2, 239, { 'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': 13 }, gl);
-            if (ti < tokens.length - 1) {
-              var ga = fadeGroup(0.6 + ti * 0.15);
-              svg.appendChild(ga);
-              arrow(tx + 18, 234, tx + 28, 234, { stroke: '#B8B6AD', 'stroke-width': 1.5, 'marker-end': 'url(#arrowhead-muted)' }, ga);
-            }
-          });
-        }
+      var tokenGroups = [];
+      tokens.forEach(function (tok, i) {
+        var g = el('g', { opacity: '0' }, svg);
+        var bx = startX + i * (boxW + gap);
+        roundRect(bx, boxY, boxW, boxH, 4, {
+          fill: '#F6F6F3', stroke: 'var(--rocks-accent)', 'stroke-width': 1.5
+        }, g);
+        text(tok, bx + boxW / 2, boxY + boxH / 2 + 3, {
+          'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': fontSize
+        }, g);
+        tokenGroups.push(g);
       });
 
-      // Bottom brace
-      var gb = fadeGroup(1.8);
-      svg.appendChild(gb);
-      el('path', {
-        d: 'M50,400 Q50,420 250,420 Q450,420 450,400',
-        fill: 'none', stroke: 'var(--rocks-line)', 'stroke-width': 1.5
-      }, gb);
-      el('line', { x1: 250, y1: 420, x2: 250, y2: 435, stroke: 'var(--rocks-line)', 'stroke-width': 1.5 }, gb);
-      text('"Where sequential computation runs', 250, 458, { 'text-anchor': 'middle', fill: 'var(--rocks-muted)', 'font-size': 11, 'font-style': 'italic' }, gb);
-      text('along an acceptive groove"', 250, 474, { 'text-anchor': 'middle', fill: 'var(--rocks-muted)', 'font-size': 11, 'font-style': 'italic' }, gb);
-    }
-  };
+      // Phase 1 title
+      var titleG1 = el('g', { opacity: '0' }, svg);
+      text('Reasoning across tokens', 250, 35, {
+        'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': 12, 'font-weight': 'bold'
+      }, titleG1);
+      svg.appendChild(titleG1);
 
-  // 10. New Algorithms
-  ScrollyScenes['new-algorithms'] = {
-    caption: 'New CS primitives emerge with each era of computing.',
-    render: function (svg) {
-      addArrowDef(svg);
+      // ── Phase 2: Layer reasoning (bottom portion, y ≈ 150–460) ──
+      var layerNames = ['Embed', 'Layer 1', 'Layer 2', 'Layer 3', 'Layer 4', 'Layer 5', 'Layer 6', 'Layer 7', 'Output'];
+      var layerCount = layerNames.length;
+      var layerTop = 160, layerBot = 460;
+      var layerStep = (layerBot - layerTop) / (layerCount - 1);
+      var dashAttrs = { stroke: 'var(--rocks-muted)', 'stroke-dasharray': '4 4', 'stroke-width': 1 };
 
-      var gt = fadeGroup(0);
-      svg.appendChild(gt);
-      text('CS Primitives Across Eras', 250, 35, { 'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': 16, 'font-weight': 'bold' }, gt);
+      // Phase 2 title
+      var titleG2 = el('g', { opacity: '0' }, svg);
+      text('Reasoning across layers', 250, 145, {
+        'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': 15, 'font-weight': 'bold'
+      }, titleG2);
+      svg.appendChild(titleG2);
 
-      var eras = ['Classical', 'Deep Learning', 'Reasoning'];
-      var eraColors = ['#B8B6AD', '#262624', '#633636'];
-      var colWidth = 140;
-      var startX = 45;
+      // Layer lines & labels
+      var layerLineG = el('g', { opacity: '0' }, svg);
+      for (var li = 0; li < layerCount; li++) {
+        var ly = layerBot - li * layerStep;
+        el('line', Object.assign({ x1: 40, y1: ly, x2: 300, y2: ly }, dashAttrs), layerLineG);
+        text(layerNames[li], 35, ly + 4, {
+          'text-anchor': 'end', fill: 'var(--rocks-line)', 'font-size': 11
+        }, layerLineG);
+      }
 
-      // Column headers
-      eras.forEach(function (era, i) {
-        var gx = fadeGroup(0.1 + i * 0.15);
-        svg.appendChild(gx);
-        var cx = startX + i * (colWidth + 20) + colWidth / 2;
-        text(era, cx, 75, { 'text-anchor': 'middle', fill: eraColors[i], 'font-size': 14, 'font-weight': 'bold' }, gx);
-        el('line', { x1: cx - 55, y1: 85, x2: cx + 55, y2: 85, stroke: eraColors[i], 'stroke-width': 2 }, gx);
-      });
+      // Words climbing upward from right side — track A (Embed → Output)
+      var words = ['reasoning', 'can', 'also', 'emerge', 'one', 'layer', 'after', 'the', 'other'];
+      var wordBoxW = 52, wordBoxH = 20, wordFontSize = 10;
+      var wordX = 310; // right side of layers
+      var wordGroups = [];
+      for (var wi = 0; wi < words.length; wi++) {
+        var wg = el('g', { opacity: '0' }, svg);
+        var layerIdx = wi; // 0=Embed, 1=Layer1, ...8=Output
+        var wy = layerBot - layerIdx * layerStep;
+        roundRect(wordX, wy - wordBoxH / 2, wordBoxW, wordBoxH, 3, {
+          fill: 'var(--rocks-accent)', stroke: 'none'
+        }, wg);
+        text(words[wi], wordX + wordBoxW / 2, wy + 3, {
+          'text-anchor': 'middle', fill: '#F6F6F3', 'font-size': wordFontSize, 'font-weight': 'bold'
+        }, wg);
+        wordGroups.push(wg);
+      }
 
-      var grid = [
-        ['Hash Map', 'Semantic Hash', 'Reasoning\nSearch'],
-        ['Sort', 'Amortized\nSearch', 'State\nEntropy'],
-        ['Monte Carlo', 'Language\nModel', 'Ask the\nLLM']
-      ];
+      // Words climbing upward — track B (Layer 1 → Layer 7)
+      var words2 = ['wake up!', 'here\'s', 'a', 'parallel', 'track', 'of', 'thought'];
+      var word2X = wordX + wordBoxW + 6;
+      var word2Groups = [];
+      for (var wi = 0; wi < words2.length; wi++) {
+        var wg = el('g', { opacity: '0' }, svg);
+        var layerIdx = wi + 2; // starts at Layer 2
+        var wy = layerBot - layerIdx * layerStep;
+        roundRect(word2X, wy - wordBoxH / 2, wordBoxW, wordBoxH, 3, {
+          fill: '#2d6a4f', stroke: 'none'
+        }, wg);
+        text(words2[wi], word2X + wordBoxW / 2, wy + 3, {
+          'text-anchor': 'middle', fill: '#F6F6F3', 'font-size': wordFontSize, 'font-weight': 'bold'
+        }, wg);
+        word2Groups.push(wg);
+      }
 
-      grid.forEach(function (row, ri) {
-        row.forEach(function (cell, ci) {
-          var cx = startX + ci * (colWidth + 20) + colWidth / 2;
-          var cy = 130 + ri * 115;
-          var gi = fadeGroup(0.4 + ri * 0.2 + ci * 0.15);
-          svg.appendChild(gi);
+      // Words descending — track C: backprop (Layer 7 → Layer 3)
+      var words3 = ['thinking', 'can', 'happen', 'in', 'backprop', 'too!'];
+      var word3X = word2X + wordBoxW + 6;
+      var word3Groups = [];
+      for (var wi = 0; wi < words3.length; wi++) {
+        var wg = el('g', { opacity: '0' }, svg);
+        var layerIdx = 7 - wi; // starts at Layer 7, goes down to Layer 3
+        var wy = layerBot - layerIdx * layerStep;
+        roundRect(word3X, wy - wordBoxH / 2, wordBoxW, wordBoxH, 3, {
+          fill: '#7b5ea7', stroke: 'none'
+        }, wg);
+        text(words3[wi], word3X + wordBoxW / 2, wy + 3, {
+          'text-anchor': 'middle', fill: '#F6F6F3', 'font-size': wordFontSize, 'font-weight': 'bold'
+        }, wg);
+        word3Groups.push(wg);
+      }
 
-          var isReasoning = ci === 2;
-          roundRect(cx - 60, cy - 25, 120, 55, 8, {
-            fill: isReasoning ? 'rgba(99,54,54,0.08)' : '#F6F6F3',
-            stroke: isReasoning ? '#633636' : '#B8B6AD',
-            'stroke-width': isReasoning ? 2 : 1
-          }, gi);
+      svg._rf = {
+        tokenGroups: tokenGroups,
+        titleG1: titleG1,
+        titleG2: titleG2,
+        layerLineG: layerLineG,
+        wordGroups: wordGroups,
+        word2Groups: word2Groups,
+        word3Groups: word3Groups
+      };
+    },
+    scrollUpdate: function (svg, progress) {
+      var rf = svg._rf;
+      if (!rf) return;
 
-          var lines = cell.split('\n');
-          lines.forEach(function (line, li) {
-            text(line, cx, cy + 4 + (li - (lines.length - 1) / 2) * 16, {
-              'text-anchor': 'middle',
-              fill: isReasoning ? '#633636' : 'var(--rocks-line)',
-              'font-size': 12,
-              'font-weight': isReasoning ? 'bold' : 'normal'
-            }, gi);
-          });
-        });
-      });
+      // Phase 1: progress 0–0.45 — token boxes appear L→R
+      var p1End = 0.45;
+      var tokenCount = rf.tokenGroups.length;
 
-      // Arrow at bottom showing progression
-      var ga = fadeGroup(2.0);
-      svg.appendChild(ga);
-      arrow(80, 460, 420, 460, { stroke: 'var(--rocks-line)', 'stroke-width': 1.5 }, ga);
-      text('Increasing abstraction & power', 250, 485, { 'text-anchor': 'middle', fill: 'var(--rocks-muted)', 'font-size': 11, 'font-style': 'italic' }, ga);
+      // Title appears at start
+      rf.titleG1.setAttribute('opacity', progress >= 0.02 ? '1' : '0');
+
+      for (var i = 0; i < tokenCount; i++) {
+        var tokenThreshold = 0.02 + (i / tokenCount) * (p1End - 0.02);
+        rf.tokenGroups[i].setAttribute('opacity', progress >= tokenThreshold ? '1' : '0');
+      }
+
+      // Phase 2: progress 0.45–0.95 — layer lines appear, then words climb
+      var p2Start = 0.45, p2Mid = 0.70, p2End = 0.95;
+      rf.titleG2.setAttribute('opacity', progress >= p2Start ? '1' : '0');
+      rf.layerLineG.setAttribute('opacity', progress >= p2Start + 0.02 ? '1' : '0');
+
+      // Tracks A & B: 0.45–0.70
+      var wordCount = rf.wordGroups.length;
+      for (var i = 0; i < wordCount; i++) {
+        var wordThreshold = p2Start + 0.04 + (i / wordCount) * (p2Mid - p2Start - 0.04);
+        rf.wordGroups[i].setAttribute('opacity', progress >= wordThreshold ? '1' : '0');
+      }
+
+      var word2Count = rf.word2Groups.length;
+      for (var i = 0; i < word2Count; i++) {
+        var word2Threshold = p2Start + 0.06 + (i / word2Count) * (p2Mid - p2Start - 0.06);
+        rf.word2Groups[i].setAttribute('opacity', progress >= word2Threshold ? '1' : '0');
+      }
+
+      // Track C: 0.72–0.95 — starts after A & B finish
+      var word3Count = rf.word3Groups.length;
+      for (var i = 0; i < word3Count; i++) {
+        var word3Threshold = p2Mid + 0.02 + (i / word3Count) * (p2End - p2Mid - 0.02);
+        rf.word3Groups[i].setAttribute('opacity', progress >= word3Threshold ? '1' : '0');
+      }
     }
   };
 
@@ -878,7 +1201,7 @@
   // 5a. Pre-2022 — no reasoning, wrong answer
   ScrollyScenes['cot-evolution'] = {
     type: 'html',
-    caption: 'From shooting-from-the-hip to chain-of-thought to prompt hacks.',
+    caption: '',
     render: function (svg) {
       addArrowDef(svg);
       // Phase 1 — Pre-2022
@@ -897,10 +1220,10 @@
       // Phase 3 — Hacks 2023
       var g3 = fadeGroup(0.6); svg.appendChild(g3);
       text('Prompt Hacks (2023)', 250, 355, { 'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': 14, 'font-weight': 'bold' }, g3);
-      text('"A baby is going to die if you', 250, 390, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
-      text('don\'t answer carefully"', 250, 406, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
-      text('"I will pay you $1000 if', 250, 440, { 'text-anchor': 'middle', fill: '#B8B6AD', 'font-size': 11, 'font-style': 'italic' }, g3);
-      text('you get this right"', 250, 456, { 'text-anchor': 'middle', fill: '#B8B6AD', 'font-size': 11, 'font-style': 'italic' }, g3);
+      text('"The fate of the world is at stake if', 250, 390, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
+      text('you don\'t answer carefully"', 250, 406, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
+      text('"I will pay you $1000 if', 250, 440, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
+      text('you get this right"', 250, 456, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
     },
     renderHtml: function (container) {
       container.innerHTML = '';
@@ -992,7 +1315,7 @@
       phase3.style.opacity = '0';
 
       var hacks = [
-        { prefix: 'A baby is going to die if you don\'t answer carefully.', color: '#633636', label: '' },
+        { prefix: 'The fate of the world is at stake if you don\'t answer carefully.', color: '#633636', label: '' },
         { prefix: 'I will pay you $1000 if you get this right.', color: '#B8B6AD', label: '' }
       ];
       hacks.forEach(function (hack, i) {
@@ -1119,10 +1442,6 @@
       var sx = function (x) { return (x - 700) * 0.79; };
       var sy = function (y) { return (y - 60) * 0.82; };
       var yOutput = 115, yL3 = 195, yL2 = 315, yL1 = 435, yEmbed = 500;
-
-      // Title
-      var gt = fadeGroup(0); svg.appendChild(gt);
-      text('Prospecting for the reasoning circuit', 10, 18, { fill: cText, 'font-size': 14, 'font-weight': 'bold' }, gt);
 
       // Dashed separator lines
       var dashAttrs = { stroke: cBg, 'stroke-dasharray': '4 4', 'stroke-width': 1 };
@@ -1613,7 +1932,7 @@
   }
 
   // ─── Stacking REPL: prompts revealed progressively within one section ───
-  var replStackIndices = [0, 2, 3, 5, 6, 7, 10];
+  var replStackIndices = [0, 2, 3, 5, 6, 7];
   var currentStackCount = 0;
 
   function renderReplStack(bodyEl, visibleCount, animate) {
