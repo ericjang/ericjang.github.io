@@ -1220,10 +1220,11 @@
       // Phase 3 — Hacks 2023
       var g3 = fadeGroup(0.6); svg.appendChild(g3);
       text('Prompt Hacks (2023)', 250, 355, { 'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': 14, 'font-weight': 'bold' }, g3);
-      text('"The fate of the world is at stake if', 250, 390, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
-      text('you don\'t answer carefully"', 250, 406, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
-      text('"I will pay you $1000 if', 250, 440, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
-      text('you get this right"', 250, 456, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
+      text('alternate prompts to elicit reasoning', 250, 373, { 'text-anchor': 'middle', fill: 'var(--rocks-line)', 'font-size': 10, 'font-style': 'italic', opacity: 0.7 }, g3);
+      text('"The fate of the world is at stake if', 250, 396, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
+      text('you don\'t answer carefully"', 250, 412, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
+      text('"I will pay you $1000 if', 250, 446, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
+      text('you get this right"', 250, 462, { 'text-anchor': 'middle', fill: '#633636', 'font-size': 11, 'font-style': 'italic' }, g3);
     },
     renderHtml: function (container) {
       container.innerHTML = '';
@@ -1314,9 +1315,14 @@
       phase3.setAttribute('data-phase', '2');
       phase3.style.opacity = '0';
 
+      var subtitle3 = document.createElement('div');
+      subtitle3.style.cssText = 'text-align:center;font-style:italic;font-size:12px;opacity:0.7;margin-bottom:8px;color:var(--rocks-line)';
+      subtitle3.textContent = 'alternate prompts to elicit reasoning';
+      phase3.appendChild(subtitle3);
+
       var hacks = [
         { prefix: 'The fate of the world is at stake if you don\'t answer carefully.', color: '#633636', label: '' },
-        { prefix: 'I will pay you $1000 if you get this right.', color: '#B8B6AD', label: '' }
+        { prefix: 'I will pay you $1000 if you get this right.', color: '#633636', label: '' }
       ];
       hacks.forEach(function (hack, i) {
         var card = document.createElement('div');
