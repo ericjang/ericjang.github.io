@@ -31,7 +31,7 @@ For my "automated AlphaGo researcher" codebase, I created a Claude command [`/ex
 3. Intermediate artifacts and data are saved to data/ and figures/ subdirectories. All files are stored in easy-to-parse formats like CSV files that can be loaded with pandas.
 4. Observe the outcome and draw conclusions from the experiment, suggest what is still unknown and what is now known.
 
-The outcome of the experiment is a report.md markdown that summarizes the latest observation about the world. 
+The outcome of the experiment is a report.md markdown that summarizes the latest observation about the world ([example](/assets/rocks/example_report.pdf)). 
 
 Here is an example of how I'd use it:
 
@@ -144,7 +144,7 @@ R1-Zero develops good reasoning circuits that can solve problems, but is hard to
 
 Given that R1-Zero was so conceptually simple, why didn't outcome supervision from 2023 work before? What prevented these ideas from working sooner? 
 
-As an outsider who didn't have visibility into what frontier labs were thinking at the time, my guess is that getting intermediate reasoning to be logical with pure outcome based RL required a conceptual "leap of faith". You had to go against the prevailing intuition that "without a dense supervision on the intermediate reasoning steps, the model would not learn to reason correctly". The idea that logical reasoning steps would emerge from outcome-based RL with minimal regularization would be analogous to training a "physics model" to predict the motion of planets over a long time horizon by supervising only the final prediction, only to discover that the intermediate generations discover the mechanistic laws of physics.
+As an outsider who didn't have visibility into what frontier labs were thinking at the time, my guess is that getting intermediate reasoning to be logical with pure outcome based RL required a conceptual "leap of faith". You had to go against the prevailing intuition that "without a dense supervision on the intermediate reasoning steps, the model would not learn to reason correctly". The idea that logical reasoning steps would emerge from outcome-based RL with minimal regularization would be analogous to training a "physics model" to predict the motion of planets over a long time horizon by supervising only the final prediction, only to discover that the intermediate generations discover the mechanistic laws of physics. This is an unintuitive outcome. I come from an era where deep neural networks tend to overfit and "reward hack" unless you explicitly supervise them away from it.
 
 My guess is that all of the following had to come together for this to work:
 
@@ -204,7 +204,7 @@ Modern coding agents are profoundly useful for teaching and communication as wel
 
 Based on my own usage patterns, it's beginning to dawn on me how much inference compute we will need in the coming years. I don't think people have begun to fathom how much we will need. Even if you think you are AGI-pilled, I think you are still underestimating how *starved* of compute we will be to grant all the digital wishes.
 
-As air conditioning unlocked productivity in the global south, automated thinking will create astronomical demand for inference compute. Air conditioning currently consumes 12% of global electricity production, while compute less than 1%. We will have rocks thinking all the time to further the interests of their owners. Every corporation with GPUs to spare will have ambient thinkers constantly re-planning deadlines, reducing tech debt, and trawling for more information that helps the business make its decisions in a dynamic world. 007 is the new 996.
+As air conditioning unlocked productivity in the global south, automated thinking will create astronomical demand for inference compute. Air conditioning [currently consumes 10%](https://www.iea.org/reports/the-future-of-cooling) of global electricity production, while datacenter compute less than 1%. We will have rocks thinking all the time to further the interests of their owners. Every corporation with GPUs to spare will have ambient thinkers constantly re-planning deadlines, reducing tech debt, and trawling for more information that helps the business make its decisions in a dynamic world. 007 is the new 996.
 
 Militaries will scramble every FLOP they can find to play out wargames, like rollouts in a MCTS search. What will happen when the first decisive war is won not by guns and drones, but by compute and information advantage? Stockpile your thinking tokens, for thinking begets better thinking.
 
