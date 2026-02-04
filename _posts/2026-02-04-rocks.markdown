@@ -1,7 +1,7 @@
 ---
 layout: scrollytelling
 title: "As Rocks May Think"
-date:  2026-02-02
+date:  2026-02-04
 epigraph: "Whenever logical processes of thought are employed — that is, whenever thought for a time runs along an acceptive groove — there is an opportunity for the machine."
 epigraph_source: 'Dr. Vannevar Bush, <a href="https://worrydream.com/refs/Bush%20-%20As%20We%20May%20Think%20(Life%20Magazine%209-10-1945).pdf" target="_blank">As We May Think</a>, 1945'
 ---
