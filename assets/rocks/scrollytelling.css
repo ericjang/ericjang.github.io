@@ -1,0 +1,395 @@
+/* Scrollytelling Layout — As Rocks May Think */
+
+/* Widen the Minima wrapper for scrollytelling pages */
+body.scrollytelling .wrapper {
+  max-width: 1260px;
+}
+
+/* ─── Centered header with epigraph ─── */
+.scroll-header {
+  text-align: center;
+  padding-top: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.scroll-header .post-title {
+  margin-bottom: 0.15em;
+}
+
+.scroll-epigraph {
+  max-width: 600px;
+  margin: 1.2rem auto 0;
+  border: none;
+  padding: 0;
+  font-style: italic;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.scroll-epigraph p {
+  margin-bottom: 0.3em;
+}
+
+.scroll-epigraph cite {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+/* Inline quote — epigraph style, left-aligned */
+.scroll-inline-quote {
+  border: none;
+  padding: 0;
+  margin: 1.2rem 0;
+  font-style: italic;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.scroll-inline-quote p {
+  margin-bottom: 0.3em;
+}
+
+.scroll-inline-quote cite {
+  font-style: normal;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+/* Per-section container */
+.scrollytelling-container {
+  position: relative;
+}
+
+.scroll-narrative {
+  max-width: 100%;
+}
+
+/* Scroll sections */
+.scroll-section {
+  position: relative;
+  padding: 0;
+  opacity: 1;
+}
+
+.scroll-section-inner {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  gap: 40px;
+  overflow: hidden;
+}
+
+.scroll-section-text {
+  flex: 0 0 55%;
+  max-width: 55%;
+  padding: 40px 0 20px;
+  will-change: transform;
+}
+
+.scroll-section-viz {
+  flex: 0 0 40%;
+  max-width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 20px;
+}
+
+.scroll-section-viz svg {
+  width: 100%;
+  max-height: calc(100vh - 180px);
+  background: none;
+  border: none;
+  border-radius: 8px;
+}
+
+/* Caption below viz */
+.scroll-viz-caption {
+  margin-top: 12px;
+  font-size: 0.82rem;
+  color: #777;
+  text-align: center;
+  min-height: 1.4em;
+  transition: opacity 0.3s ease;
+}
+
+/* Wrap long lines inside code blocks */
+.scroll-narrative pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Mobile viz snapshot — hidden on desktop */
+.mobile-viz-snapshot {
+  display: none;
+}
+
+/* ─── SVG Animation Primitives ─── */
+
+/* Fade in with optional delay via data-delay attr or animation-delay style */
+.svg-fade-in {
+  opacity: 0;
+  animation: svgFadeIn 0.6s ease forwards;
+}
+
+@keyframes svgFadeIn {
+  to { opacity: 1; }
+}
+
+/* Stroke draw animation */
+.svg-draw-line {
+  stroke-dasharray: var(--dash-length, 300);
+  stroke-dashoffset: var(--dash-length, 300);
+  animation: svgDrawLine 1s ease forwards;
+}
+
+@keyframes svgDrawLine {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Pulse animation */
+.svg-pulse {
+  animation: svgPulse 2s ease-in-out infinite;
+}
+
+@keyframes svgPulse {
+  0%, 100% { transform-origin: center; transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.8; }
+}
+
+/* Stagger utility — used in JS via inline style animation-delay */
+
+/* ─── Color palette variables ─── */
+:root {
+  --rocks-line: #262624;
+  --rocks-accent: #633636;
+  --rocks-accent-light: rgba(99,54,54,0.12);
+  --rocks-bg: #F6F6F3;
+  --rocks-muted: #B8B6AD;
+  --rocks-text: #262624;
+}
+
+/* ─── REPL Widget ─── */
+.scroll-viz-repl {
+  display: none;
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+.repl-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  font-family: 'SF Mono', Monaco, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+/* Output text — appears above status */
+.repl-output {
+  margin-bottom: 16px;
+}
+
+.repl-output-line {
+  color: #333;
+}
+
+.repl-output-line.success {
+  color: #633636;
+}
+
+/* Status line — "Thinking…" then "Thought for Xm Ys" */
+.repl-status {
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  color: #B8B6AD;
+  font-style: italic;
+}
+
+/* Prompt box — pinned to bottom, black border */
+.repl-box {
+  border: 2px solid #262624;
+  padding: 14px 16px;
+  background: #fff;
+}
+
+/* Stacked prompt boxes */
+.repl-stack-item + .repl-stack-item {
+  margin-top: 8px;
+}
+
+/* Slide-in from right for scroll-triggered reveals (forward direction only) */
+.repl-fade-in {
+  opacity: 0;
+  transform: translateX(40px);
+  animation: replSlideIn 0.4s ease forwards;
+}
+
+.repl-box .repl-marker {
+  color: var(--rocks-accent);
+  font-weight: bold;
+  margin-right: 6px;
+}
+
+.repl-box .repl-prompt-text {
+  color: #333;
+}
+
+@keyframes replSlideIn {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── HTML Scene Container ─── */
+.scroll-viz-html {
+  display: none;
+  width: 100%;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* ─── Chat Scene Styles ─── */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: 'SF Mono', Monaco, Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.chat-msg {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.chat-label {
+  font-size: 0.72rem;
+  color: #888;
+  margin-bottom: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.chat-bubble {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.chat-user .chat-bubble {
+  background: rgba(99,54,54,0.06);
+  border: 1px solid #B8B6AD;
+  color: #333;
+}
+
+.chat-ai .chat-bubble {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  color: #333;
+}
+
+.chat-token {
+  display: inline;
+  font-family: 'SF Mono', Monaco, Menlo, Consolas, monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 1px 2px;
+  letter-spacing: 0.08em;
+}
+
+.chat-cursor {
+  color: #633636;
+  animation: cursorBlink 1s step-end infinite;
+  font-size: 1.1rem;
+}
+
+@keyframes cursorBlink {
+  50% { opacity: 0; }
+}
+
+.chat-step {
+  margin: 4px 0;
+  font-family: 'SF Mono', Monaco, Menlo, Consolas, monospace;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.chat-verdict {
+  margin-top: 8px;
+  font-size: 0.85rem;
+  transition: opacity 0.3s ease;
+}
+
+.verdict-wrong {
+  color: #633636;
+  font-weight: bold;
+}
+
+.verdict-correct {
+  color: #262624;
+  font-weight: bold;
+}
+
+.hack-card {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.chat-bubble em {
+  color: #633636;
+  font-style: italic;
+  font-weight: bold;
+}
+
+/* ─── Mobile breakpoint ─── */
+@media (max-width: 900px) {
+  body.scrollytelling .wrapper {
+    max-width: 100%;
+  }
+
+  .scroll-section-inner {
+    position: static;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .scroll-section-viz {
+    display: none;
+  }
+
+  .scroll-section-text {
+    flex: 1 1 100%;
+    max-width: 100%;
+    transform: none !important;
+  }
+
+  .scroll-section {
+    height: auto !important;
+  }
+
+  /* Show inline mobile snapshots instead */
+  .mobile-viz-snapshot {
+    display: block;
+    width: 100%;
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .mobile-viz-snapshot svg {
+    width: 100%;
+    max-width: 400px;
+    background: #F6F6F3;
+    border: 1px solid #B8B6AD;
+    border-radius: 8px;
+  }
+}
