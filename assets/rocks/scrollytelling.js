@@ -1037,6 +1037,7 @@
   // 4b. Reasoning Forms — tokens + layers
   ScrollyScenes['reasoning-forms'] = {
     caption: '',
+    animRoomMultiplier: 2,
     render: function (svg) {
       addArrowDef(svg);
       // We build everything here; scrollUpdate controls opacity directly.
@@ -1938,7 +1939,7 @@
   }
 
   // ─── Stacking REPL: prompts revealed progressively within one section ───
-  var replStackIndices = [0, 2, 3, 5, 6, 7];
+  var replStackIndices = [0, 2, 3, 5, 6, 7, 14];
   var currentStackCount = 0;
 
   function renderReplStack(bodyEl, visibleCount, animate) {
@@ -2071,36 +2072,57 @@
       if (!ScrollyScenes[sceneName]) {
         inner.style.position = 'static';
         inner.style.height = 'auto';
+        inner.style.minHeight = '';
+        vizEl.style.position = 'relative';
+        vizEl.style.height = 'auto';
+        textEl.style.position = 'static';
         section._noScene = true;
       }
     });
 
-    // Measure text heights and set section heights after DOM restructure
+    // Measure section dimensions and configure sticky + animation timing.
+    // Both text and viz are sticky. The text sticks with its bottom aligned
+    // to the viz bottom. The animation plays over vizH of scroll — from when
+    // the section top enters the viewport to when both elements release.
+    // This means no extra whitespace is ever needed: the section is purely
+    // content-height, and the next section follows immediately.
     function measureSections() {
-      var viewH = window.innerHeight;
-      var triggerTop = Math.round(viewH * 0.25);
       sections.forEach(function (section) {
-        // No-scene sections: natural height, no extra scroll room
         if (section._noScene) {
           section.style.height = '';
-          section._textScrollMax = 0;
+          section._inner.style.minHeight = '';
           section._animRoom = 0;
+          section._vizH = 0;
           return;
         }
 
-        var textH = section._textEl.scrollHeight;
+        // Reset before measuring
+        section._inner.style.minHeight = '';
+        section._textEl.style.paddingBottom = '20px';
+        section._textEl.style.top = '';
+
+        var vizH = section._vizEl.offsetHeight;
+        var textH = section._textEl.offsetHeight;
+
+        // Pad short text (bottom) to match vizH so both children stick/release together
+        // Text content stays top-aligned with the viz; extra space goes below.
+        if (textH < vizH) {
+          section._textEl.style.paddingBottom = (20 + vizH - textH) + 'px';
+        }
+
         var sceneName = section.getAttribute('data-scene');
         var scene = ScrollyScenes[sceneName];
         var hasAnim = !!(scene && (scene.scrollUpdate || scene.scrollUpdateHtml || scene.type === 'repl'));
-        var textScrollMax = Math.max(0, textH - viewH);
         var animMult = (scene && scene.animRoomMultiplier) || 1;
-        var animRoom = hasAnim ? Math.round(viewH * animMult) : Math.round(viewH * 0.3);
-        // Animation plays over animRoom of scroll starting when section top hits 25% from viewport top.
-        // Section must be tall enough for sticky viewport + whichever is larger: text scroll or anim scroll.
-        var afterTrigger = Math.max(0, animRoom - triggerTop);
-        section.style.height = (viewH + Math.max(textScrollMax, afterTrigger)) + 'px';
-        section._textScrollMax = textScrollMax;
+        var animRoom = hasAnim ? Math.round(vizH * animMult) : 0;
+
+        // Inner minHeight must accommodate both the content and the animation scroll room
+        var contentH = Math.max(section._textEl.offsetHeight, vizH);
+        section._inner.style.minHeight = Math.max(contentH, animRoom) + 'px';
+
+        section.style.height = '';
         section._animRoom = animRoom;
+        section._vizH = vizH;
       });
     }
 
@@ -2180,17 +2202,11 @@
             // Skip if section not in viewport at all
             if (rect.bottom < 0 || rect.top > viewH) return;
 
-            var scrolled = Math.max(0, -rect.top);
-            var textScrollMax = section._textScrollMax;
             var animRoom = section._animRoom;
-            var triggerTop = Math.round(viewH * 0.25);
+            var vizH = section._vizH || 0;
 
-            // Phase 1: text scrolling (pinned once all text visible)
-            var textOffset = Math.min(scrolled, textScrollMax);
-            section._textEl.style.transform = 'translateY(' + (-textOffset) + 'px)';
-
-            // Phase 2: animation progress (begins when section top reaches 25% from viewport top)
-            var animProgress = (triggerTop - rect.top) / Math.max(1, animRoom);
+            // Animation progress: 0 at section top = vizH, 1 when sticky elements release
+            var animProgress = (vizH - rect.top) / Math.max(1, animRoom);
             animProgress = Math.max(0, Math.min(0.999, animProgress));
 
             // Drive scene animation
