@@ -45,3 +45,38 @@ img[src*="#halfwidth"] {
    margin-left: auto;
    margin-right: auto
 }
+
+.email-subscribe, .email-subscribe-inline {
+  display: inline-flex;
+  gap: 0.5em;
+  margin-bottom: 1em;
+
+  input[type="email"] {
+    padding: 0.4em 0.6em;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 0.9em;
+  }
+
+  button {
+    padding: 0.4em 0.8em;
+    background: #25a1d1;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9em;
+
+    &:hover {
+      background: #1d8ab5;
+    }
+  }
+}
+
+.email-subscribe-inline {
+  input[type="email"] {
+    width: 120px;
+  }
+}

@@ -12,8 +12,12 @@ layout: default
   {%- if site.posts.size > 0 -%}
     <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
     
-    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a> or <a href="https://feedburner.google.com/fb/a/mailverify?uri=evjang/tnsT&amp;loc=en_US">via Email</a></p>
-    
+    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a> or via email:</p>
+    <form class="email-subscribe" action="https://api.follow.it/subscription-form/QW5CNVowaTM3bWcwRnBTV2N3cUJGR0NoSENicVpsS1NUUGdOTEp0b0JBRGdNNVA1aHZZcERBL1RJUVVBY0JsamhBUkhiWTNpTHViRmpYV3Q3bGZFSXRrQndjYkw4L21rQ2RWSDNoQUJXTDJhOFA0bDYydS9RWGp4dVdEcERCcEF8MTJkSjVQUHpCMkJNQmVodi82UnI2MFJ3Um1zQTgwMXNWTWxVazhiQ0l6WT0=/8" method="post">
+      <input type="email" name="email" placeholder="your@email.com" required />
+      <button type="submit">Subscribe</button>
+    </form>
+
     <ul class="post-list">
       {%- for post in site.posts -%}
       <li>
@@ -32,7 +36,11 @@ layout: default
       {%- endfor -%}
     </ul>
 
-    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a> or <a href="https://feedburner.google.com/fb/a/mailverify?uri=evjang/tnsT&amp;loc=en_US">via Email</a></p>
+    <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | relative_url }}">via RSS</a> or via email:</p>
+    <form class="email-subscribe" action="https://api.follow.it/subscription-form/QW5CNVowaTM3bWcwRnBTV2N3cUJGR0NoSENicVpsS1NUUGdOTEp0b0JBRGdNNVA1aHZZcERBL1RJUVVBY0JsamhBUkhiWTNpTHViRmpYV3Q3bGZFSXRrQndjYkw4L21rQ2RWSDNoQUJXTDJhOFA0bDYydS9RWGp4dVdEcERCcEF8MTJkSjVQUHpCMkJNQmVodi82UnI2MFJ3Um1zQTgwMXNWTWxVazhiQ0l6WT0=/8" method="post">
+      <input type="email" name="email" placeholder="your@email.com" required />
+      <button type="submit">Subscribe</button>
+    </form>
   {%- endif -%}
 
 </div>

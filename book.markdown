@@ -8,9 +8,8 @@ permalink: /book/
 ---
 
 ![paperback on display](/assets/book/promo.jpg)
-<!-- <img src="/assets/book/promo.jpg" alt="paperback" width="300"/> -->
 
-[LINK TO PAPERBACK](https://www.amazon.com/gp/product/B0C9SH1GPV/) 
+[LINK TO PAPERBACK](https://www.amazon.com/gp/product/B0C9SH1GPV/) (900+ copies sold!)
 
 [LINK TO KINDLE](https://www.amazon.com/dp/B0C1WRN9VR)
 
