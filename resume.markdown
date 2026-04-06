@@ -18,7 +18,7 @@ My career goal is to build machines that improve exponentially 📈.
 - Built out the AI team, which works on RL whole body controllers, VLAs, VLMs, World Models for NEO, simulation, data engine.
 - Trained lots of models for EVE and NEO.
 
-**2016 - 2022**  Senior Research Scientist at [Robotics at Google](https://research.google/teams/brain/robotics/)
+**2016 - 2022**  Senior Research Scientist at Robotics at Google, now known as Google DeepMind Robotics
 
 The last decade of Machine Learning research has shown that rich data + simple learning algorithms + powerful computational resources outperforms hand-engineered systems in computer vision, translation, and NLP problems. My research focused on applying that principle to the domain of robotics.
 
