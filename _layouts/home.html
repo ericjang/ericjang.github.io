@@ -20,6 +20,7 @@ layout: default
 
     <ul class="post-list">
       {%- for post in site.posts -%}
+      {%- if post.hidden -%}{%- continue -%}{%- endif -%}
       <li>
         <!-- TODO: render thumbnail -->
         {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
