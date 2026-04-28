@@ -384,16 +384,16 @@ function Act2_TreeSearch({ showPUCT }) {
   return (
     <>
       <div style={{ position: 'absolute', left: 200, top: 100, opacity: clamp(lt / 0.3, 0, 1) }}>
-        <SectionLabel num="03" title="each simulation: select, expand, evaluate, back up" />
+        <SectionLabel num="03" title="Each simulation: select, expand, evaluate, back up" />
       </div>
 
       <div style={{ position: 'absolute', left: 200, top: 190, maxWidth: 380, opacity: clamp(lt / 0.5, 0, 1) }}>
         <Caption size={14} style={{ lineHeight: 1.55 }}>
           On each simulation, MCTS starts from the root node and walks the tree repeatedly — picking the action that
-          maximises <span style={{ fontFamily: 'var(--mono)' }}>Q(s,a) + c·p<sub>a</sub>·√N / (1+N<sub>a</sub>)</span>.
+          maximises a metric <span style={{ fontFamily: 'var(--mono)' }}>PUCT(s,a) = Q(s,a) + c·p<sub>a</sub>·√N / (1+N<sub>a</sub>)</span>.
           The prior <span style={{ fontFamily: 'var(--mono)', color: 'var(--accent-net)' }}>p</span> biases exploration;
           at leaves the network's value <span style={{ fontFamily: 'var(--mono)', color: 'var(--accent-net)' }}>v</span> is
-          backed up as Q — no rollouts needed. New leaf nodes are appended as needed.
+          backed up as Q. At each leaf node, the value network guesses the final outcome of the game, predicting what would happen if the tree were further expanded.
         </Caption>
         <Caption size={13} mono style={{ marginTop: 10, color: 'var(--ink-soft)' }}>
           simulation <span style={{ color: 'var(--ink)', fontWeight: 600 }}>{Math.min(simIdx + (showRollout ? 1 : 0), simCount)}</span> / {simCount}
@@ -872,6 +872,124 @@ function TreeNode({
   );
 }
 
+// ── Act 2c: PUCT formula — UCB1 → PUCT ──────────────────────────────────────
+// Inserted between "03 · mcts" (tree walk) and "04 · pseudocode". Builds the
+// selection rule from its bandit ancestor (UCB1) and shows why a tree with a
+// huge branching factor needs the prior-weighted form.
+function Act2c_PUCT() {
+  const { localTime: lt } = useSprite();
+  const op = (at, dur = 0.6) => Easing.easeOutCubic(clamp((lt - at) / dur, 0, 1));
+
+  const introOp   = op(0.0);
+  const ucbOp     = op(0.6);
+  const bridgeOp  = op(1.6);
+  const puctOp    = op(2.4);
+  const noteOp    = op(4.4);
+
+  const FORMULA_BOX = {
+    fontFamily: 'var(--mono)', fontSize: 16,
+    padding: '14px 18px',
+    background: 'var(--accent-mcts-bg)',
+    border: '1px solid var(--accent-mcts)',
+    borderRadius: 10,
+    color: 'var(--accent-mcts)',
+    display: 'inline-block',
+    lineHeight: 1.4,
+  };
+
+  return (
+    <>
+      <SlideHeader
+        num="04"
+        title="From UCB1 to PUCT"
+        maxWidth={820}
+        subtitle={<>
+          UCB1 is the classic multi-armed-bandit rule: try every arm at least once, then favour arms whose confidence
+          interval still leaves room above the best mean. PUCT is its tree-search cousin — modified for the case where
+          we <em>can't</em> consider every arm even once.
+        </>}
+      />
+
+      {/* UCB1 block */}
+      <div style={{
+        position: 'absolute', left: 200, top: 230,
+        opacity: ucbOp, transform: `translateY(${(1 - ucbOp) * 6}px)`,
+      }}>
+        <div style={{
+          fontFamily: 'var(--mono)', fontSize: 11,
+          letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: 'var(--ink-soft)', marginBottom: 8,
+        }}>
+          UCB1 · multi-armed bandits
+        </div>
+        <div style={FORMULA_BOX}>
+          a<sub>t</sub> = argmax<sub>a</sub> [ Q(a) + √( 2·ln N ⁄ N(a) ) ]
+        </div>
+
+        <div style={{
+          marginTop: 12,
+          display: 'flex', flexDirection: 'column', gap: 6,
+          fontFamily: 'var(--serif)', fontSize: 12.5,
+          color: 'var(--ink-soft)', lineHeight: 1.5,
+          maxWidth: 540,
+        }}>
+          <div>
+            <span style={{ fontFamily: 'var(--mono)', color: 'var(--accent-mcts)', fontWeight: 600 }}>
+              Q(a)
+            </span>
+            <span style={{ margin: '0 8px', opacity: 0.5 }}>—</span>
+            empirical mean reward.
+          </div>
+          <div>
+            <span style={{ fontFamily: 'var(--mono)', color: 'var(--accent-mcts)', fontWeight: 600 }}>
+              √( 2·ln N ⁄ N(a) )
+            </span>
+            <span style={{ margin: '0 8px', opacity: 0.5 }}>—</span>
+            exploration bonus; shrinks as <span style={{ fontFamily: 'var(--mono)' }}>n<sub>i</sub></span> grows.
+            The more times we select an action, the higher <span style={{ fontFamily: 'var(--mono)' }}>n<sub>i</sub></span>{' '}
+            grows, which decreases its bonus.
+          </div>
+        </div>
+      </div>
+
+      {/* PUCT block — single combined formula */}
+      <div style={{
+        position: 'absolute', left: 200, top: 470,
+        opacity: puctOp, transform: `translateY(${(1 - puctOp) * 6}px)`,
+        maxWidth: 640,
+      }}>
+        <div style={{
+          fontFamily: 'var(--mono)', fontSize: 11,
+          letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: 'var(--accent-mcts)', marginBottom: 8,
+        }}>
+          PUCT · selection rule
+        </div>
+        <div style={{ ...FORMULA_BOX, fontSize: 14.5 }}>
+          a<sub>t</sub> = argmax<sub>a</sub> [ Q(s,a) + c<sub>puct</sub> · P(s,a) · √( N ) ⁄ ( 1 + N(a) ) ]
+        </div>
+
+        <div style={{
+          marginTop: 12,
+          fontFamily: 'var(--serif)', fontSize: 12.5,
+          color: 'var(--ink-soft)', lineHeight: 1.5,
+        }}>
+          The exploration factor{' '}
+          <span style={{ fontFamily: 'var(--mono)', color: 'var(--accent-mcts)', fontWeight: 600 }}>
+            √(N) ⁄ (1 + N(a))
+          </span>{' '}
+          shrinks slower than UCB1's{' '}
+          <span style={{ fontFamily: 'var(--mono)' }}>√(2·ln t ⁄ n<sub>a</sub>)</span> as total visits accumulate —
+          <span style={{ fontFamily: 'var(--mono)' }}> √N</span> grows faster than{' '}
+          <span style={{ fontFamily: 'var(--mono)' }}>√(ln t)</span>, so the bonus for less-visited actions stays
+          large longer and PUCT keeps exploring instead of locking in.
+        </div>
+      </div>
+
+    </>
+  );
+}
+
 // ── Act 3: Visit counts → π* ────────────────────────────────────────────────
 // 17..23s. Shrink tree to the side, show visit histogram, normalize to π*.
 function Act3_NormalizeTarget() {
@@ -896,7 +1014,7 @@ function Act3_NormalizeTarget() {
   return (
     <>
       <div style={{ position: 'absolute', left: 200, top: 100, opacity: clamp(lt / 0.3, 0, 1) }}>
-        <SectionLabel num="05" title="MCTS visit counts become the policy target π*" />
+        <SectionLabel num="06" title="MCTS visit counts become the policy target π*" />
       </div>
 
       <div style={{ position: 'absolute', left: 200, top: 180, maxWidth: 400, opacity: clamp((lt - 0.3) / 0.5, 0, 1) }}>
@@ -911,7 +1029,24 @@ function Act3_NormalizeTarget() {
         }}>
           π*(a | s) = N(s, a)<sup>1/τ</sup> / Σ N(s, b)<sup>1/τ</sup>
         </div>
+        <Caption size={13} style={{ marginTop: 12, lineHeight: 1.5 }}>
+          This "action relabeling" is applied to all states, regardless of win or lose.
+          This is analogous to{' '}
+          <a href="https://arxiv.org/abs/1011.0686"
+             target="_blank"
+             rel="noopener noreferrer"
+             onClick={(e) => e.stopPropagation()}
+             style={{
+               color: 'var(--accent-mcts)',
+               textDecoration: 'underline',
+               textUnderlineOffset: 2,
+               pointerEvents: 'auto',
+             }}>
+            DAgger
+          </a>.
+        </Caption>
       </div>
+
 
       {/* Big bars */}
       <div style={{
@@ -1457,6 +1592,6 @@ function Act5_MovingTarget() {
 }
 
 Object.assign(window, {
-  HeroTitle, Act1_PriorFromNet, Act2_TreeSearch, Act3_NormalizeTarget,
+  HeroTitle, Act1_PriorFromNet, Act2_TreeSearch, Act2c_PUCT, Act3_NormalizeTarget,
   Act4_NetworkChasesTarget, Act5_MovingTarget,
 });

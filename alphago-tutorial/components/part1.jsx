@@ -28,7 +28,7 @@ function P1_Title() {
       flexDirection: 'column', gap: 18, opacity: op,
     }}>
       <div style={{fontFamily:'var(--mono)', fontSize:13, color:'var(--ink-soft)', letterSpacing:'0.22em', textTransform:'uppercase'}}>Part 1</div>
-      <div style={{fontFamily:'var(--serif)', fontSize:72, fontWeight:400, color:'var(--ink)', letterSpacing:'-0.03em'}}>Rules of Go</div>
+      <h2 style={{fontFamily:'var(--serif)', fontSize:72, fontWeight:400, color:'var(--ink)', letterSpacing:'-0.03em', margin:0}}>Rules of Go</h2>
     </div>
   );
 }
@@ -47,9 +47,9 @@ function P1_StrategiesTitle() {
       <div style={{fontFamily:'var(--mono)', fontSize:12, color:'var(--ink-soft)', letterSpacing:'0.22em', textTransform:'uppercase'}}>
         Part 1
       </div>
-      <div style={{fontFamily:'var(--serif)', fontSize:56, fontWeight:400, color:'var(--ink)', letterSpacing:'-0.02em'}}>
+      <h2 style={{fontFamily:'var(--serif)', fontSize:56, fontWeight:400, color:'var(--ink)', letterSpacing:'-0.02em', margin:0}}>
         Basic Tactics in Go
-      </div>
+      </h2>
     </div>
   );
 }
@@ -114,7 +114,7 @@ function P1_Scoring() {
   return (
     <>
       <SlideHeader num="05" title="Scoring & Komi" subtitle={
-        <>Count stones on the board plus empty points enclosed by your color. <em>Komi</em> is a handicap added to White to offset Black's first-move advantage.</>
+        <>Count stones on the board plus empty points not reaching opponent's color. <em>Komi</em> is a handicap added to White to offset Black's first-move advantage.</>
       } />
       <div style={{position:'absolute', left:BOARD_X, top:BOARD_Y}}>
         <GoAnim n={5} size={BOARD_SIZE} lt={lt} moves={moves} annotations={annotations} />
@@ -640,7 +640,8 @@ function P1_EndOfGame() {
           fontFamily:'var(--serif)', fontSize:13, color:'var(--ink-soft)',
           lineHeight:1.55, fontStyle:'italic',
         }}>
-          We use <em>Chinese</em> scoring (area = stones + territory) — simpler to implement for a Go AI. Tromp-Taylor is also commonly used.
+          We use <em><a href="https://www.cs.cmu.edu/~wjh/go/tmp/rules/TrompTaylor.html"
+                          target="_blank" rel="noopener noreferrer">Tromp-Taylor</a></em> scoring (area = stones + territory) — simple and unambiguous scoring rules to implement for a Go AI. Modern form of Chinese area scoring.
         </div>
       </div>
     </>

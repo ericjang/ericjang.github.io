@@ -326,7 +326,7 @@ function P4_ExperimentTimeline() {
     <>
       <div style={{ opacity: headerOp }}>
         <SlideHeader
-          num="11"
+          num="16"
           title="Lessons from a four-month research log"
           maxWidth={1040}
           subtitle={<>

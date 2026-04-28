@@ -348,7 +348,18 @@ function Stage({
       return isFinite(v) ? clamp(v, 0, duration) : 0;
     } catch { return 0; }
   });
-  const [playing, setPlaying] = React.useState(autoplay);
+  // Respect prefers-reduced-motion: start paused so users aren't ambushed
+  // by auto-advancing motion. They can still play with the controls.
+  const [playing, setPlaying] = React.useState(() => {
+    if (!autoplay) return false;
+    try {
+      if (typeof window !== 'undefined' && window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return false;
+      }
+    } catch {}
+    return true;
+  });
   const [hoverTime, setHoverTime] = React.useState(null);
   const [scale, setScale] = React.useState(1);
 
@@ -376,24 +387,19 @@ function Stage({
   }, [kfList]);
 
   const nextSlideTime = React.useCallback((t) => {
+    // Strictly greater than t so we never return the boundary we are
+    // currently parked at, but without an extra buffer that would skip the
+    // very next slide when the playhead is paused at boundary − ε.
     for (const k of kfList) {
-      if (k > t + 0.05) return k;
+      if (k > t) return k;
     }
     return duration;
   }, [kfList, duration]);
 
-  // On initial mount, if autoplay is on and keyframes are provided, schedule
-  // the RAF loop to auto-pause *just before* the next slide boundary so the
-  // playhead settles inside the current slide (the outline marker should
-  // stay on the slide that just played, not advance to the next).
-  React.useEffect(() => {
-    if (autoplay) {
-      const t0 = time;
-      const next = kfList.find(k => k > t0 + 0.05);
-      if (next != null && next < duration) stopAtRef.current = next - 0.05;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // The RAF loop sets stopAtRef lazily on its first frame, so we don't need
+  // an eager mount-time autopause here. Doing it eagerly captured the
+  // localStorage-loaded `time` and would override any pre-RAF seek (e.g.
+  // from a URL-hash initializer) by yanking the playhead back.
 
   // Persist playhead
   React.useEffect(() => {
@@ -422,19 +428,33 @@ function Stage({
     };
   }, [width, height, scrollDriven]);
 
-  // Animation loop. Runs whenever `playing` is true. If stopAtRef is set,
-  // auto-pauses the loop the moment time reaches that target (used to
-  // implement "play until the next slide boundary").
+  // Animation loop. Runs whenever `playing` is true. Slides do not
+  // auto-advance: while playing, the loop continually targets the current
+  // slide's end boundary and pauses before the next slide becomes visible.
+  // Recomputing the boundary also keeps hash/sidebar seeks from inheriting a
+  // stale stop target from the previous slide.
   React.useEffect(() => {
     if (!playing) {
       lastTsRef.current = null;
       return;
     }
     const step = (ts) => {
-      if (lastTsRef.current == null) lastTsRef.current = ts;
+      const firstFrame = lastTsRef.current == null;
+      if (firstFrame) lastTsRef.current = ts;
       const dt = (ts - lastTsRef.current) / 1000;
       lastTsRef.current = ts;
       setTime((t) => {
+        const boundary = nextSlideTime(t);
+        const desiredStop = boundary != null && boundary < duration
+          ? Math.max(t, boundary - 0.05)
+          : null;
+        const staleStop = stopAtRef.current != null && (
+          stopAtRef.current < t - 1e-6 ||
+          (desiredStop != null && stopAtRef.current > desiredStop + 1e-6)
+        );
+        if (stopAtRef.current == null || staleStop) {
+          stopAtRef.current = desiredStop;
+        }
         let next = t + dt;
         const stopAt = stopAtRef.current;
         if (stopAt != null && next >= stopAt) {
@@ -454,7 +474,7 @@ function Stage({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       lastTsRef.current = null;
     };
-  }, [playing, duration, loop]);
+  }, [playing, duration, loop, nextSlideTime]);
 
   // Keyboard:
   //   ↑ / PageUp   — jump to previous slide, pause
@@ -523,6 +543,8 @@ function Stage({
   // Scroll-driven mode: wheel deltaY advances time, with per-frame coalescing.
   React.useEffect(() => {
     if (!scrollDriven) return;
+    const el = stageRef.current;
+    if (!el) return;
     let pendingDelta = 0;
     let rafId = null;
     const flush = () => {
@@ -533,6 +555,10 @@ function Stage({
       setTime(t => clamp(t + d, 0, duration));
     };
     const onWheel = (e) => {
+      if (e.target && e.target.closest &&
+          e.target.closest('button, a, input, textarea, select, summary, [data-no-timeline-wheel]')) {
+        return;
+      }
       e.preventDefault();
       // Manual scroll stops any ongoing autoplay.
       setPlaying(false);
@@ -541,9 +567,9 @@ function Stage({
       pendingDelta += e.deltaY * 0.004;
       if (rafId == null) rafId = requestAnimationFrame(flush);
     };
-    window.addEventListener('wheel', onWheel, { passive: false });
+    el.addEventListener('wheel', onWheel, { passive: false });
     return () => {
-      window.removeEventListener('wheel', onWheel);
+      el.removeEventListener('wheel', onWheel);
       if (rafId != null) cancelAnimationFrame(rafId);
     };
   }, [scrollDriven, duration]);
@@ -629,8 +655,77 @@ function Stage({
 
       {/* Scroll-driven progress rail */}
       {scrollDriven && (
-        <ScrollProgress time={displayTime} duration={duration} />
+        <>
+          <ScrollProgress time={displayTime} duration={duration} />
+          <ScrollControls
+            playing={playing}
+            onPlayPause={() => setPlaying(p => !p)}
+            onPrev={() => {
+              setPlaying(false);
+              stopAtRef.current = null;
+              setTime(t => Math.max(0, prevSlideTime(t)));
+            }}
+            onNext={() => {
+              setTime(t => {
+                const nextStart = nextSlideTime(t);
+                stopAtRef.current = nextSlideTime(nextStart + 0.05) - 0.05;
+                return Math.min(duration, nextStart + 0.01);
+              });
+              setPlaying(true);
+            }}
+          />
+        </>
       )}
+    </div>
+  );
+}
+
+function ScrollControls({ playing, onPlayPause, onPrev, onNext }) {
+  return (
+    <div
+      data-no-timeline-wheel
+      aria-label="Timeline controls"
+      style={{
+        position: 'absolute',
+        left: '50%',
+        bottom: 14,
+        transform: 'translateX(-50%)',
+        zIndex: 30,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        padding: '7px 10px',
+        background: 'rgba(20,20,20,0.88)',
+        border: '1px solid rgba(255,255,255,0.12)',
+        borderRadius: 8,
+        color: '#f6f4ef',
+      }}
+    >
+      <IconButton onClick={onPrev} title="Previous slide" ariaLabel="Previous slide" ariaKeyshortcuts="ArrowUp">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+          <path d="M9.5 2L4 7l5.5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </IconButton>
+      <IconButton onClick={onPlayPause}
+                  title="Play/pause"
+                  ariaLabel={playing ? 'Pause' : 'Play'}
+                  ariaKeyshortcuts="Space">
+        {playing ? (
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+            <rect x="3" y="2" width="3" height="10" fill="currentColor"/>
+            <rect x="8" y="2" width="3" height="10" fill="currentColor"/>
+          </svg>
+        ) : (
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+            <path d="M3 2l9 5-9 5V2z" fill="currentColor"/>
+          </svg>
+        )}
+      </IconButton>
+      <IconButton onClick={onNext} title="Next slide" ariaLabel="Next slide" ariaKeyshortcuts="ArrowDown">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
+          <path d="M4.5 2L10 7l-5.5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </IconButton>
     </div>
   );
 }
@@ -732,19 +827,25 @@ function PlaybackBar({ time, duration, playing, onPlayPause, onReset, onSeek, on
       userSelect: 'none',
       flexShrink: 0,
     }}>
-      <IconButton onClick={onReset} title="Return to start (0)">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <IconButton onClick={onReset}
+                  title="Return to start (0)"
+                  ariaLabel="Return to start"
+                  ariaKeyshortcuts="0">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
           <path d="M3 2v10M12 2L5 7l7 5V2z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round"/>
         </svg>
       </IconButton>
-      <IconButton onClick={onPlayPause} title="Play/pause (space)">
+      <IconButton onClick={onPlayPause}
+                  title="Play/pause (space)"
+                  ariaLabel={playing ? 'Pause' : 'Play'}
+                  ariaKeyshortcuts="Space">
         {playing ? (
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
             <rect x="3" y="2" width="3" height="10" fill="currentColor"/>
             <rect x="8" y="2" width="3" height="10" fill="currentColor"/>
           </svg>
         ) : (
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
             <path d="M3 2l9 5-9 5V2z" fill="currentColor"/>
           </svg>
         )}
@@ -761,12 +862,30 @@ function PlaybackBar({ time, duration, playing, onPlayPause, onReset, onSeek, on
         {fmt(time)}
       </div>
 
-      {/* Scrub track */}
+      {/* Scrub track. Real <input type=range> would be ideal, but we paint a
+          custom track behind the playhead — so we expose ARIA semantics on
+          the wrapper and handle key events directly. */}
       <div
         ref={trackRef}
+        role="slider"
+        tabIndex={0}
+        aria-label="Timeline"
+        aria-valuemin={0}
+        aria-valuemax={Math.round(duration * 100) / 100}
+        aria-valuenow={Math.round(time * 100) / 100}
+        aria-valuetext={`${fmt(time)} of ${fmt(duration)}`}
         onMouseMove={onTrackMove}
         onMouseLeave={onTrackLeave}
         onMouseDown={onTrackDown}
+        onKeyDown={(e) => {
+          const big = e.shiftKey ? 5 : 1;
+          if (e.key === 'ArrowLeft')      { e.preventDefault(); onSeek(Math.max(0, time - big)); }
+          else if (e.key === 'ArrowRight') { e.preventDefault(); onSeek(Math.min(duration, time + big)); }
+          else if (e.key === 'Home')       { e.preventDefault(); onSeek(0); }
+          else if (e.key === 'End')        { e.preventDefault(); onSeek(duration); }
+          else if (e.key === 'PageDown')   { e.preventDefault(); onSeek(Math.min(duration, time + 10)); }
+          else if (e.key === 'PageUp')     { e.preventDefault(); onSeek(Math.max(0, time - 10)); }
+        }}
         style={{
           flex: 1,
           height: 22,
@@ -812,12 +931,15 @@ function PlaybackBar({ time, duration, playing, onPlayPause, onReset, onSeek, on
   );
 }
 
-function IconButton({ children, onClick, title }) {
+function IconButton({ children, onClick, title, ariaLabel, ariaKeyshortcuts }) {
   const [hover, setHover] = React.useState(false);
   return (
     <button
+      type="button"
       onClick={onClick}
       title={title}
+      aria-label={ariaLabel || title}
+      aria-keyshortcuts={ariaKeyshortcuts}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
@@ -845,4 +967,3 @@ Object.assign(window, {
   TextSprite, ImageSprite, RectSprite,
   Stage, PlaybackBar,
 });
-

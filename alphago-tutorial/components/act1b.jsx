@@ -22,7 +22,6 @@ function Act1b_WhySearch() {
   const grandValueOp   = op(5.4);
   const policyLabelOp  = op(5.6);
   const valueLabelOp   = op(5.6);
-  const takeawayOp     = op(6.1);
 
   // Board contents — a simple 3×3 position with 3 plausible white replies.
   const rootStones = [
@@ -126,7 +125,9 @@ function Act1b_WhySearch() {
       </div>
 
       {/* Phase B: three vertically-stacked successors */}
-      {branchT > 0 && SUCC.map((b, i) => (
+      {branchT > 0 && SUCC.map((b, i) => {
+        const supersededByChildren = i === 1 ? grandOp : 0;
+        return (
         <div key={i} style={{
           position: 'absolute',
           left: succX, top: succYs[i],
@@ -137,14 +138,19 @@ function Act1b_WhySearch() {
                    highlights={[{ x: b.hl.x, y: b.hl.y, color: 'var(--accent-net)' }]} />
           <div style={{
             position: 'absolute', left: succSize + 8, top: succSize / 2 - 9,
-            opacity: valueOp,
+            opacity: valueOp * (1 - 0.55 * supersededByChildren),
             fontFamily: 'var(--mono)', fontSize: 13,
-            color: 'var(--accent-mcts)', fontWeight: 600,
+            color: supersededByChildren > 0
+              ? `color-mix(in oklch, var(--accent-mcts) ${100 - 100 * supersededByChildren}%, var(--ink-soft))`
+              : 'var(--accent-mcts)',
+            fontWeight: 600,
+            textDecoration: supersededByChildren > 0.5 ? 'line-through' : 'none',
           }}>
             v = {b.v.toFixed(2)}
           </div>
         </div>
-      ))}
+        );
+      })}
 
       {/* Policy head (2) — coming out of the centre successor */}
       <div style={{
@@ -335,26 +341,6 @@ function Act1b_WhySearch() {
         </div>
       </div>
 
-      {/* Takeaway */}
-      <div style={{
-        position: 'absolute', left: 200, right: 80, bottom: 24,
-        opacity: takeawayOp,
-        transform: `translateY(${(1 - takeawayOp) * 6}px)`,
-      }}>
-        <div style={{
-          fontFamily: 'var(--mono)', fontSize: 10.5,
-          letterSpacing: '0.14em', textTransform: 'uppercase',
-          color: 'var(--ink-soft)', marginBottom: 4,
-        }}>
-          Takeaway
-        </div>
-        <div style={{
-          fontFamily: 'var(--serif)', fontSize: 14.5, lineHeight: 1.5,
-          color: 'var(--ink)', maxWidth: 960,
-        }}>
-          MCTS iteratively updates a distribution over good actions. It treats the policy and value networks' guesses as <em>recommendations</em> and trusts the average over many simulations to decide the best move.
-        </div>
-      </div>
     </>
   );
 }

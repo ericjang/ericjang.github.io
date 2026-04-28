@@ -141,7 +141,7 @@ function Act2b_Pseudocode() {
   return (
     <>
       <SlideHeader
-        num="04"
+        num="05"
         title="MCTS pseudocode"
         maxWidth={760}
       />

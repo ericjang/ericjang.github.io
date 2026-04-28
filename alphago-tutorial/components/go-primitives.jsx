@@ -35,7 +35,11 @@
 //   'group'      — translucent halo around a group of points
 
 function goLayout(n, size, padding) {
-  const pad = padding ?? Math.max(12, Math.round(size * 0.22));
+  // Default padding is just enough to keep corner stones inside the board.
+  // Solving stoneR = 0.4 · step and pad = stoneR + 4 simultaneously gives
+  // pad = (0.4·size + 4·(n−1)) / (n − 0.2). Floored at 8 for tiny boards.
+  const autoPad = Math.max(8, Math.round((0.4 * size + 4 * (n - 1)) / (n - 0.2)));
+  const pad = padding ?? autoPad;
   const inner = size - pad * 2;
   const step = n > 1 ? inner / (n - 1) : inner;
   const pos = (i) => pad + i * step;

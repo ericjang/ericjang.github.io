@@ -251,17 +251,20 @@ function ValueTag({ label, value, color = 'var(--ink)', size = 11 }) {
 }
 
 // ── SectionLabel ────────────────────────────────────────────────────────────
+// Real <h2> so screen readers can navigate the deck by headings. Visual
+// styling is unchanged — we override default browser margins here.
 function SectionLabel({ num, title, color = 'var(--ink)' }) {
   return (
-    <div style={{
+    <h2 style={{
       display: 'flex', alignItems: 'baseline', gap: 10,
+      margin: 0, padding: 0, fontWeight: 500,
     }}>
       <span style={{
         fontFamily: 'var(--mono)',
         fontSize: 12,
         color: 'var(--ink-soft)',
         letterSpacing: '0.08em',
-      }}>{num}</span>
+      }} aria-hidden="true">{num}</span>
       <span style={{
         fontFamily: 'var(--serif)',
         fontSize: 22,
@@ -269,7 +272,7 @@ function SectionLabel({ num, title, color = 'var(--ink)' }) {
         color,
         letterSpacing: '-0.01em',
       }}>{title}</span>
-    </div>
+    </h2>
   );
 }
 

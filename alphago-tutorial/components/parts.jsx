@@ -124,7 +124,7 @@ function P2_Title() {
       flexDirection:'column', gap:18, opacity:op,
     }}>
       <div style={{fontFamily:'var(--mono)', fontSize:13, color:'var(--ink-soft)', letterSpacing:'0.22em', textTransform:'uppercase'}}>Part 2</div>
-      <div style={{fontFamily:'var(--serif)', fontSize:72, fontWeight:400, color:'var(--ink)', letterSpacing:'-0.03em'}}>Implementing AlphaGo</div>
+      <h2 style={{fontFamily:'var(--serif)', fontSize:72, fontWeight:400, color:'var(--ink)', letterSpacing:'-0.03em', margin:0}}>Implementing AlphaGo</h2>
       <div style={{fontFamily:'var(--serif)', fontSize:18, color:'var(--ink-soft)', maxWidth:640, textAlign:'center', lineHeight:1.55, marginTop:6}}>
         Now that we know how the game is played, here is how to implement a superhuman Go AI with AlphaGo.
       </div>
@@ -145,7 +145,7 @@ function P3_AutoGoTitle() {
       flexDirection:'column', gap:18, opacity:op,
     }}>
       <div style={{fontFamily:'var(--mono)', fontSize:13, color:'var(--ink-soft)', letterSpacing:'0.22em', textTransform:'uppercase'}}>Part 3</div>
-      <div style={{fontFamily:'var(--serif)', fontSize:72, fontWeight:400, color:'var(--ink)', letterSpacing:'-0.03em'}}>AutoGo</div>
+      <h2 style={{fontFamily:'var(--serif)', fontSize:72, fontWeight:400, color:'var(--ink)', letterSpacing:'-0.03em', margin:0}}>AutoGo</h2>
       <div style={{fontFamily:'var(--serif)', fontSize:20, color:'var(--ink-soft)', maxWidth:720, textAlign:'center', lineHeight:1.4, marginTop:2}}>
         Implementing AlphaGo Zero from Scratch
       </div>
@@ -153,7 +153,9 @@ function P3_AutoGoTitle() {
   );
 }
 
-// Compute table showing how many GPU/TPU-hours each project used.
+// Compute scatterplot showing how many GPU/TPU-hours each project used,
+// over time, on a log y-axis. Each project is one point; AutoGo is the
+// punchline so it's highlighted.
 function P4_Compute() {
   const { localTime: lt } = useSprite();
   const rows = [
@@ -165,121 +167,172 @@ function P4_Compute() {
     { name: 'AutoGo',       year: 2026, hours:   3_000, cite: null,
       preliminary: true },
   ];
-  const maxHours = Math.max(...rows.map(r => r.hours));
   const panelOp = Easing.easeOutCubic(clamp((lt - 0.4) / 0.5, 0, 1));
+
+  // Plot geometry (in the SVG's viewBox). Margins reserve room for axis
+  // labels; the data area is what's left.
+  const W = 1000, H = 360;
+  const M = { l: 92, r: 64, t: 28, b: 56 };
+  const innerW = W - M.l - M.r;
+  const innerH = H - M.t - M.b;
+
+  const xMin = 2015, xMax = 2027;
+  const yMin = 3, yMax = 6; // log10(hours): 10^3 = 1k, 10^6 = 1M
+  const xScale = (yr)    => M.l + ((yr - xMin) / (xMax - xMin)) * innerW;
+  const yScale = (hours) => M.t + (1 - (Math.log10(hours) - yMin) / (yMax - yMin)) * innerH;
+
+  const xTicks = [2016, 2018, 2020, 2022, 2024, 2026];
+  const yTicks = [
+    { v: 1_000,    label: '1k'    },
+    { v: 10_000,   label: '10k'   },
+    { v: 100_000,  label: '100k'  },
+    { v: 1_000_000,label: '1M'    },
+  ];
 
   const fmt = (n) => n.toLocaleString();
 
   return (
     <>
       <SlideHeader num="01" title="Motivation: what does it take to create a strong Go AI in 2026?" maxWidth={760} subtitle={<>
-        AlphaGo (2016) took considerable computing resources to train. In 2020, KataGo produced a strong open-source Go AI with far fewer computational resources, and developed algorithmic techniques to speed up convergence.
-        In 2026, do we still need all these tricks, or does increased GPU performance + LLM-assisted coding allow us to radically simplify the algorithmic recipe?
+        <div>
+          AlphaGo (2016) and AlphaGo Zero (2017) took considerable computing resources to train. KataGo (2020) used various algorithmic techniques to speed up convergence, achieving ~38x reduction in compute.
+          In 2026, can we train a strong AI with modest computational resources, while keeping the recipe as simple as possible?
+        </div>
       </>} />
 
       <div style={{
-        position:'absolute', left:200, top:240, right:80,
+        position: 'absolute', left: 200, top: 250, right: 80,
         opacity: panelOp,
       }}>
-        <div style={{
-          display:'grid',
-          gridTemplateColumns: '200px 70px 1fr 130px 60px',
-          alignItems:'center',
-          columnGap: 18,
-          rowGap: 0,
-          fontFamily:'var(--mono)', fontSize: 11,
-          color:'var(--ink-soft)', letterSpacing:'0.1em', textTransform:'uppercase',
-          paddingBottom: 8,
-          borderBottom: '1px solid rgba(31,26,20,0.15)',
-          marginBottom: 4,
-        }}>
-          <div>Project</div>
-          <div>Year</div>
-          <div>GPU / TPU-hours</div>
-          <div style={{textAlign:'right'}}>Total</div>
-          <div></div>
-        </div>
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%"
+             role="img"
+             aria-label="Scatterplot of GPU/TPU-hours used to train Go AIs over time, on a log scale: AlphaGo Lee 40k hours in 2016, AlphaGo Zero 464k hours in 2017, KataGo 12k hours in 2020, AutoGo 3k hours in 2026."
+             style={{ display: 'block', overflow: 'visible' }}>
+          {/* Y gridlines + labels */}
+          {yTicks.map((t, i) => {
+            const y = yScale(t.v);
+            const tickOp = Easing.easeOutCubic(clamp((lt - 0.5) / 0.4, 0, 1));
+            return (
+              <g key={t.v} opacity={tickOp}>
+                <line x1={M.l} x2={W - M.r} y1={y} y2={y}
+                      stroke="rgba(31,26,20,0.10)" strokeWidth="1"
+                      strokeDasharray={i === 0 ? 'none' : '2 4'} />
+                <text x={M.l - 12} y={y + 4} textAnchor="end"
+                      fontFamily="var(--mono)" fontSize="13"
+                      fill="var(--ink-soft)" fontVariantNumeric="tabular-nums">
+                  {t.label}
+                </text>
+              </g>
+            );
+          })}
 
-        {rows.map((r, i) => {
-          const start = 0.8 + i * 0.6;
-          const rowOp = Easing.easeOutCubic(clamp((lt - start) / 0.4, 0, 1));
-          const barP  = Easing.easeOutCubic(clamp((lt - (start + 0.1)) / 1.0, 0, 1));
-          const barW  = barP * (r.hours / maxHours);
-          const countN = Math.round(r.hours * Easing.easeOutCubic(clamp((lt - (start + 0.1)) / 1.0, 0, 1)));
-          const strong = r.name === 'AutoGo';
+          {/* Axis spines */}
+          <line x1={M.l} x2={M.l} y1={M.t} y2={H - M.b}
+                stroke="rgba(31,26,20,0.35)" strokeWidth="1.2" />
+          <line x1={M.l} x2={W - M.r} y1={H - M.b} y2={H - M.b}
+                stroke="rgba(31,26,20,0.35)" strokeWidth="1.2" />
 
-          return (
-            <div key={r.name} style={{
-              display:'grid',
-              gridTemplateColumns: '200px 70px 1fr 130px 60px',
-              alignItems:'center',
-              columnGap: 18,
-              padding:'16px 0',
-              borderBottom: i < rows.length - 1 ? '1px solid rgba(31,26,20,0.08)' : 'none',
-              opacity: rowOp,
-              transform: `translateY(${(1 - rowOp) * 6}px)`,
-            }}>
-              <div style={{
-                fontFamily:'var(--serif)', fontSize:18,
-                color:'var(--ink)', fontWeight: strong ? 600 : 400,
-              }}>
-                {r.name}
-                {r.tabulaRasa && <span style={{ color:'var(--ink-soft)' }}>*</span>}
-                {r.preliminary && <span style={{ color:'var(--ink-soft)' }}>†</span>}
-              </div>
-              <div style={{
-                fontFamily:'var(--mono)', fontSize:12,
-                color:'var(--ink-soft)', fontVariantNumeric:'tabular-nums',
-              }}>
-                {r.year}
-              </div>
-              <div style={{ position:'relative', height:22 }}>
-                <div style={{
-                  position:'absolute', left:0, top:'50%', transform:'translateY(-50%)',
-                  height: 14, width: `${barW * 100}%`,
-                  background: strong ? 'var(--accent-mcts)' : 'var(--ink)',
-                  opacity: strong ? 1 : 0.78,
-                  borderRadius: 3,
-                  transition: 'none',
-                }} />
-              </div>
-              <div style={{
-                textAlign:'right',
-                fontFamily:'var(--mono)', fontSize:16,
-                color:'var(--ink)', fontWeight: strong ? 600 : 400,
-                fontVariantNumeric:'tabular-nums',
-              }}>
-                {fmt(countN)}
-              </div>
-              <div style={{ fontFamily:'var(--mono)', fontSize:10.5, position:'relative', zIndex: 5 }}>
-                {r.cite && (
-                  <a href={r.cite} target="_blank" rel="noopener noreferrer"
-                     onClick={(e) => e.stopPropagation()}
-                     style={{
-                       display:'inline-block',
-                       color:'var(--ink-soft)',
-                       textDecoration:'underline',
-                       textUnderlineOffset: 2,
-                       cursor: 'pointer',
-                       padding: '6px 8px',
-                       margin: '-6px -8px',
-                       pointerEvents: 'auto',
-                     }}>
-                    [ref]
-                  </a>
+          {/* X tick labels */}
+          {xTicks.map((yr) => {
+            const x = xScale(yr);
+            const tickOp = Easing.easeOutCubic(clamp((lt - 0.5) / 0.4, 0, 1));
+            return (
+              <g key={yr} opacity={tickOp}>
+                <line x1={x} x2={x} y1={H - M.b} y2={H - M.b + 6}
+                      stroke="rgba(31,26,20,0.35)" strokeWidth="1" />
+                <text x={x} y={H - M.b + 22} textAnchor="middle"
+                      fontFamily="var(--mono)" fontSize="13"
+                      fill="var(--ink-soft)" fontVariantNumeric="tabular-nums">
+                  {yr}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Axis titles */}
+          <text x={M.l - 72} y={M.t + innerH / 2}
+                transform={`rotate(-90, ${M.l - 72}, ${M.t + innerH / 2})`}
+                textAnchor="middle"
+                fontFamily="var(--mono)" fontSize="12"
+                letterSpacing="0.14em"
+                fill="var(--ink-soft)"
+                style={{ textTransform: 'uppercase' }}>
+            GPU / TPU-hours (log)
+          </text>
+          <text x={M.l + innerW / 2} y={H - 8} textAnchor="middle"
+                fontFamily="var(--mono)" fontSize="12"
+                letterSpacing="0.14em"
+                fill="var(--ink-soft)"
+                style={{ textTransform: 'uppercase' }}>
+            Year
+          </text>
+
+          {/* Points */}
+          {rows.map((r, i) => {
+            const cx = xScale(r.year);
+            const cy = yScale(r.hours);
+            const start = 0.9 + i * 0.35;
+            const op = Easing.easeOutCubic(clamp((lt - start) / 0.45, 0, 1));
+            const grow = Easing.easeOutCubic(clamp((lt - start) / 0.55, 0, 1));
+            const isAuto = r.name === 'AutoGo';
+            const fill = isAuto ? 'var(--accent-mcts)' : 'var(--ink)';
+            const r0 = isAuto ? 9 : 7;
+
+            // Place the project label so it doesn't crash into adjacent
+            // points or the plot edge. Default = above and to the right.
+            const labelDX = isAuto ? -14 : 14;
+            const labelDY = isAuto ? -16 : -14;
+            const labelAnchor = isAuto ? 'end' : 'start';
+
+            return (
+              <g key={r.name} opacity={op}>
+                {isAuto && (
+                  <circle cx={cx} cy={cy} r={r0 * 2.4 * grow}
+                          fill="var(--accent-mcts)" opacity={0.12} />
                 )}
-              </div>
-            </div>
-          );
-        })}
+                <circle cx={cx} cy={cy} r={r0 * grow}
+                        fill={fill} opacity={isAuto ? 1 : 0.85} />
+                <text x={cx + labelDX} y={cy + labelDY}
+                      textAnchor={labelAnchor}
+                      fontFamily="var(--serif)" fontSize="17"
+                      fontWeight={isAuto ? 600 : 500}
+                      fill="var(--ink)">
+                  {r.name}
+                  {r.tabulaRasa && <tspan fill="var(--ink-soft)">*</tspan>}
+                  {r.preliminary && <tspan fill="var(--ink-soft)">†</tspan>}
+                </text>
+                <text x={cx + labelDX} y={cy + labelDY + 16}
+                      textAnchor={labelAnchor}
+                      fontFamily="var(--mono)" fontSize="12"
+                      fontVariantNumeric="tabular-nums"
+                      fill="var(--ink-soft)">
+                  {fmt(r.hours)} h
+                </text>
+              </g>
+            );
+          })}
+        </svg>
 
+        {/* Reference links + footnotes underneath the plot */}
         <div style={{
-          marginTop: 18,
-          fontFamily:'var(--mono)', fontSize: 11,
-          color:'var(--ink-soft)', lineHeight: 1.6,
+          marginTop: 8,
+          display: 'flex', gap: 18, flexWrap: 'wrap',
+          fontFamily: 'var(--mono)', fontSize: 11,
+          color: 'var(--ink-soft)', lineHeight: 1.6,
         }}>
-          <div>* trained tabula rasa.</div>
-          <div>† results are preliminary; we are re-running experiments to validate.</div>
+          {rows.filter(r => r.cite).map(r => (
+            <a key={r.name}
+               href={r.cite} target="_blank" rel="noopener noreferrer"
+               onClick={(e) => e.stopPropagation()}
+               style={{
+                 color: 'var(--ink-soft)',
+                 textDecoration: 'underline', textUnderlineOffset: 2,
+                 pointerEvents: 'auto',
+               }}>
+              [{r.name} ref]
+            </a>
+          ))}
+          <span style={{ marginLeft: 'auto' }}>* trained tabula rasa. † preliminary; re-running to validate.</span>
         </div>
       </div>
     </>
@@ -302,16 +355,16 @@ function P4_WinRateVsKataGo() {
   const footOp   = Easing.easeOutCubic(clamp((lt - 2.4) / 0.8, 0, 1));
 
   const STATS = [
-    { label: 'AutoGo as Black', wins: 42, total: 55, pct: 76.4,
+    { label: 'AutoGo as Black', wins: 42, total: 55, pct: 76,
       accent: 'var(--ink)',         op: blackOp, p: blackP, side: 'black' },
-    { label: 'AutoGo as White', wins: 38, total: 49, pct: 77.6,
-      accent: 'var(--accent-mcts)', op: whiteOp, p: whiteP, side: 'white' },
+    { label: 'AutoGo as White', wins: 38, total: 49, pct: 77,
+      accent: 'var(--ink)', op: whiteOp, p: whiteP, side: 'white' },
   ];
 
   return (
     <>
       <div style={{ opacity: headerOp }}>
-        <SlideHeader num="12" title="AutoGo wins ~77% of games against KataGo" maxWidth={900} subtitle={<>
+        <SlideHeader num="14" title="AutoGo wins ~77% of games against KataGo" maxWidth={900} subtitle={<>
           On 19×19, AutoGo defeats KataGo — a strong open-source Go AI — at roughly the same rate playing as either color over 104 evaluation games.
         </>} />
       </div>
@@ -354,7 +407,7 @@ function P4_WinRateVsKataGo() {
                 fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em',
                 lineHeight: 1,
               }}>
-                {animated.toFixed(1)}<span style={{ color: s.accent, fontSize: 56 }}>%</span>
+                {Math.round(animated)}<span style={{ color: s.accent, fontSize: 56 }}>%</span>
               </div>
 
               <div style={{
@@ -399,6 +452,320 @@ function P4_WinRateVsKataGo() {
   );
 }
 
+// Three-card reflection on what current LLM coding assistants can and
+// can't do for this kind of from-scratch ML research project.
+function P4_LLMAutoresearch() {
+  const { localTime: lt } = useSprite();
+  const headerOp = Easing.easeOutCubic(clamp(lt / 0.5, 0, 1));
+  const card1Op  = Easing.easeOutCubic(clamp((lt - 0.5) / 0.6, 0, 1));
+  const card2Op  = Easing.easeOutCubic(clamp((lt - 1.0) / 0.6, 0, 1));
+  const card3Op  = Easing.easeOutCubic(clamp((lt - 1.5) / 0.6, 0, 1));
+  const card4Op  = Easing.easeOutCubic(clamp((lt - 2.0) / 0.6, 0, 1));
+
+  const Column = ({ op, accent, eyebrow, title, body, glyph, image, imageAlt, flex = '1 1 0' }) => (
+    <div style={{
+      flex, minWidth: 0, minHeight: 0,
+      padding: '16px 22px',
+      background: 'var(--bg)',
+      border: '1px solid rgba(31,26,20,0.12)',
+      borderTop: `4px solid ${accent}`,
+      borderRadius: 6,
+      opacity: op,
+      transform: `translateY(${(1 - op) * 8}px)`,
+      transition: 'transform 240ms ease',
+      display: 'flex', flexDirection: 'column', gap: 8,
+      overflow: 'hidden',
+    }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 10,
+        fontFamily: 'var(--mono)', fontSize: 11,
+        letterSpacing: '0.14em', textTransform: 'uppercase',
+        color: accent, fontWeight: 600,
+      }}>
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+          width: 22, height: 22, borderRadius: 11,
+          border: `2px solid ${accent}`,
+          fontSize: 13, fontFamily: 'var(--serif)', fontWeight: 700,
+        }}>
+          {glyph}
+        </span>
+        {eyebrow}
+      </div>
+      <div style={{
+        fontFamily: 'var(--serif)', fontSize: 19, fontWeight: 500,
+        color: 'var(--ink)', lineHeight: 1.2,
+      }}>
+        {title}
+      </div>
+      <div style={{
+        fontFamily: 'var(--serif)', fontSize: 14,
+        color: 'var(--ink-soft)', lineHeight: 1.45,
+      }}>
+        {body}
+      </div>
+      {image && (
+        <div style={{
+          flex: '1 1 0', minHeight: 0,
+          background: 'rgba(31,26,20,0.04)',
+          border: '1px solid rgba(31,26,20,0.10)',
+          borderRadius: 4,
+          padding: 6,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          overflow: 'hidden',
+        }}>
+          <img
+            src={image}
+            alt={imageAlt || ''}
+            style={{
+              display: 'block',
+              maxWidth: '100%', maxHeight: '100%',
+              objectFit: 'contain',
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <div style={{
+      position: 'absolute', inset: 0,
+      display: 'flex', flexDirection: 'column',
+      paddingLeft: 200, paddingRight: 60,
+      paddingTop: 76, paddingBottom: 56,
+      gap: 20,
+    }}>
+      <div style={{ opacity: headerOp }}>
+        <SectionLabel num="18" title="Autoresearch with LLMs: what works, what doesn't?" />
+        
+      </div>
+
+      <div style={{
+        flex: '1 1 auto', minHeight: 0,
+        display: 'flex', gap: 20, alignItems: 'stretch',
+      }}>
+        <div style={{
+          flex: '1 1 0', minWidth: 0,
+          display: 'flex', flexDirection: 'column', gap: 20,
+        }}>
+          <Column
+            op={card1Op}
+            accent="#1f8a5b"
+            glyph="✓"
+            eyebrow="Works"
+            title="Implementing and running experiments"
+            body={<>
+              Current models (Claude Opus 4.7) can implement experiments and get them to run. They can rewrite Python into C++ and do a good job at distributed systems design (protocols and gRPC services).
+            </>}
+            flex="0 0 auto"
+          />
+          <Column
+            op={card2Op}
+            accent="#1f8a5b"
+            glyph="✓"
+            eyebrow="Works"
+            title="Optimizing hyperparameters"
+            body={<>
+              Given a "standard deep learning task" like "make the loss go down", agents can make substantial improvements by tweaking hyperparameters.
+            </>}
+            image="/alphago-tutorial/val_loss_progress.png"
+            imageAlt="Val loss running-best curve over 63 autoresearch experiments"
+            flex="1 1 0"
+          />
+        </div>
+        <div style={{
+          flex: '1 1 0', minWidth: 0,
+          display: 'flex', flexDirection: 'column', gap: 20,
+        }}>
+          <Column
+            op={card3Op}
+            accent="#b64242"
+            glyph="✕"
+            eyebrow="Still doesn't work"
+            title="Choosing the next card or switching to a new row"
+            body={<>
+              LLM agents cannot (yet) suggest what the next <em>card</em> in the chain should be, or recognize when we should abandon the current row and pursue a different one (lateral thinking). Strategy at the level of the lineage tree is still up to the human.
+            </>}
+            flex="0 0 auto"
+          />
+          <Column
+            op={card4Op}
+            accent="#b64242"
+            glyph="✕"
+            eyebrow="Still doesn't work"
+            title="Visualization that yields an &ldquo;aha&rdquo; moment"
+            body={<>
+              Compacting an enormous amount of research data &amp; context into a single plot, glancing at it with computer vision, then having an &ldquo;aha&rdquo; moment of geometric understanding. For me, this moment came from a plot of MCTS argmax vs. raw policy argmax disagreement and realizing that this indicated the quality of the training signal to the policy network.
+            </>}
+            flex="1 1 0"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Why Go is a good outer-loop testbed for autoresearch: a box of frontier
+// ML topics that all collapse into a single quick-to-verify game.
+function P4_WhyGo() {
+  const { localTime: lt } = useSprite();
+  const headerOp = Easing.easeOutCubic(clamp(lt / 0.5, 0, 1));
+  const boxOp    = Easing.easeOutCubic(clamp((lt - 0.4) / 0.5, 0, 1));
+  const arrowOp  = Easing.easeOutCubic(clamp((lt - 1.4) / 0.5, 0, 1));
+  const boardOp  = Easing.easeOutCubic(clamp((lt - 1.7) / 0.6, 0, 1));
+
+  const topics = [
+    'Architectures and compute multipliers',
+    'Distributed RL systems',
+    'Self-play, Nash equilibria, mixed strategies',
+    'Recursive self-improvement',
+    'synthetic reasoning data',
+    'Train-time and test-time scaling',
+    'Combining Onpolicy + Offpolicy RL',
+    'Predicting experiment outcomes',
+    'Lateral creative thinking',
+    'Scientific understanding'
+  ];
+
+  // A plausible mid-game scatter of stones on a 9×9 board. Hand-picked so
+  // the board reads as "a real game in progress" rather than a uniform grid.
+  const stones = [
+    { x: 2, y: 2, color: 'B' }, { x: 6, y: 2, color: 'W' },
+    { x: 4, y: 3, color: 'B' }, { x: 3, y: 4, color: 'W' },
+    { x: 5, y: 5, color: 'B' }, { x: 6, y: 6, color: 'W' },
+    { x: 1, y: 5, color: 'B' }, { x: 7, y: 4, color: 'W' },
+    { x: 3, y: 6, color: 'B' }, { x: 5, y: 1, color: 'W' },
+    { x: 4, y: 7, color: 'B' }, { x: 1, y: 7, color: 'W' },
+  ];
+
+  // Stagger the inner topic cards' entrance.
+  const cardOp = (i) => Easing.easeOutCubic(clamp((lt - 0.6 - i * 0.10) / 0.5, 0, 1));
+
+  return (
+    <div style={{
+      position: 'absolute', inset: 0,
+      display: 'flex', flexDirection: 'column',
+      paddingLeft: 200, paddingRight: 60,
+      paddingTop: 76, paddingBottom: 56,
+      gap: 18,
+    }}>
+      <div style={{ opacity: headerOp }}>
+        <SectionLabel num="20" title="Why Go for autoresearch?" />
+        <div style={{
+          marginTop: 12,
+          fontFamily: 'var(--serif)', fontSize: 15,
+          color: 'var(--ink-soft)',
+          maxWidth: 920, lineHeight: 1.55,
+        }}>
+          Go folds a sampling platter of frontier ML problems into one outer loop. We can set LLMs about learning to do these tasks with onpolicy RL, and yet score the final result easily using Go. The ultimate RL objective is not to train strong Go agents; it is to build a playground for an automated scientist for which we have a complex-but-verifiable domain.
+        </div>
+      </div>
+
+      <div style={{
+        flex: '1 1 auto', minHeight: 0,
+        display: 'flex', alignItems: 'stretch', gap: 28,
+      }}>
+        {/* Frontier-topics box */}
+        <div style={{
+          flex: '1 1 0', minWidth: 0, minHeight: 0,
+          padding: '20px 22px',
+          background: 'var(--bg)',
+          border: '1px solid rgba(31,26,20,0.16)',
+          borderRadius: 8,
+          opacity: boxOp,
+          display: 'flex', flexDirection: 'column', gap: 14,
+        }}>
+          <div style={{
+            fontFamily: 'var(--mono)', fontSize: 11,
+            letterSpacing: '0.14em', textTransform: 'uppercase',
+            color: 'var(--ink-soft)', fontWeight: 600,
+          }}>
+            Auto-research tasks (Inner loop)
+          </div>
+          <div style={{
+            flex: '1 1 auto', minHeight: 0,
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gridAutoRows: 'minmax(0, 1fr)',
+            gap: 10,
+          }}>
+            {topics.map((t, i) => (
+              <div key={t} style={{
+                padding: '10px 14px',
+                background: 'rgba(31,26,20,0.04)',
+                border: '1px solid rgba(31,26,20,0.10)',
+                borderLeft: '3px solid var(--accent-mcts)',
+                borderRadius: 5,
+                fontFamily: 'var(--serif)', fontSize: 14,
+                color: 'var(--ink)', lineHeight: 1.3,
+                display: 'flex', alignItems: 'center',
+                opacity: cardOp(i),
+                transform: `translateY(${(1 - cardOp(i)) * 6}px)`,
+                transition: 'transform 240ms ease',
+              }}>
+                {t}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Arrow + 9×9 Go board on the right */}
+        <div style={{
+          flex: '0 0 auto',
+          display: 'flex', alignItems: 'center', gap: 8,
+        }}>
+          <ArrowToBoard opacity={arrowOp} />
+          <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10,
+            opacity: boardOp,
+          }}>
+            <GoBoard n={9} size={232} padding={16} stones={stones} />
+            <div style={{
+              fontFamily: 'var(--mono)', fontSize: 10,
+              letterSpacing: '0.16em', textTransform: 'uppercase',
+              color: 'var(--accent-mcts)', fontWeight: 600,
+            }}>
+              Outer loop
+            </div>
+            <div style={{
+              fontFamily: 'var(--serif)', fontSize: 13,
+              color: 'var(--ink-soft)', fontStyle: 'italic',
+              textAlign: 'center', maxWidth: 232, lineHeight: 1.4,
+            }}>
+              The output is an agent which we can score easily with a simple, quick game.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Horizontal arrow used by P4_WhyGo to point from the topics box at the
+// 9×9 board. Defined out-of-line so the marker id is stable.
+function ArrowToBoard({ opacity = 1 }) {
+  return (
+    <svg width={68} height={36} style={{ overflow: 'visible', opacity, transition: 'opacity 240ms ease' }}>
+      <defs>
+        <marker
+          id="whygo-arrow-head"
+          viewBox="0 0 10 10" refX="9" refY="5"
+          markerWidth="9" markerHeight="9" orient="auto"
+        >
+          <path d="M 0,0 L 10,5 L 0,10 z" fill="var(--ink-soft)" />
+        </marker>
+      </defs>
+      <line
+        x1={2} y1={18} x2={56} y2={18}
+        stroke="var(--ink-soft)" strokeWidth={2.4}
+        strokeLinecap="round"
+        markerEnd="url(#whygo-arrow-head)"
+      />
+    </svg>
+  );
+}
+
 function P4_FindingsTitle() {
   const { localTime: lt, duration } = useSprite();
   const op = Math.min(
@@ -411,12 +778,12 @@ function P4_FindingsTitle() {
       flexDirection:'column', gap:18, opacity:op,
     }}>
       <div style={{fontFamily:'var(--mono)', fontSize:13, color:'var(--ink-soft)', letterSpacing:'0.22em', textTransform:'uppercase'}}>Part 4</div>
-      <div style={{
+      <h2 style={{
         fontFamily:'var(--serif)', fontSize:72, fontWeight:400, color:'var(--ink)',
-        letterSpacing:'-0.03em', lineHeight:1.12, textAlign:'center',
-      }}>Research Findings</div>
+        letterSpacing:'-0.03em', lineHeight:1.12, textAlign:'center', margin:0,
+      }}>Research Findings</h2>
       <div style={{fontFamily:'var(--serif)', fontSize:18, color:'var(--ink-soft)', maxWidth:640, textAlign:'center', lineHeight:1.55, marginTop:6}}>
-        Lessons learned from implementing this from scratch
+        Here are some things I've learned so far. More results coming soon
       </div>
     </div>
   );
@@ -438,13 +805,14 @@ function TutorialCover() {
       <div style={{fontFamily:'var(--mono)', fontSize:12, color:'var(--ink-soft)', letterSpacing:'0.22em', textTransform:'uppercase'}}>
         A tutorial
       </div>
-      <div style={{
+      <h1 style={{
         fontFamily:'var(--serif)', fontSize:60, fontWeight:400, color:'var(--ink)',
         letterSpacing:'-0.025em', lineHeight:1.08, textAlign:'center',
+        margin: 0,
       }}>
         Automating Go Research<br/>
         with AutoGo
-      </div>
+      </h1>
       <div style={{fontFamily:'var(--serif)', fontSize:18, color:'var(--ink-soft)', maxWidth:680, textAlign:'center', lineHeight:1.55, marginTop:4}}>
         Building a strong Go AI from scratch with modern AI tools.
       </div>
@@ -481,6 +849,131 @@ function TutorialCover() {
       >
         Play at autogo.evjang.com →
       </a>
+
+      <a
+        href="https://github.com/ericjang/autogo"
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          marginTop: 10,
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          fontFamily: 'var(--mono)', fontSize: 12,
+          letterSpacing: '0.14em', textTransform: 'uppercase',
+          color: 'var(--ink-soft)',
+          textDecoration: 'none',
+          padding: '10px 18px',
+          border: '1px solid var(--ink-soft)',
+          borderRadius: 22,
+          cursor: 'pointer',
+          pointerEvents: 'auto',
+          position: 'relative',
+          zIndex: 5,
+          transition: 'background 140ms, color 140ms',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'var(--ink-soft)';
+          e.currentTarget.style.color = 'var(--bg)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'transparent';
+          e.currentTarget.style.color = 'var(--ink-soft)';
+        }}
+      >
+        Code on Github →
+      </a>
+    </div>
+  );
+}
+
+// ── AutoGo · Outro (closing CTAs) ──────────────────────────────────────────
+// Echoes the cover's Play/Code buttons at the end of the deck, plus an
+// "About me" link out to evjang.com.
+function AutoGo_Outro() {
+  const { localTime: lt, duration } = useSprite();
+  const op = Math.min(
+    Easing.easeOutCubic(clamp(lt / 0.6, 0, 1)),
+    1 - Easing.easeInCubic(clamp((lt - (duration - 0.8)) / 0.8, 0, 1))
+  );
+  const headOp = Easing.easeOutCubic(clamp((lt - 0.2) / 0.6, 0, 1));
+  const ctaOp  = (i) => Easing.easeOutCubic(clamp((lt - 0.6 - i * 0.18) / 0.5, 0, 1));
+
+  // Shared pill-button style; `solid` controls fill vs outline.
+  const Pill = ({ href, color, label, solid, opacity, idx }) => (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: 8,
+        fontFamily: 'var(--mono)', fontSize: 12,
+        letterSpacing: '0.14em', textTransform: 'uppercase',
+        color: solid ? 'var(--bg)' : color,
+        background: solid ? color : 'transparent',
+        textDecoration: 'none',
+        padding: '10px 18px',
+        border: `1px solid ${color}`,
+        borderRadius: 22,
+        cursor: 'pointer',
+        pointerEvents: 'auto',
+        position: 'relative', zIndex: 5,
+        opacity,
+        transform: `translateY(${(1 - opacity) * 6}px)`,
+        transition: 'background 140ms, color 140ms, transform 240ms ease',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = color;
+        e.currentTarget.style.color = 'var(--bg)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = solid ? color : 'transparent';
+        e.currentTarget.style.color = solid ? 'var(--bg)' : color;
+      }}
+    >
+      {label}
+    </a>
+  );
+
+  return (
+    <div style={{
+      position: 'absolute', inset: 0,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      flexDirection: 'column', gap: 18, opacity: op,
+    }}>
+      <div style={{
+        fontFamily: 'var(--mono)', fontSize: 12,
+        color: 'var(--ink-soft)', letterSpacing: '0.22em',
+        textTransform: 'uppercase', opacity: headOp,
+      }}>
+        Thanks for reading
+      </div>
+      <div style={{
+        fontFamily: 'var(--serif)', fontSize: 48, fontWeight: 400,
+        color: 'var(--ink)', letterSpacing: '-0.025em',
+        lineHeight: 1.1, textAlign: 'center', maxWidth: 900,
+        opacity: headOp, margin: 0,
+      }}>
+        Play, fork, or get in touch.
+      </div>
+
+      <div style={{
+        marginTop: 22,
+        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+      }}>
+        <Pill href="https://autogo.evjang.com"
+              color="var(--accent-mcts)" solid={false}
+              label="Play at autogo.evjang.com →"
+              opacity={ctaOp(0)} />
+        <Pill href="https://github.com/ericjang/autogo"
+              color="var(--ink-soft)" solid={false}
+              label="Code on Github →"
+              opacity={ctaOp(1)} />
+        <Pill href="https://evjang.com"
+              color="var(--ink-soft)" solid={false}
+              label="About me · evjang.com →"
+              opacity={ctaOp(2)} />
+      </div>
     </div>
   );
 }
@@ -548,8 +1041,11 @@ Object.assign(window, {
   IntroInstructions,
   TutorialCover,
   AutoGo_Thanks,
+  AutoGo_Outro,
   P2_Title,
   P4_Compute,
   P4_FindingsTitle,
+  P4_LLMAutoresearch,
+  P4_WhyGo,
   P4_WinRateVsKataGo,
 });

@@ -200,8 +200,6 @@ function NN_MaskedResBlockDetail({x, y, opacity = 1, highlight = 0}) {
     <g transform={`translate(${x}, ${y})`} opacity={opacity}>
       <rect x={-12} y={-32} width={W + 24} height={totalH + 60} rx={8}
             fill={NN_COLORS.blockSoft} stroke={NN_COLORS.blockEdge} strokeWidth={1}/>
-      <text x={-6} y={-40} fontFamily="JetBrains Mono, monospace" fontSize="9.5"
-            fill="#7a7460" letterSpacing="0.18em">MASKED RES BLOCK · DETAIL</text>
       <text x={W/2} y={-14} textAnchor="middle"
             fontFamily="JetBrains Mono, monospace" fontSize="9"
             fill="#7a7460">in : (B, 128, H, W)</text>
@@ -588,7 +586,7 @@ function P4_VariableBoard() {
 
   return (
     <>
-      <SlideHeader num="13" title="Variable board sizing" maxWidth={820} subtitle={<>
+      <SlideHeader num="19" title="Variable board sizing" maxWidth={820} subtitle={<>
         I found it helpful to train a strong model on 9x9 first, and then use the data collected to warm-start a 19x19 model. To have the model handle both 9×9 and 19×19 inputs, we use the Fully Convolutional ResNet with masking from KataGo. Stones are pinned to the upper-left of a padded 19×19 canvas, and a binary mask multiplies through every conv, BN, and head.
       </>} />
 
