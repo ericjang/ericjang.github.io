@@ -889,17 +889,14 @@ function TutorialCover() {
 // ── AutoGo · Outro (closing CTAs) ──────────────────────────────────────────
 // Echoes the cover's Play/Code buttons at the end of the deck, plus an
 // "About me" link out to evjang.com.
-function AutoGo_Outro() {
-  const { localTime: lt, duration } = useSprite();
-  const op = Math.min(
-    Easing.easeOutCubic(clamp(lt / 0.6, 0, 1)),
-    1 - Easing.easeInCubic(clamp((lt - (duration - 0.8)) / 0.8, 0, 1))
-  );
-  const headOp = Easing.easeOutCubic(clamp((lt - 0.2) / 0.6, 0, 1));
-  const ctaOp  = (i) => Easing.easeOutCubic(clamp((lt - 0.6 - i * 0.18) / 0.5, 0, 1));
 
-  // Shared pill-button style; `solid` controls fill vs outline.
-  const Pill = ({ href, color, label, solid, opacity, idx }) => (
+// IMPORTANT: this pill component is defined at module scope (outside
+// AutoGo_Outro). If it were defined inside the per-frame render of the
+// outro, React would treat it as a new component type on every tick and
+// remount the underlying <a>, which breaks clicks (mousedown lands on the
+// old node, mouseup on a freshly mounted one).
+function OutroPill({ href, color, label, opacity }) {
+  return (
     <a
       href={href}
       target="_blank"
@@ -909,8 +906,7 @@ function AutoGo_Outro() {
         display: 'inline-flex', alignItems: 'center', gap: 8,
         fontFamily: 'var(--mono)', fontSize: 12,
         letterSpacing: '0.14em', textTransform: 'uppercase',
-        color: solid ? 'var(--bg)' : color,
-        background: solid ? color : 'transparent',
+        color, background: 'transparent',
         textDecoration: 'none',
         padding: '10px 18px',
         border: `1px solid ${color}`,
@@ -927,13 +923,23 @@ function AutoGo_Outro() {
         e.currentTarget.style.color = 'var(--bg)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = solid ? color : 'transparent';
-        e.currentTarget.style.color = solid ? 'var(--bg)' : color;
+        e.currentTarget.style.background = 'transparent';
+        e.currentTarget.style.color = color;
       }}
     >
       {label}
     </a>
   );
+}
+
+function AutoGo_Outro() {
+  const { localTime: lt, duration } = useSprite();
+  const op = Math.min(
+    Easing.easeOutCubic(clamp(lt / 0.6, 0, 1)),
+    1 - Easing.easeInCubic(clamp((lt - (duration - 0.8)) / 0.8, 0, 1))
+  );
+  const headOp = Easing.easeOutCubic(clamp((lt - 0.2) / 0.6, 0, 1));
+  const ctaOp  = (i) => Easing.easeOutCubic(clamp((lt - 0.6 - i * 0.18) / 0.5, 0, 1));
 
   return (
     <div style={{
@@ -961,18 +967,18 @@ function AutoGo_Outro() {
         marginTop: 22,
         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
       }}>
-        <Pill href="https://autogo.evjang.com"
-              color="var(--accent-mcts)" solid={false}
-              label="Play at autogo.evjang.com →"
-              opacity={ctaOp(0)} />
-        <Pill href="https://github.com/ericjang/autogo"
-              color="var(--ink-soft)" solid={false}
-              label="Code on Github →"
-              opacity={ctaOp(1)} />
-        <Pill href="https://evjang.com"
-              color="var(--ink-soft)" solid={false}
-              label="About me · evjang.com →"
-              opacity={ctaOp(2)} />
+        <OutroPill href="https://autogo.evjang.com"
+                   color="var(--accent-mcts)"
+                   label="Play at autogo.evjang.com →"
+                   opacity={ctaOp(0)} />
+        <OutroPill href="https://github.com/ericjang/autogo"
+                   color="var(--ink-soft)"
+                   label="Code on Github →"
+                   opacity={ctaOp(1)} />
+        <OutroPill href="https://evjang.com"
+                   color="var(--ink-soft)"
+                   label="About me · evjang.com →"
+                   opacity={ctaOp(2)} />
       </div>
     </div>
   );
