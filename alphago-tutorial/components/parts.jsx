@@ -341,112 +341,39 @@ function P4_Compute() {
 
 // ── Part 4 · Research Findings ──────────────────────────────────────────────
 
-// Headline finding: AutoGo's win rate vs the KataGo reference checkpoint,
-// split by which color AutoGo played. Two big stats with bars; numbers
-// count up.
+// Headline finding: AutoGo's win rate vs the KataGo reference checkpoint.
+// Hidden for now while results are being re-evaluated.
 function P4_WinRateVsKataGo() {
   const { localTime: lt } = useSprite();
-
   const headerOp = Easing.easeOutCubic(clamp(lt / 0.5, 0, 1));
-  const blackOp  = Easing.easeOutCubic(clamp((lt - 0.6) / 0.5, 0, 1));
-  const whiteOp  = Easing.easeOutCubic(clamp((lt - 1.2) / 0.5, 0, 1));
-  const blackP   = Easing.easeOutCubic(clamp((lt - 0.7) / 1.6, 0, 1));
-  const whiteP   = Easing.easeOutCubic(clamp((lt - 1.3) / 1.6, 0, 1));
-  const footOp   = Easing.easeOutCubic(clamp((lt - 2.4) / 0.8, 0, 1));
-
-  const STATS = [
-    { label: 'AutoGo as Black', wins: 42, total: 55, pct: 76,
-      accent: 'var(--ink)',         op: blackOp, p: blackP, side: 'black' },
-    { label: 'AutoGo as White', wins: 38, total: 49, pct: 77,
-      accent: 'var(--ink)', op: whiteOp, p: whiteP, side: 'white' },
-  ];
+  const noteOp   = Easing.easeOutCubic(clamp((lt - 0.6) / 0.6, 0, 1));
 
   return (
     <>
       <div style={{ opacity: headerOp }}>
-        <SlideHeader num="14" title="AutoGo wins ~77% of games against KataGo" maxWidth={900} subtitle={<>
-          On 19×19, AutoGo defeats KataGo — a strong open-source Go AI — at roughly the same rate playing as either color over 104 evaluation games.
-        </>} />
+        <SlideHeader num="14" title="Win rate against KataGo" maxWidth={900} />
       </div>
 
       <div style={{
-        position:'absolute', left: 200, right: 80, top: 240,
-        display:'flex', gap: 28,
+        position:'absolute', left: 200, right: 80, top: 280,
+        display:'flex', flexDirection:'column', alignItems:'flex-start', gap: 16,
+        opacity: noteOp,
+        transform: `translateY(${(1 - noteOp) * 8}px)`,
       }}>
-        {STATS.map((s) => {
-          const animated = s.pct * s.p;
-          const losses = s.total - s.wins;
-          return (
-            <div key={s.label} style={{
-              flex: 1,
-              padding: '32px 40px 28px',
-              background: 'rgba(31,26,20,0.03)',
-              border: '1px solid rgba(31,26,20,0.10)',
-              borderRadius: 10,
-              opacity: s.op,
-              transform: `translateY(${(1 - s.op) * 8}px)`,
-              display: 'flex', flexDirection: 'column', gap: 16,
-            }}>
-              <div style={{
-                display:'flex', alignItems:'center', gap: 10,
-                fontFamily: 'var(--mono)', fontSize: 11,
-                letterSpacing: '0.2em', textTransform: 'uppercase',
-                color: 'var(--ink-soft)',
-              }}>
-                <span style={{
-                  display:'inline-block', width: 12, height: 12, borderRadius: '50%',
-                  background: s.side === 'black' ? 'var(--stone-black)' : 'var(--stone-white)',
-                  border: s.side === 'white' ? '1px solid rgba(31,26,20,0.35)' : 'none',
-                }}/>
-                {s.label}
-              </div>
-
-              <div style={{
-                fontFamily: 'var(--serif)', fontWeight: 500,
-                fontSize: 96, color: 'var(--ink)',
-                fontVariantNumeric: 'tabular-nums', letterSpacing: '-0.02em',
-                lineHeight: 1,
-              }}>
-                {Math.round(animated)}<span style={{ color: s.accent, fontSize: 56 }}>%</span>
-              </div>
-
-              <div style={{
-                position:'relative',
-                width: '100%', height: 10,
-                background: 'rgba(31,26,20,0.08)', borderRadius: 5,
-                overflow: 'hidden',
-              }}>
-                <div style={{
-                  height: '100%', width: `${animated}%`,
-                  background: s.accent, borderRadius: 5,
-                }} />
-              </div>
-
-              <div style={{
-                display:'flex', justifyContent:'space-between',
-                fontFamily: 'var(--mono)', fontSize: 13,
-                color: 'var(--ink-soft)', fontVariantNumeric: 'tabular-nums',
-              }}>
-                <span>
-                  <span style={{color:'var(--ink)', fontWeight:600}}>{s.wins}</span>
-                  &nbsp;wins · {losses} losses
-                </span>
-                <span>{s.wins} / {s.total}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div style={{
-        position: 'absolute', left: 200, right: 80, bottom: 56,
-        fontFamily: 'var(--mono)', fontSize: 11,
-        color: 'var(--ink-soft)', letterSpacing: '0.04em',
-        opacity: footOp,
-        lineHeight: 1.6,
-      }}>
-        Opponent: <span style={{color:'var(--ink)'}}>kata1-zhizi-b40c768nbt-fdx6c</span>
-        &nbsp;· evaluated 2026-04-06
+        <div style={{
+          fontFamily: 'var(--mono)', fontSize: 11,
+          letterSpacing: '0.22em', textTransform: 'uppercase',
+          color: 'var(--ink-soft)',
+        }}>
+          Pending
+        </div>
+        <div style={{
+          fontFamily: 'var(--serif)', fontSize: 32, fontWeight: 400,
+          color: 'var(--ink)', letterSpacing: '-0.01em', lineHeight: 1.25,
+          maxWidth: 760,
+        }}>
+          Currently pending re-evaluation. I had a scoring bug that invalidated some results!
+        </div>
       </div>
     </>
   );
