@@ -4,6 +4,12 @@ title: Talks
 permalink: /talks/
 ---
 
+<ins>May 2026 - Dwarkesh Podcast</ins>
+
+- Host: Dwarkesh Patel
+- Links: [YouTube](https://www.youtube.com/watch?v=X_ZVSPcZhtw)
+- Summary: Dwarkesh and I teach how to build a strong Go AI (AlphaGo / AlphaZero) from scratch in the age of AI coding and autoresearch.
+
 <ins>Sep 2024 - First Principles</ins>
 
 - Host: Christian Keil
