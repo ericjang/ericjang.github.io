@@ -9,7 +9,7 @@ permalink: /talks/
 - Host: Dwarkesh Patel
 - Links: [YouTube](https://www.youtube.com/watch?v=X_ZVSPcZhtw)
 - Summary: Dwarkesh and I teach how to build a strong Go AI (AlphaGo / AlphaZero) from scratch in the age of AI coding and autoresearch.
-- Errata: ![PDF](/alphago-tutorial/llm_rl_variance.pdf)
+- Errata: [PDF](/alphago-tutorial/llm_rl_variance.pdf)
 
 <ins>Sep 2024 - First Principles</ins>
 
