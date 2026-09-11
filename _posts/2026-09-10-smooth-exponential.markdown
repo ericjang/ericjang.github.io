@@ -42,7 +42,7 @@ Because broad pretraining data for robotics is somewhat hardware-agnostic, we ar
 
 Because pretraining is relatively decoupled from hardware specifics, the same pretraining corpus is likely to benefit all robotics labs, and therefore scaling laws on robotic imitation can be studied in a fairly reproducible way. A common "data pyramid" of hardware-agnostic data, in turn, unlocks action perplexity and action mean-squared-error scaling laws on large held-out datasets without requiring real-world robots.
 
-In a talk in April to a small audience of about 100 people, I predicted that we would see the first 2-3 general-purpose home robots go on the market in June 2027, swiftly followed by a dozen or more companies in China and the US accomplishing the same thing. 
+In a talk in April to a small audience of about 100 people, I predicted that we would see the first 2-3 general-purpose home robots go on the market in October 2027, swiftly followed by a dozen or more companies in China and the US accomplishing the same thing. 
 
 The first generation of such products will not be useful enough to replace entire humans in the home or otherwise, but will be general enough to be interesting to a few thousand enthusiast users. They might do basic pick-and-place tasks around the house, or fold your laundry into a neat pile, along with a small suite of party tricks. Like ChatGPT and coding agents, they will follow a progression from "not very useful" to "very useful" to "economically disruptive." The consumer home will be the first place that tolerates an "interesting-but-not-very-useful robot," but as capabilities transition to the "very useful" category, we should expect to see explosive adoption in enterprise and manufacturing at much larger volumes.
 
